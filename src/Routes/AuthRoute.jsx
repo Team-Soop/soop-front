@@ -7,6 +7,7 @@ import StudyGroupPage from '../pages/StudyGroupPage/StudyGroupPage';
 import LunchRecommendationPage from '../pages/LunchRecommendationPage/LunchRecommendationPage';
 import FeedPage from '../pages/FeedPage/FeedPage';
 import Admin from '../pages/Admin/Admin';
+import AuthPage from '../pages/AuthPage/AuthPage';
 
 function AuthRoute(props) {
   return (
