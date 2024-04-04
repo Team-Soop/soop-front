@@ -78,26 +78,27 @@ function FeedPage(props) {
   }
   
   const handleImageUpload = () => {
-    const file = uploadPhotos[0];
-    console.log(uploadPhotos);
-    console.log(file.name);
-    const storageRef = ref(storage, `soop/test/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    // const file = uploadPhotos[0];
+    uploadPhotos.forEach((file) => {
+      console.log(uploadPhotos);
+      console.log(file.name);
+      const storageRef = ref(storage, `soop/test/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {},
-      (error) => {
-        console.log(error);
-      },
-      () => {     
-        getDownloadURL(storageRef)
-        .then(urls => {
-          console.log(urls);
-        })
-      }
-    );
-
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {},
+        (error) => {
+          console.log(error);
+        },
+        () => {     
+          getDownloadURL(storageRef)
+          .then(urls => {
+            console.log(urls);
+          })
+        }
+      );
+    })
   }
 
 
