@@ -12,21 +12,19 @@ import { useQuery } from 'react-query';
 import { getPrincipalRequest } from '../apis/api/principal';
 
 function AuthRoute(props) {
-
-  const principalQuery = useQuery(["principalQuery"], getPrincipalRequest,
+  const principalQuery = useQuery(["principalQuery"], getPrincipalRequest, 
     {
-      retry:0,
-      refetchOnWindowFocus:false,
-      onSuccess: response => {
-        console.log("onSuccess");
-        console.log(response);
-      },
-      onError: error => {
-        console.log("오류");
-        console.log(error);
-      }
-    }
-  );
+        retry: 0,
+        refetchOnWindowFocus: false,
+        onSuccess: response => {
+            console.log("onSuccess");
+            console.log(response);
+        },
+        onError: error => {
+            console.log("오류");
+            console.log(error);
+        }
+    });
 
   return (
     <>
@@ -38,7 +36,7 @@ function AuthRoute(props) {
         {/* 토큰이 있어야지만 접근 가능 */}
         <Route path='' element={<Mypage />} />     
         {/* 임시회원, 일반회원은 접근 불가  */}
-        <Route path='' element={<ClassSchedulePage />} />   
+        <Route path='/schedule' element={<ClassSchedulePage />} />   
         {/* 임시회원, 일반회원은 접근 불가 */}
         <Route path='' element={<StudyGroupPage />} />  
         {/* 임시회원 글작성 불가  */}
