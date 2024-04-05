@@ -9,8 +9,7 @@ function App() {
       {/* // layout
       // container
       // sidebar */}
-      {/* <AuthRoute/> */}
-      <FeedPage />
+      <AuthRoute/>
     </>
   );
 }

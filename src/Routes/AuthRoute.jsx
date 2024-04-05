@@ -44,7 +44,7 @@ function AuthRoute(props) {
         {/* 임시회원 글작성 불가  */}
         <Route path='' element={<LunchRecommendationPage />} />  
         {/* 임시회원 글작성 불가 */}
-        <Route path='' element={<FeedPage />} />                 
+        <Route path='/feed' element={<FeedPage />} />                 
       </Routes>
     </>
   );
