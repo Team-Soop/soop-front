@@ -11,11 +11,11 @@ import { useMutation } from "react-query";
 import { addSchedule } from "../../apis/api/schedule";
 
 export default function AddClassSchedule() {
-    const [ classTitle, classTitleChange ] = useInput("");
-    const [ classTeacherName, classTeacherNameChange ] = useInput("");
+    const [ classScheduleTitle, classScheduleTitleChange ] = useInput("");
+    const [ classScheduleTeacher, classScheduleTeacherChange ] = useInput("");
     const [ classLocationId, classLocationIdChange ] = useInput("");
-    const [ classStartDate, setClassStartDate ] = useState();
-    const [ classEndDate, setClassEndDate ] = useState();
+    const [ classScheduleStartDate, setClassScheduleStartDate ] = useState();
+    const [ classScheduleEndDate, setClassScheduleEndDate ] = useState();
     const [ clickDayList ] = useState([]);
     const [ selectTimeOption ] = useState([]);
 
@@ -45,22 +45,22 @@ export default function AddClassSchedule() {
 
     const handleOnChangeStartTime = (e) => {
         console.log(e.value);
-        setClassStartDate(e.value);
+        setClassScheduleStartDate(e.value);
     }
     const handleOnChangeEndTime = (e) => {
         console.log(e.value);
-        setClassEndDate(e.value);
+        setClassScheduleEndDate(e.value);
     }
     const handleSubmitClick = () => {
         const finalDateList = [];
 
         for(let day of clickDayList) {
             finalDateList.push({
-                classTitle: classTitle,
-                classTeacherName: classTeacherName,
+                classScheduleTitle: classScheduleTitle,
+                classScheduleTeacher: classScheduleTeacher,
                 classLocationId: classLocationId,
-                classStartDate: day + "T" + classStartDate + ":00+09:00",
-                classEndDate: day + "T" + classEndDate + ":00+09:00"
+                classScheduleStartDate: day + "T" + classScheduleStartDate + ":00+09:00",
+                classScheduleEndDate: day + "T" + classScheduleEndDate + ":00+09:00"
             })
         }
         console.log(finalDateList);
@@ -91,10 +91,10 @@ export default function AddClassSchedule() {
         </div>
         <div>
             <div> 타이틀
-                <input type="text" onChange={classTitleChange} />
+                <input type="text" onChange={classScheduleTitleChange} />
             </div>
             <div> 강사명
-                <input type="text" onChange={classTeacherNameChange}/>
+                <input type="text" onChange={classScheduleTeacherChange}/>
             </div>
             <div> 강의실
                 <input type="text" onChange={classLocationIdChange}/>
