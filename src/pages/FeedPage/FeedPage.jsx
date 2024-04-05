@@ -2,23 +2,32 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../apis/firebase/firebaseConfig";
+import { feedRequest } from "../../apis/api/feed";
+import { QueryClient, useQueryClient } from "react-query";
 
 function FeedPage(props) {
-  const [ feeds, setFeeds ] = useState([]);
-  const [ newFeed, setNewFeed ] = useState("");
+  const [ newFeedContent, setNewFeedContent ] = useState("");
   const [ uploadPhotos, setUploadPhotos ] = useState([]);
   const uploadFilesId = useRef(0);
   const imgFileRef = useRef();
+  const [ contentImg, setContentImg ] = useState([]);
+  const [ contentImgList ] = useState([]);
+  const queryClient = useQueryClient();
+  const principalData = queryClient.getQueryData("principalQuery");
 
   const handleSubmitFeed = () => {
-      const updateFeeds = [...feeds, { content: newFeed }];
-      setFeeds(updateFeeds);
-      setNewFeed("");
+    feedRequest({
+      principalData: principalData.username,
+      newFeedContent: newFeedContent,
+      contentImg: contentImg
+    }).then(response => {
+      console.log(response)
+    })
   }
 
   const handleCancelFeed = () => {
-      if (!newFeed) return;
-      setNewFeed("");
+      if (!newFeedContent) return;
+      setNewFeedContent("");
   }
 
   const modules = useMemo(
@@ -36,7 +45,7 @@ function FeedPage(props) {
     }),
   );
 
-  console.log(newFeed);
+  console.log(newFeedContent);
 
   const handleFileChange = (e) => {
     console.log(e.target.files);
@@ -78,30 +87,43 @@ function FeedPage(props) {
   }
   
   const handleImageUpload = () => {
-    // const file = uploadPhotos[0];
+    const uploadPromises = [];
     uploadPhotos.forEach((file) => {
-      console.log(uploadPhotos);
-      console.log(file.name);
       const storageRef = ref(storage, `soop/test/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {},
-        (error) => {
-          console.log(error);
-        },
-        () => {     
-          getDownloadURL(storageRef)
-          .then(urls => {
-            console.log(urls);
-          })
-        }
-      );
+      const promise = new Promise((resolve) => {
+
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {},
+          (error) => {
+            console.log(error);
+          },
+          () => {     
+            getDownloadURL(storageRef)
+            .then(url => {
+              console.log(url);
+              resolve(url);
+            })
+          }
+        );
+
+      })
+      uploadPromises.push(promise);
     })
+    Promise.all(uploadPromises)
+    .then((urls) => {
+      console.log(urls);
+    })
+
   }
 
-
+  // useEffect(() => {
+  //   contentImgList.push(contentImg);
+  //   console.log(contentImgList)
+  // }, [contentImg
+  // ])
 
   return (
     <div>
@@ -129,14 +151,14 @@ function FeedPage(props) {
 
       <div>
         <div>
-          <img src="" alt="" />
+          <img src={contentImg} alt="" />
           <div>사용자 이름</div>
         </div>
         <div >
           <ReactQuill 
             modules={modules} 
-            value={newFeed} 
-            onChange={setNewFeed}
+            value={newFeedContent} 
+            onChange={setNewFeedContent}
             style={{width: "400px"}}
           />
           <input 

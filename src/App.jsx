@@ -13,7 +13,7 @@ function App() {
         <RootSideMenuLeft/> */}
         <AuthRoute/>
       {/* </RootLayout> */}
-      
+
     </>
   );
 }
