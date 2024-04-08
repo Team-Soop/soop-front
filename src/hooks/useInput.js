@@ -31,6 +31,7 @@ export const useInput = (property) => {
                 }
             }
         }
+        
     }, [value])
 
     const handleOnChange = (e) => {

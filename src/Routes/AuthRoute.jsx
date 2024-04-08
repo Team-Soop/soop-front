@@ -10,6 +10,7 @@ import Admin from '../pages/Admin/Admin';
 import AuthPage from '../pages/AuthPage/AuthPage';
 import { useQuery } from 'react-query';
 import { getPrincipalRequest } from '../apis/api/principal';
+import PasswordEditPage from '../pages/PasswordEditPage/PasswordEditPage';
 
 function AuthRoute(props) {
   const principalQuery = useQuery(["principalQuery"], getPrincipalRequest, 
@@ -21,7 +22,7 @@ function AuthRoute(props) {
             console.log(response);
         },
         onError: error => {
-            console.log("오류");
+            console.log("토큰 없음");
             console.log(error);
         }
     });
@@ -32,9 +33,11 @@ function AuthRoute(props) {
         <Route path="/auth/*" element={<AuthPage />} />
         {/* Admin 권한만 접근 가능 */}
         <Route path='' element={<Admin />} />                    
-        <Route path='' element={<MainPage />} />
+        <Route path='/' element={<MainPage />} />
         {/* 토큰이 있어야지만 접근 가능 */}
-        <Route path='' element={<Mypage />} />     
+        <Route path='/account/mypage' element={<Mypage />} />     
+        {/* 임시회원, 일반회원은 접근 불가  */}
+        <Route path='/account/edit/password' element={<PasswordEditPage />} />     
         {/* 임시회원, 일반회원은 접근 불가  */}
         <Route path='/schedule' element={<ClassSchedulePage />} />   
         {/* 임시회원, 일반회원은 접근 불가 */}
