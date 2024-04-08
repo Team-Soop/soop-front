@@ -16,7 +16,6 @@ function AuthPage(props) {
 
   useEffect(() => {
     if (!!principalData) {
-      console.log("왜 업데이트되면 뜨노");
       alert("잘못된 접근입니다, 닌 토큰있다")
       window.location.replace("/")
     }

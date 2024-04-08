@@ -8,6 +8,7 @@ function SignupPage(props) {
   const navigate = useNavigate();
 
   const [username, userNameChange, usernameMessage, setUsernameValue, setUsernameMessage] = useInput("username");
+  const [nickname, nickNameChange, nicknameMessage, setNicknameValue, setNicknameMessage] = useInput("nickname");
   const [password, passwordChange, passwordMessage] = useInput("password");
   const [checkPassword, checkPasswordChange] = useInput("checkPassword");
   const [name, nameChange, nameMessage] = useInput("name");
@@ -40,6 +41,7 @@ function SignupPage(props) {
   const handleSignupSubmit = () => {
     const checkFlags = [
       usernameMessage?.type,
+      nicknameMessage?.type,
       passwordMessage?.type,
       checkPasswordMessage?.type,
       nameMessage?.type,
@@ -53,6 +55,7 @@ function SignupPage(props) {
 
     signupRequest({
       username,
+      nickname,
       password,
       name,
       email
@@ -88,7 +91,8 @@ function SignupPage(props) {
         <h1>회원가입</h1>
         <button onClick={handleSignupSubmit}>가입하기</button>
       </div>
-      <AuthPageInput type={"text"} name={"username"} placeholder={"사용자이름"} value={username} onChange={userNameChange} message={usernameMessage} />
+      <AuthPageInput type={"text"} name={"username"} placeholder={"아이디"} value={username} onChange={userNameChange} message={usernameMessage} />
+      <AuthPageInput type={"text"} name={"nickname"} placeholder={"닉네임"} value={nickname} onChange={nickNameChange} message={nicknameMessage} />
       <AuthPageInput type={"password"} name={"password"} placeholder={"비밀번호"} value={password} onChange={passwordChange} message={passwordMessage} />
       <AuthPageInput type={"password"} name={"checkPassword"} placeholder={"비밀번호 확인"} value={checkPassword} onChange={checkPasswordChange} message={checkPasswordMessage} />
       <AuthPageInput type={"text"} name={"name"} placeholder={"성명"} value={name} onChange={nameChange} message={nameMessage} />
