@@ -4,13 +4,13 @@ import * as s from "./style";
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useInput } from "../../hooks/useInput";
 import Select from "react-select";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { addSchedule } from "../../apis/api/schedule";
 
-export default function AddClassSchedule() {
+export default function AddClassSchedule({viewScheduleDate, originScheduleDate}) {
     const [ classScheduleTitle, classScheduleTitleChange ] = useInput("");
     const [ classScheduleTeacher, classScheduleTeacherChange ] = useInput("");
     const [ classLocationId, classLocationIdChange ] = useInput("");
@@ -18,6 +18,13 @@ export default function AddClassSchedule() {
     const [ classScheduleEndDate, setClassScheduleEndDate ] = useState();
     const [ clickDayList ] = useState([]);
     const [ selectTimeOption ] = useState([]);
+
+    const queryClient = useQueryClient();
+    const ScheduleQueryData = queryClient.getQueryData("searchAllScheduleQuery").data
+
+    useEffect(() => {
+        console.log(viewScheduleDate)
+    })
 
     const addScheduleMutation = useMutation({
         mutationKey: "addScheduleMutation",
@@ -73,12 +80,12 @@ export default function AddClassSchedule() {
             <FullCalendar 
                 selectable="true"
                 plugins={[ dayGridPlugin, interactionPlugin ]}
-                // enents={[
-        
-                // ]}
-                // eventClick={(info) => {
+                events={
+                    viewScheduleDate
+                }
+                eventClick={(info) => {
                   
-                // }}
+                }}
                 select={(date) => {
                     if(clickDayList.indexOf(date.startStr) > -1) {
                         clickDayList.splice(clickDayList.indexOf(date.startStr), 1)
