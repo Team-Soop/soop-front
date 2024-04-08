@@ -3,31 +3,55 @@ import ReactQuill from "react-quill";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../apis/firebase/firebaseConfig";
 import { feedRequest } from "../../apis/api/feed";
-import { QueryClient, useQueryClient } from "react-query";
+import { QueryClient, useMutation, useQueryClient } from "react-query";
+
 
 function FeedPage(props) {
-  const [ newFeedContent, setNewFeedContent ] = useState("");
+  const [ feeds, setFeeds ] = useState([]);
+  const [ newFeed, setNewFeed ] = useState("");
   const [ uploadPhotos, setUploadPhotos ] = useState([]);
   const uploadFilesId = useRef(0);
   const imgFileRef = useRef();
-  const [ contentImg, setContentImg ] = useState([]);
-  const [ contentImgList ] = useState([]);
-  const queryClient = useQueryClient();
-  const principalData = queryClient.getQueryData("principalQuery");
+
+  const addtest = useMutation({
+    mutationKey: "addtest",
+    mutationFn: feedRequest,
+    onSuccess: response => {
+      console.log("ㅇㅇ")
+      console.log(contentImg)
+      console.log(principalData.data.userId)
+       console.log(newFeedContent) 
+    },
+    onError: error => {
+      console.log("ㄴㄴ")
+      console.log(contentImg)
+      console.log(principalData.data.userId)
+      console.log(newFeedContent)
+    }
+  })
 
   const handleSubmitFeed = () => {
-    feedRequest({
-      principalData: principalData.username,
-      newFeedContent: newFeedContent,
-      contentImg: contentImg
-    }).then(response => {
-      console.log(response)
+    addtest.mutate({
+      userId: principalData.data.userId,
+      feedContent: newFeedContent,
+      feedImgUrls: contentImg
     })
+    console.log(contentImg);
+    // feedRequest({
+      // userId: principalData.data.username,
+      // feedContent: newFeedContent,
+      // feedImgUrls: contentImg
+    // }).then(response => {
+    //   console.log(response)
+    // })
+      const updateFeeds = [...feeds, { content: newFeed }];
+      setFeeds(updateFeeds);
+      setNewFeed("");
   }
 
   const handleCancelFeed = () => {
-      if (!newFeedContent) return;
-      setNewFeedContent("");
+      if (!newFeed) return;
+      setNewFeed("");
   }
 
   const modules = useMemo(
@@ -45,7 +69,7 @@ function FeedPage(props) {
     }),
   );
 
-  console.log(newFeedContent);
+  console.log(newFeed);
 
   const handleFileChange = (e) => {
     console.log(e.target.files);
@@ -87,13 +111,14 @@ function FeedPage(props) {
   }
   
   const handleImageUpload = () => {
-    const uploadPromises = [];
+    // const file = uploadPhotos[0];
     uploadPhotos.forEach((file) => {
+      console.log(uploadPhotos);
+      console.log(file.name);
       const storageRef = ref(storage, `soop/test/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       const promise = new Promise((resolve) => {
-
         uploadTask.on(
           "state_changed",
           (snapshot) => {},
@@ -115,15 +140,25 @@ function FeedPage(props) {
     Promise.all(uploadPromises)
     .then((urls) => {
       console.log(urls);
-    })
+      setContentImg(urls)
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {},
+        (error) => {
+          console.log(error);
+        },
+        () => {     
+          getDownloadURL(storageRef)
+          .then(urls => {
+            console.log(urls);
+          })
+        }
+      );
 
+    })
   }
 
-  // useEffect(() => {
-  //   contentImgList.push(contentImg);
-  //   console.log(contentImgList)
-  // }, [contentImg
-  // ])
+  console.log(contentImg);
 
   return (
     <div>
@@ -151,14 +186,14 @@ function FeedPage(props) {
 
       <div>
         <div>
-          <img src={contentImg} alt="" />
+          <img src="" alt="" />
           <div>사용자 이름</div>
         </div>
         <div >
           <ReactQuill 
             modules={modules} 
-            value={newFeedContent} 
-            onChange={setNewFeedContent}
+            value={newFeed} 
+            onChange={setNewFeed}
             style={{width: "400px"}}
           />
           <input 
