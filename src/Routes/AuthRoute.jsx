@@ -10,21 +10,25 @@ import Admin from '../pages/Admin/Admin';
 import AuthPage from '../pages/AuthPage/AuthPage';
 import { useQuery } from 'react-query';
 import { getPrincipalRequest } from '../apis/api/principal';
+import { searchAllSchedule } from '../apis/api/schedule';
 
 function AuthRoute(props) {
-  const principalQuery = useQuery(["principalQuery"], getPrincipalRequest, 
+  const principalQuery = useQuery(["principalQuery"], getPrincipalRequest,
     {
-        retry: 0,
-        refetchOnWindowFocus: false,
-        onSuccess: response => {
-            console.log("onSuccess");
-            console.log(response);
-        },
-        onError: error => {
-            console.log("오류");
-            console.log(error);
-        }
-    });
+      retry:0,
+      refetchOnWindowFocus:false,
+      onSuccess: response => {
+        console.log("onSuccess");
+        console.log(response);
+      },
+      onError: error => {
+        console.log("오류");
+        console.log(error);
+      }
+    }
+  );
+
+
 
   return (
     <>

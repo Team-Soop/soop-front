@@ -11,8 +11,7 @@ function SigninPage(props) {
   const handleSigninSubmit = () => {
     signinRequest({
       username,
-      password,
-
+      password
     }).then(response => {
         const accessToken = response.data;
         localStorage.setItem("AccessToken", accessToken);
