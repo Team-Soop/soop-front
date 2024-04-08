@@ -1,5 +1,5 @@
 import instance from "../utils/instance"
 
-export const feedRequest = async () => {
-    return await instance.get("/feed");
+export const feedRequest = async (data) => {
+    return await instance.post("/feed", data);
 }

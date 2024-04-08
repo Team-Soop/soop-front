@@ -2,6 +2,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../apis/firebase/firebaseConfig";
+import { feedRequest } from "../../apis/api/feed";
+import { QueryClient, useMutation, useQueryClient } from "react-query";
+
 
 function FeedPage(props) {
   const [ feeds, setFeeds ] = useState([]);
@@ -10,7 +13,37 @@ function FeedPage(props) {
   const uploadFilesId = useRef(0);
   const imgFileRef = useRef();
 
+  const addtest = useMutation({
+    mutationKey: "addtest",
+    mutationFn: feedRequest,
+    onSuccess: response => {
+      console.log("ㅇㅇ")
+      console.log(contentImg)
+      console.log(principalData.data.userId)
+       console.log(newFeedContent) 
+    },
+    onError: error => {
+      console.log("ㄴㄴ")
+      console.log(contentImg)
+      console.log(principalData.data.userId)
+      console.log(newFeedContent)
+    }
+  })
+
   const handleSubmitFeed = () => {
+    addtest.mutate({
+      userId: principalData.data.userId,
+      feedContent: newFeedContent,
+      feedImgUrls: contentImg
+    })
+    console.log(contentImg);
+    // feedRequest({
+      // userId: principalData.data.username,
+      // feedContent: newFeedContent,
+      // feedImgUrls: contentImg
+    // }).then(response => {
+    //   console.log(response)
+    // })
       const updateFeeds = [...feeds, { content: newFeed }];
       setFeeds(updateFeeds);
       setNewFeed("");
@@ -85,6 +118,29 @@ function FeedPage(props) {
       const storageRef = ref(storage, `soop/test/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
+      const promise = new Promise((resolve) => {
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {},
+          (error) => {
+            console.log(error);
+          },
+          () => {     
+            getDownloadURL(storageRef)
+            .then(url => {
+              console.log(url);
+              resolve(url);
+            })
+          }
+        );
+
+      })
+      uploadPromises.push(promise);
+    })
+    Promise.all(uploadPromises)
+    .then((urls) => {
+      console.log(urls);
+      setContentImg(urls)
       uploadTask.on(
         "state_changed",
         (snapshot) => {},
@@ -98,10 +154,11 @@ function FeedPage(props) {
           })
         }
       );
+
     })
   }
 
-
+  console.log(contentImg);
 
   return (
     <div>
