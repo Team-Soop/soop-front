@@ -26,18 +26,6 @@ function AuthRoute(props) {
             console.log(error);
         }
     });
-      retry:0,
-      refetchOnWindowFocus:false,
-      onSuccess: response => {
-        console.log("onSuccess");
-        console.log(response);
-      },
-      onError: error => {
-        console.log("오류");
-        console.log(error);
-      }
-    }
-  );
 
 
 
