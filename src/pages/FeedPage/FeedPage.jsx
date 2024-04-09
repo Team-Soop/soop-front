@@ -7,8 +7,6 @@ import { QueryClient, useMutation, useQueryClient } from "react-query";
 
 
 function FeedPage(props) {
-  const [ feeds, setFeeds ] = useState([]);
-  const [ newFeed, setNewFeed ] = useState("");
   const [ uploadPhotos, setUploadPhotos ] = useState([]);
   const [ newFeedContent, setNewFeedContent ] = useState("");
   const uploadFilesId = useRef(0);
@@ -17,19 +15,20 @@ function FeedPage(props) {
   const queryClient = useQueryClient();
   const principalData = queryClient.getQueryData("principalQuery");
 
-  const addtest = useMutation({
-    mutationKey: "addtest",
+  const saveFeed = useMutation({
+    mutationKey: "saveFeed",
     mutationFn: feedRequest,
     onSuccess: response => {
       alert("작성이 완료되었습니다.");
     },
     onError: error => {
       console.log(error);
+      alert("게시글을 작성해주세요.");
     }
   })
 
   const handleSubmitFeed = () => {
-    addtest.mutate({
+    saveFeed.mutate({
       userId: principalData.data.userId,
       feedContent: newFeedContent,
       feedImgUrls: contentImg
@@ -55,6 +54,8 @@ function FeedPage(props) {
       }
     }),
   );
+
+  console.log(newFeedContent);
 
   const handleFileChange = (e) => {
     console.log(e.target.files);
@@ -96,7 +97,7 @@ function FeedPage(props) {
   const handleImageUpload = () => {
     const uploadPromises = [];
     uploadPhotos.forEach((file) => {
-      const storageRef = ref(storage, `soop/test/${file.name}`);
+      const storageRef = ref(storage, `soop/feed/${principalData.data.userId}/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       const promise = new Promise((resolve) => {
@@ -134,6 +135,7 @@ function FeedPage(props) {
           </div>
           <div>
             <div>test</div>
+            <div>img</div>
           </div>
           <div>
             <div>좋아요</div>
