@@ -4,65 +4,78 @@ import * as s from "./style";
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useInput } from "../../hooks/useInput";
 import Select from "react-select";
 import { useMutation, useQueryClient } from "react-query";
 import { addSchedule } from "../../apis/api/schedule";
+import { set } from "firebase/database";
 
-export default function AddClassSchedule({viewScheduleDate, originScheduleDate}) {
-    const [ classScheduleTitle, classScheduleTitleChange ] = useInput("");
-    const [ classScheduleTeacher, classScheduleTeacherChange ] = useInput("");
-    const [ classLocationId, classLocationIdChange ] = useInput("");
-    const [ classScheduleStartDate, setClassScheduleStartDate ] = useState();
-    const [ classScheduleEndDate, setClassScheduleEndDate ] = useState();
-    const [ clickDayList ] = useState([]);
+export default function AddClassSchedule({ viewScheduleDate, originScheduleDate }) {
+    const [ classScheduleId, setClassScheduleId ] = useState(0);
+    const [ classScheduleTitle, classScheduleTitleChange, unusedTitle, setClassScheduleTitle ] = useInput("");
+    const [ classScheduleTeacher, classScheduleTeacherChange, unusedTeacher, setClassScheduleTeacher ] = useInput("");
+    const [ classLocationId, classLocationIdChange, unusedLocationId, setClassLocationId ] = useInput("");
+    const [ classScheduleStartDate, setClassScheduleStartDate ] = useState("");
+    const [ classScheduleEndDate, setClassScheduleEndDate ] = useState("");
     const [ selectTimeOption ] = useState([]);
-
-    const queryClient = useQueryClient();
-    const ScheduleQueryData = queryClient.getQueryData("searchAllScheduleQuery").data
+    const [ startDateOption, setStartDateOption ] = useState({})
+    const [ endDateOption, setEndDateOption] = useState({});
+    const [ clickDayList ] = useState([]);
+    const [ updateDay, setUpdateDay ] = useState("");
+    const scheduleRef = useRef(0);
 
     useEffect(() => {
-        console.log(viewScheduleDate)
-    })
-
-    const addScheduleMutation = useMutation({
-        mutationKey: "addScheduleMutation",
-        mutationFn: addSchedule,
-        onSuccess: response => {
-            alert("데이터 전송 완료")
-            console.log(response)
-        },
-        onError: error => {
-            alert("데이터 전송 실패")
-            console.log(error)
-        }
-    })
+        console.log(startDateOption.lable);
+        console.log(originScheduleDate);
+    }, [])
 
     useMemo(() => {
         for(let i = 0; i < 24; i++) {
             for (let j = 0; j <= 1; j++) {
                 let timeSet = {};
                 timeSet.value = ('0' + i).slice(-2) + ":" + ('0' + (j * 30)).slice(-2);
-                timeSet.label = ('0' + i).slice(-2) + "시" +  ('0' + (j * 30)).slice(-2) + "분";
+                timeSet.label = ('0' + i).slice(-2) + "시 " +  ('0' + (j * 30)).slice(-2) + "분";
                 selectTimeOption.push(timeSet);
             };
         };
     }, [])
+    
+    const addScheduleMutation = useMutation({
+        mutationKey: "addScheduleMutation",
+        mutationFn: addSchedule,
+        onSuccess: response => {
+        },
+        onError: error => {
+        }
+    })
+
+    const selectDayList = (date) => {
+        if(clickDayList.indexOf(date.startStr) > -1) {
+            clickDayList.splice(clickDayList.indexOf(date.startStr), 1)
+            console.log(clickDayList)
+        } else {
+            clickDayList.push(date.startStr)
+            clickDayList.sort();
+            console.log(clickDayList)
+        }
+    }
 
     const handleOnChangeStartTime = (e) => {
         console.log(e.value);
         setClassScheduleStartDate(e.value);
     }
     const handleOnChangeEndTime = (e) => {
-        console.log(e.value);
+        console.log(e.label);
         setClassScheduleEndDate(e.value);
     }
+   
+
     const handleSubmitClick = () => {
-        const finalDateList = [];
+        const addDateList = [];
 
         for(let day of clickDayList) {
-            finalDateList.push({
+            addDateList.push({
                 classScheduleTitle: classScheduleTitle,
                 classScheduleTeacher: classScheduleTeacher,
                 classLocationId: classLocationId,
@@ -70,9 +83,23 @@ export default function AddClassSchedule({viewScheduleDate, originScheduleDate})
                 classScheduleEndDate: day + "T" + classScheduleEndDate + ":00+09:00"
             })
         }
-        console.log(finalDateList);
-        addScheduleMutation.mutate(finalDateList);
+        console.log(addDateList);
+        addScheduleMutation.mutate(addDateList);
     }
+
+    const handleUpdateClick = (ScheduleId) => {
+        const updateDate = {
+            classScheduleId: ScheduleId,
+            classScheduleTitle: classScheduleTitle,
+            classScheduleTeacher: classScheduleTeacher,
+            classLocationId: classLocationId,
+        }
+
+        console.log()
+
+    }
+
+
 
   return (
     <div>
@@ -84,36 +111,54 @@ export default function AddClassSchedule({viewScheduleDate, originScheduleDate})
                     viewScheduleDate
                 }
                 eventClick={(info) => {
-                  
+                    for(let scheduleDate of originScheduleDate) {
+                        if (scheduleDate.classScheduleId == info.event.id) {
+                            setClassScheduleTitle(scheduleDate.classScheduleTitle)
+                            setClassScheduleTeacher(scheduleDate.classScheduleTeacher)
+                            setClassLocationId(scheduleDate.classLocationId)
+                            // setStartDateOption()
+                            // setEndDateOption()
+                        }
+                    }
+                    setUpdateDay(info.event.start.getFullYear() + "-" + ("0" + info.event.start.getMonth()).slice(-2) + "-" + ("0" + info.event.start.getDay()).slice(-2))
+                    setStartDateOption({
+                        label: ("0" + info.event.start.getHours()).slice(-2) + "시 " + ("0" + info.event.start.getMinutes()).slice(-2) + "분",
+                        value: ("0" + info.event.start.getHours()).slice(-2) + ":" + ("0" + info.event.start.getMinutes()).slice(-2)
+                    })
+                    setClassScheduleStartDate(startDateOption.value)
+                    setEndDateOption({
+                        label: ("0" + info.event.end.getHours()).slice(-2) + "시 " + ("0" + info.event.end.getMinutes()).slice(-2) + "분",
+                        value: ("0" + info.event.end.getHours()).slice(-2) + ":" + ("0" + info.event.end.getMinutes()).slice(-2)
+                    })
+                    setClassScheduleEndDate(endDateOption.value)
+                    console.log()
                 }}
                 select={(date) => {
-                    if(clickDayList.indexOf(date.startStr) > -1) {
-                        clickDayList.splice(clickDayList.indexOf(date.startStr), 1)
-                    } else {
-                        clickDayList.push(date.startStr)
-                        clickDayList.sort();
-                    }
+                    selectDayList(date)
                 }}
             />
         </div>
         <div>
             <div> 타이틀
-                <input type="text" onChange={classScheduleTitleChange} />
+                <input type="text" onChange={classScheduleTitleChange} value={classScheduleTitle} />
             </div>
             <div> 강사명
-                <input type="text" onChange={classScheduleTeacherChange}/>
+                <input type="text" onChange={classScheduleTeacherChange} value={classScheduleTeacher}/>
             </div>
             <div> 강의실
-                <input type="text" onChange={classLocationIdChange}/>
+                <input type="text" onChange={classLocationIdChange} value={classLocationId}/>
             </div>
         </div>
         <div>
-            <Select options={selectTimeOption} onChange={handleOnChangeStartTime} />
-            <Select options={selectTimeOption} onChange={handleOnChangeEndTime} />
+            <Select options={selectTimeOption} onChange={handleOnChangeStartTime} value={startDateOption}/>
+            <Select options={selectTimeOption} onChange={handleOnChangeEndTime} value={endDateOption}/>
 
         </div>
         <div>
             <button onClick={handleSubmitClick}>확인</button>
+        </div>
+        <div>
+            <button onClick={handleUpdateClick}>업데이트 버튼</button>
         </div>
     </div>
   )
