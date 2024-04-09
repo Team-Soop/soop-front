@@ -10,23 +10,21 @@ function FeedPage(props) {
   const [ feeds, setFeeds ] = useState([]);
   const [ newFeed, setNewFeed ] = useState("");
   const [ uploadPhotos, setUploadPhotos ] = useState([]);
+  const [ newFeedContent, setNewFeedContent ] = useState("");
   const uploadFilesId = useRef(0);
   const imgFileRef = useRef();
+  const [ contentImg, setContentImg ] = useState([]);
+  const queryClient = useQueryClient();
+  const principalData = queryClient.getQueryData("principalQuery");
 
   const addtest = useMutation({
     mutationKey: "addtest",
     mutationFn: feedRequest,
     onSuccess: response => {
-      console.log("ㅇㅇ")
-      console.log(contentImg)
-      console.log(principalData.data.userId)
-       console.log(newFeedContent) 
+      alert("작성이 완료되었습니다.");
     },
     onError: error => {
-      console.log("ㄴㄴ")
-      console.log(contentImg)
-      console.log(principalData.data.userId)
-      console.log(newFeedContent)
+      console.log(error);
     }
   })
 
@@ -36,22 +34,11 @@ function FeedPage(props) {
       feedContent: newFeedContent,
       feedImgUrls: contentImg
     })
-    console.log(contentImg);
-    // feedRequest({
-      // userId: principalData.data.username,
-      // feedContent: newFeedContent,
-      // feedImgUrls: contentImg
-    // }).then(response => {
-    //   console.log(response)
-    // })
-      const updateFeeds = [...feeds, { content: newFeed }];
-      setFeeds(updateFeeds);
-      setNewFeed("");
   }
 
   const handleCancelFeed = () => {
-      if (!newFeed) return;
-      setNewFeed("");
+      if (!newFeedContent) return;
+      setNewFeedContent("");
   }
 
   const modules = useMemo(
@@ -68,8 +55,6 @@ function FeedPage(props) {
       }
     }),
   );
-
-  console.log(newFeed);
 
   const handleFileChange = (e) => {
     console.log(e.target.files);
@@ -97,24 +82,20 @@ function FeedPage(props) {
 
       fileReader.onload = (e) => {
         resolve(e.target.result);
-        console.log(e.target.result);
       }
       fileReader.readAsDataURL(file.originFile);
-      console.log(file.originFile);
     }))    
 
     Promise.all(promises)
     .then(result => {
-      console.log(result);
+      
     })
 
   }
   
   const handleImageUpload = () => {
-    // const file = uploadPhotos[0];
+    const uploadPromises = [];
     uploadPhotos.forEach((file) => {
-      console.log(uploadPhotos);
-      console.log(file.name);
       const storageRef = ref(storage, `soop/test/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -128,7 +109,6 @@ function FeedPage(props) {
           () => {     
             getDownloadURL(storageRef)
             .then(url => {
-              console.log(url);
               resolve(url);
             })
           }
@@ -141,31 +121,15 @@ function FeedPage(props) {
     .then((urls) => {
       console.log(urls);
       setContentImg(urls)
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {},
-        (error) => {
-          console.log(error);
-        },
-        () => {     
-          getDownloadURL(storageRef)
-          .then(urls => {
-            console.log(urls);
-          })
-        }
-      );
-
     })
   }
-
-  console.log(contentImg);
 
   return (
     <div>
       <ul>
         <li>
           <div>
-            <img src="" alt="" />
+            <img src={contentImg} alt="" />
             <span>사용자 이름</span>
           </div>
           <div>
@@ -192,8 +156,8 @@ function FeedPage(props) {
         <div >
           <ReactQuill 
             modules={modules} 
-            value={newFeed} 
-            onChange={setNewFeed}
+            value={newFeedContent} 
+            onChange={setNewFeedContent}
             style={{width: "400px"}}
           />
           <input 
