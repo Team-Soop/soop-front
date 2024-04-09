@@ -55,70 +55,79 @@ function ClassSchedulePage(props) {
                   display: "block"
               }
           }));
-      },
+      }, 
       onError: error => {
         
       }
     })
 
-    useEffect(() => {
-      console.log(viewScheduleDate)
-    })
+    // useEffect(() => {
+    //   console.log(viewScheduleDate)
+    // })
 
   return (
     <>
       <div css={s.calendar}>
-        <FullCalendar
-          locale={"ko"}
-          initialView="dayGridMonth"
-          plugins={[ dayGridPlugin ]}
-          events={
-            viewScheduleDate
-          //  [{
-          //     id: 999,
-          //     title: "test",
-          //     start: "2024-04-26T07:30:00+09:00",
-          //     end: "2024-04-26T09:30:00+09:00",
-          //     color: "#fd7575",
-          //     display: "block",
-          //     date: "2024-04-26"
-          //   },
-          //   {
-          //     id: 2,
-          //     title: "abc",
-          //     start: "2024-04-02",
-          //     end: "2024-04-05",
-          //     color: "#5f5ffa"
-          //   },
-          //   {
-          //     id: 3,
-          //     title: "abc",
-          //     start: "2024-04-06",
-          //     end: "2024-04-06",
-          //     color: "#44b844"
-          //   },
-          //   {
-          //     id: 4,
-          //     title: "abc",
-          //     start: "2024-04-08",
-          //     end: "2024-04-08",
-          //     color: "#ff996a"
-          //   },
-          //   {
-          //     id: "5",
-          //     title: "abc",
-          //     start: "2024-04-10",
-          //     end: "2024-04-10",
-          //     color: "#bd46bd"
-          //   },
-          // ]
-            
+        {
+          searchAllScheduleQuery.isLoading 
+          ? <FullCalendar 
+              locale={"ko"}
+              initialView="dayGridMonth"
+              plugins={[ dayGridPlugin ]}
+            />
+          : <FullCalendar
+            locale={"ko"}
+            initialView="dayGridMonth"
+            plugins={[ dayGridPlugin ]}
+            events={
+              // viewScheduleDate
+             [{
+                id: 999,
+                title: "test",
+                start: "2024-04-26T07:30:00+09:00",
+                end: "2024-04-26T09:30:00+09:00",
+                color: "#fd7575",
+                display: "block",
+                date: "2024-04-26"
+              },
+              {
+                id: 2,
+                title: "abc",
+                start: "2024-04-02",
+                end: "2024-04-05",
+                color: "#5f5ffa"
+              },
+              {
+                id: 3,
+                title: "abc",
+                start: "2024-04-06",
+                end: "2024-04-06",
+                color: "#44b844"
+              },
+              {
+                id: 4,
+                title: "abc",
+                start: "2024-04-08",
+                end: "2024-04-08",
+                color: "#ff996a"
+              },
+              {
+                id: "5",
+                title: "abc",
+                start: "2024-04-10",
+                end: "2024-04-10",
+                color: "#bd46bd",
+              },
+            ]
+              
+            }
+            eventClick={(info) => {
+              console.log(info);
+              console.log(info.event.start.getDay());
+
+            }}
+          />
         }
-          eventClick={(info) => {
-            console.log(info);
-            console.log(info.event.start.getDay());
-          }}
-        />
       </div>
       <button>일정 추가</button>
       {
