@@ -48,7 +48,7 @@ export default function AddClassSchedule({ viewScheduleDate, originScheduleDate 
         },
         onError: error => {
         }
-    })
+    });
 
     const updateScheduleMutation = useMutation({
         mutationKey: "updateScheduleMutation",
