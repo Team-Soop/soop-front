@@ -4,7 +4,6 @@ import MainPage from '../pages/MainPage/MainPage';
 import Mypage from '../pages/Mypage/Mypage';
 import ClassSchedulePage from '../pages/ClassSchedulePage/ClassSchedulePage';
 import StudyGroupPage from '../pages/StudyGroupPage/StudyGroupPage';
-import LunchRecommendationPage from '../pages/LunchRecommendationPage/LunchRecommendationPage';
 import FeedPage from '../pages/FeedPage/FeedPage';
 import Admin from '../pages/Admin/Admin';
 import AuthPage from '../pages/AuthPage/AuthPage';
@@ -12,6 +11,8 @@ import { useQuery } from 'react-query';
 import { getPrincipalRequest } from '../apis/api/principal';
 import PasswordEditPage from '../pages/PasswordEditPage/PasswordEditPage';
 import { searchAllSchedule } from '../apis/api/schedule';
+import LunchPage from '../pages/LunchPage/LunchPage';
+
 function AuthRoute(props) {
   const principalQuery = useQuery(["principalQuery"], getPrincipalRequest,
     {
@@ -45,7 +46,7 @@ function AuthRoute(props) {
         {/* 임시회원, 일반회원은 접근 불가 */}
         <Route path='' element={<StudyGroupPage />} />  
         {/* 임시회원 글작성 불가  */}
-        <Route path='' element={<LunchRecommendationPage />} />  
+        <Route path='/lunch' element={<LunchPage />} />  
         {/* 임시회원 글작성 불가 */}
         <Route path='/feed' element={<FeedPage />} />                 
       </Routes>

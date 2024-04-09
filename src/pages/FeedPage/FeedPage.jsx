@@ -92,6 +92,8 @@ function FeedPage(props) {
     })
 
   }
+
+  
   
   const handleImageUpload = () => {
     const uploadPromises = [];
@@ -117,6 +119,7 @@ function FeedPage(props) {
       })
       uploadPromises.push(promise);
     })
+    
     Promise.all(uploadPromises)
     .then((urls) => {
       console.log(urls);
