@@ -14,6 +14,7 @@ function FeedPage(props) {
   const [ contentImg, setContentImg ] = useState([]);
   const queryClient = useQueryClient();
   const principalData = queryClient.getQueryData("principalQuery");
+  const isMountRef = useRef(false);
 
   const saveFeed = useMutation({
     mutationKey: "saveFeed",
@@ -26,6 +27,19 @@ function FeedPage(props) {
       alert("게시글을 작성해주세요.");
     }
   })
+
+  useEffect(() => {
+    if(isMountRef.current) {
+      saveFeed.mutate({
+        userId: principalData.data.userId,
+        feedContent: newFeedContent,
+        feedImgUrls: contentImg
+      })
+      window.location.replace("/feed")
+    } else {
+      isMountRef.current = true;
+    }
+  }, [contentImg])
 
   const handleSubmitFeed = () => {
     saveFeed.mutate({
@@ -93,8 +107,6 @@ function FeedPage(props) {
     })
 
   }
-
-  
   
   const handleImageUpload = () => {
     const uploadPromises = [];
@@ -116,11 +128,10 @@ function FeedPage(props) {
             })
           }
         );
-
       })
       uploadPromises.push(promise);
     })
-    
+
     Promise.all(uploadPromises)
     .then((urls) => {
       console.log(urls);
@@ -174,8 +185,8 @@ function FeedPage(props) {
           />
           <button onClick={() => imgFileRef.current.click()}>사진 선택</button>
           <button onClick={() => {
-            handleSubmitFeed();
             handleImageUpload();
+            // handleSubmitFeed();
           }}>작성 완료</button>
           <button onClick={handleCancelFeed}>취소</button>
         </div>
