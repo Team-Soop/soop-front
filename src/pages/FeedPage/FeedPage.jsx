@@ -9,18 +9,20 @@ import { QueryClient, useMutation, useQueryClient } from "react-query";
 function FeedPage(props) {
   const [ uploadPhotos, setUploadPhotos ] = useState([]);
   const [ newFeedContent, setNewFeedContent ] = useState("");
-  const uploadFilesId = useRef(0);
   const imgFileRef = useRef();
   const [ contentImg, setContentImg ] = useState([]);
   const queryClient = useQueryClient();
   const principalData = queryClient.getQueryData("principalQuery");
   const isMountRef = useRef(false);
+  const [ feedList, setFeedList ] = useState();
 
   const saveFeed = useMutation({
     mutationKey: "saveFeed",
     mutationFn: feedRequest,
     onSuccess: response => {
       alert("작성이 완료되었습니다.");
+      // window.location.replace("/feed")
+      // saveFeedList(principalData.data.userId, newFeedContent, contentImg);
     },
     onError: error => {
       console.log(error);
@@ -28,25 +30,32 @@ function FeedPage(props) {
     }
   })
 
-  useEffect(() => {
-    if(isMountRef.current) {
-      saveFeed.mutate({
-        userId: principalData.data.userId,
-        feedContent: newFeedContent,
-        feedImgUrls: contentImg
-      })
-      window.location.replace("/feed")
-    } else {
-      isMountRef.current = true;
-    }
-  }, [contentImg])
+  // useEffect(() => {
+  //   if(isMountRef.current) {
+  //     saveFeed.mutate({
+  //       userId: principalData.data.userId,
+  //       feedContent: newFeedContent,
+  //       feedImgUrls: contentImg
+  //     })
+  //     window.location.replace("/feed")
+  //   } else {
+  //     isMountRef.current = true;
+  //   }
+  // }, [contentImg])
 
   const handleSubmitFeed = () => {
-    saveFeed.mutate({
-      userId: principalData.data.userId,
-      feedContent: newFeedContent,
-      feedImgUrls: contentImg
-    })
+    if(contentImg.length > 0) {
+      handleImageUpload();
+    }
+  }
+
+  const saveFeedList = (userId, content, imgUrls) => {
+    const newFeed = {
+      userId: userId,
+      content: content,
+      imgUrls: imgUrls
+    };
+    setFeedList(feedListState => [...feedListState, newFeed]);
   }
 
   const handleCancelFeed = () => {
@@ -69,10 +78,7 @@ function FeedPage(props) {
     }),
   );
 
-  console.log(newFeedContent);
-
   const handleFileChange = (e) => {
-    console.log(e.target.files);
     const fileArray = Array.from(e.target.files);
 
     if(fileArray.length === 0) {
@@ -81,31 +87,6 @@ function FeedPage(props) {
     }
 
     setUploadPhotos(fileArray);
-    
-    let promises = [];
-    
-    const uploadFiles = fileArray.map(file => {
-      return {
-        id: uploadFilesId.current += 1,
-        originFile: file,
-        url: ""
-      }
-    })
-
-    promises = uploadFiles.map(file => new Promise((resolve) => {
-      const fileReader = new FileReader();
-
-      fileReader.onload = (e) => {
-        resolve(e.target.result);
-      }
-      fileReader.readAsDataURL(file.originFile);
-    }))    
-
-    Promise.all(promises)
-    .then(result => {
-      
-    })
-
   }
   
   const handleImageUpload = () => {
@@ -136,38 +117,60 @@ function FeedPage(props) {
     .then((urls) => {
       console.log(urls);
       setContentImg(urls)
+      // saveFeedList(principalData.data.userId, newFeedContent, urls);
+      saveFeed.mutate({
+        userId: principalData.data.userId,
+        feedContent: newFeedContent,
+        feedImgUrls: urls
+      })
+      handleSubmitFeed();
+    })
+    .catch(error => {
+      console.log(error);
     })
   }
 
+  const removeHTMLTags = (html) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || "";
+  };
+  console.log(removeHTMLTags(newFeedContent));
+
   return (
+    
+    // 게시글 (피드)
     <div>
       <ul>
-        <li>
-          <div>
-            <img src={contentImg} alt="" />
-            <span>사용자 이름</span>
-          </div>
-          <div>
-            <div>test</div>
-            <div>img</div>
-          </div>
-          <div>
-            <div>좋아요</div>
-            <div>댓글</div>
-            <div>신고하기</div>
-          </div>
-        </li>
+          <li>
+            <div>
+              <img src="" alt="" />
+              <span>유저네임</span>
+            </div>
+            <div>
+              <div>{(removeHTMLTags(newFeedContent))}</div>
+              {contentImg.map((url, index) => (
+                <img key={index} src={url} alt={`Image ${index}`} />
+              ))}
+            </div>
+            <div>
+              <div>좋아요</div>
+              <div>댓글</div>
+              <div>신고하기</div>
+            </div>
+          </li>
       </ul>
 
+      {/* 우측 하단 버튼 */}
       <div>
         <button>필터</button>
         <button>글 쓰기</button>
       </div>
 
+      {/* 글쓰기 창 */}
       <div>
         <div>
           <img src="" alt="" />
-          <div>사용자 이름</div>
+          <div>{principalData?.data.username}</div>
         </div>
         <div >
           <ReactQuill 
