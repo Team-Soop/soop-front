@@ -8,7 +8,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useInput } from "../../hooks/useInput";
 import Select from "react-select";
 import { useMutation, useQueryClient } from "react-query";
-import { addSchedule } from "../../apis/api/schedule";
+import { addSchedule, updateSchedule } from "../../apis/api/schedule";
 import { set } from "firebase/database";
 
 export default function AddClassSchedule({ viewScheduleDate, originScheduleDate }) {
@@ -47,6 +47,17 @@ export default function AddClassSchedule({ viewScheduleDate, originScheduleDate 
         onSuccess: response => {
         },
         onError: error => {
+        }
+    });
+
+    const updateScheduleMutation = useMutation({
+        mutationKey: "updateScheduleMutation",
+        mutationFn: updateSchedule,
+        onSuccess: response => {
+
+        },
+        onError: error => {
+
         }
     })
 
@@ -89,17 +100,17 @@ export default function AddClassSchedule({ viewScheduleDate, originScheduleDate 
 
     const handleUpdateClick = (ScheduleId) => {
         const updateDate = {
-            classScheduleId: ScheduleId,
+            classScheduleId: classScheduleId,
             classScheduleTitle: classScheduleTitle,
             classScheduleTeacher: classScheduleTeacher,
             classLocationId: classLocationId,
+            classScheduleStartDate: updateDay + "T" + startDateOption.value + ":00+09:00",
+            classScheduleEndDate: updateDay + "T" + endDateOption.value + ":00+09:00"
         }
 
-        console.log()
+        console.log(updateDate)
 
     }
-
-
 
   return (
     <div>
@@ -111,13 +122,16 @@ export default function AddClassSchedule({ viewScheduleDate, originScheduleDate 
                     viewScheduleDate
                 }
                 eventClick={(info) => {
+                    console.log(info)
                     for(let scheduleDate of originScheduleDate) {
                         if (scheduleDate.classScheduleId == info.event.id) {
+                            setClassScheduleId(scheduleDate.classScheduleId)
                             setClassScheduleTitle(scheduleDate.classScheduleTitle)
                             setClassScheduleTeacher(scheduleDate.classScheduleTeacher)
                             setClassLocationId(scheduleDate.classLocationId)
                             // setStartDateOption()
                             // setEndDateOption()
+                            console.log(scheduleDate)
                         }
                     }
                     setUpdateDay(info.event.start.getFullYear() + "-" + ("0" + info.event.start.getMonth()).slice(-2) + "-" + ("0" + info.event.start.getDay()).slice(-2))
