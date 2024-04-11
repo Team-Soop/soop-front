@@ -1,49 +1,202 @@
-import ReactQuill from 'react-quill';
-import { useCallback, useMemo, useRef } from 'react';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { QueryClient, useMutation, useQueryClient } from "react-query";
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../../apis/firebase/firebaseConfig';
+import ReactQuill from "react-quill";
+import { lunchRequest } from "../../apis/api/lunch";
+import { quillContent, useQuillContent } from "../../hooks/quillContent";
+import { useLunchCategory } from "../../hooks/lunchCategory";
+import LunchMap from "./LunchMap/LunchMap";
 
-function LunchWrite(props) {
+const { kakao } = window;
 
-  const reactQuillRef = useRef();
 
-  const quillImageHandler = useCallback(() => {
-    const input = document.createElement("input");
-    input.setAttribute("type", "file");
-    input.setAttribute("accept", "image/*");
-    input.setAttribute("multiple", "true")
-    input.click();
+function LunchWrite() {
 
-    input.onchange = async () => {
+  // const reactQuillRef = useRef();
+  // const [urls, setUrls] = useState([]);
 
-      const files = Array.from(input.files);
+  // const quillImageHandler = useCallback(() => {
+  //   const input = document.createElement("input");
+  //   input.setAttribute("type", "file");
+  //   input.setAttribute("accept", "image/*");
+  //   input.setAttribute("multiple", "true")
+  //   input.click();
 
-      for (let file of files) {
-        const storageRef = ref(storage, `quill_image/${file.name}`);
-        const uploadResponse = await uploadBytes(storageRef, file);
-        const downloadURL = await getDownloadURL(uploadResponse.ref);
+  //   input.onchange = async () => {
 
-        const editor = reactQuillRef.current.getEditor();
-        const range = editor.getSelection(true);
-        editor.insertEmbed(range.index, "image", downloadURL);
-        editor.setSelection(range.index + 1);
+  //     const files = Array.from(input.files);
+
+  //     for (let file of files) {
+  //       const storageRef = ref(storage, `quill_image/${file.name}`);
+  //       const uploadResponse = await uploadBytes(storageRef, file);
+  //       const downloadURL = await getDownloadURL(uploadResponse.ref);
+
+  //       const editor = reactQuillRef.current.getEditor();
+  //       const range = editor.getSelection(true);
+  //       editor.insertEmbed(range.index, "image", downloadURL);
+  //       editor.setSelection(range.index + 1);
+  //     }
+
+  //   }
+
+  // }, []);
+
+  // const handleQuillEditorOnChange = (value) => {
+  //   const tempValue = value;
+  //   const div = document.createElement("div");
+  //   div.innerHTML = value;
+  //   console.log(value);
+  //   const imgs = div.querySelectorAll("img");
+  //   const imgSrcList = Array.from(imgs).map(img => img.src);
+  //   console.log(imgSrcList)
+  // }
+
+  // const modules = useMemo(() => ({
+  //   toolbar: {
+  //     container: [
+  //       ["image"]
+  //     ],
+  //     handlers: {
+  //       image: quillImageHandler
+  //     }
+  //   }
+  // }), []);
+
+  const queryClient = useQueryClient();
+  const principalData = queryClient.getQueryData("principalQuery");
+  const [ uploadPhotos, setUploadPhotos ] = useState([]);
+  const [ lunchContent, lunchContentChange, lunchContentMessage] = useQuillContent("quilContent");
+  const [ checkCategories, setcheckCategories ] = useState([]);
+  const [ laodPhotos, setLoadPhotos ] = useState([]);
+  const imgFileRef = useRef();
+
+
+
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          // ["image"],
+          [{ size: ['small', false, 'large', 'huge'] }],
+          [{ align: [] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          [{color: [], },{ background: [] },],
+        ],
       }
+    }),
+  );
 
+  const saveLunch = useMutation({
+    mutationKey: "saveLunch",
+    mutationFn: lunchRequest,
+    onSuccess: response => {
+      alert("작성이 완료되었습니다.");
+      // window.location.replace("/feed")
+      // saveFeedList(principalData.data.userId, newFeedContent, contentImg);
+    },
+    onError: error => {
+      console.log(error);
+    }
+  })
+
+  // 사진 선택하면 상태 두게에 값 넣기
+  // 1. firebase 주소로 변경할 상태 setUploadPhotos
+  // 2. 미리보기를 보여주기위한 상태 setLoadPhotos
+  const handleFileChange = (e) => {
+    const fileArray = Array.from(e.target.files);
+    
+    if(fileArray.length === 0) {
+      imgFileRef.current.value = "";
+      return;
     }
 
-  }, []);
+    setUploadPhotos(fileArray);
 
-  const modules = useMemo(() => ({
-    toolbar: {
-      container: [
-        ["image"]
-      ],
-      handlers: {
-        image: quillImageHandler
+    const filePromiseArray = fileArray.map(
+      (file) => 
+      new Promise(
+        (resolve) => {
+          const fileReader = new FileReader();
+
+          fileReader.onload = (e) => {
+            resolve(e.target.result);
+          }
+
+          fileReader.readAsDataURL(file);
+        }
+      )
+    );
+
+    Promise.all(filePromiseArray).then(
+      (result) => {
+        setLoadPhotos(() => result.map(
+          (dataUrl, index) => {
+            return {
+              id: index + 1,
+              dataUrl
+            }
+          }
+        ));
       }
-    }
-  }), []);
+    );
 
+  }
+
+  // 사진과 글 내용 post로 요청 보내기
+  const handleImageUpload = () => {
+    if(lunchContent === "") {
+      alert("글 내용을 입력하세요")
+      return;
+    }
+
+    const uploadPromises = [];
+    uploadPhotos.forEach((file) => {
+      const storageRef = ref(storage, `soop/lunch/${principalData.data.userId}/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      const promise = new Promise(
+        (resolve) => {
+          uploadTask.on(
+            () => {
+              getDownloadURL(storageRef)
+              .then(url => {
+                resolve(url);
+              })
+            }
+          )
+      })
+      uploadPromises.push(promise)
+    })
+
+    Promise.all(uploadPromises)
+      .then(
+        (urls) => {
+          saveLunch.mutate({
+            userId: principalData.data.userId,
+            content: lunchContent,
+            categories: checkCategories,
+            lunchImgUrls: urls
+          })
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
+  
+  // category가 변경될 때 실행되는 함수
+  const handleCategoryChange = (categoryNumber, isChecked) => {
+    // category의 boolean 상태에 따라 배열 업데이트
+    if(isChecked) {
+      setcheckCategories(prevCheckedCategory => [...prevCheckedCategory, categoryNumber]);
+    } else {
+      setcheckCategories(prevCheckedCategory => prevCheckedCategory.filter(category => category !== categoryNumber))
+    }
+  }
+
+  console.log(checkCategories);
+  
 
   return (
     <div>
@@ -56,25 +209,67 @@ function LunchWrite(props) {
         카테고리 선택
         <br></br>
         중식
-        <input type="checkbox" />
+        <input 
+          type="checkbox" 
+          onChange={(e) => handleCategoryChange(1, e.target.checked)}/>
         일식
-        <input type="checkbox" />
+        <input 
+          type="checkbox" 
+          onChange={(e) => handleCategoryChange(2, e.target.checked)}/>
         한식
-        <input type="checkbox" />
+        <input 
+          type="checkbox" 
+          onChange={(e) => handleCategoryChange(3, e.target.checked)}/>
+        매운거
+        <input 
+          type="checkbox" 
+          onChange={(e) => handleCategoryChange(4, e.target.checked)}/>
+        느끼
+        <input 
+          type="checkbox" 
+          onChange={(e) => handleCategoryChange(5, e.target.checked)}/>
       </div>
-      <ReactQuill
-        modules={modules}
-        ref={reactQuillRef}
-        style={{ width: "400px", height: "500px" }}
-        onChange={(value) => {
-          console.log(value);
-        }}
-      />
-
 
       <div>
-        지도API
+        미리보기
+        {
+          laodPhotos.map(
+            photo =>
+              <div key={photo.id}>
+                <img src={photo.dataUrl} alt=""/>
+              </div>
+          )
+        }
       </div>
+
+      <ReactQuill
+        modules={modules}
+        value={lunchContent}
+        style={{ width: "400px" }}
+        onChange={lunchContentChange}
+      />
+      <div>
+        {
+          !!lunchContentMessage &&
+          <div>
+            {lunchContentMessage.text}
+          </div>
+        }
+      </div>
+
+      <input 
+        type="file" 
+        style={{display: "none"}} 
+        onChange={handleFileChange} 
+        ref={imgFileRef} 
+        multiple={true} 
+      />  
+
+      <button onClick={() => imgFileRef.current.click()}>사진 선택</button>
+      <button onClick={() => handleImageUpload()}>작성완료</button>
+
+      <LunchMap kakao={kakao}/>
+
     </div>
   );
 }

@@ -50,16 +50,16 @@ export default function AddClassSchedule({ viewScheduleDate, originScheduleDate 
         }
     });
 
-    const updateScheduleMutation = useMutation({
-        mutationKey: "updateScheduleMutation",
-        mutationFn: updateSchedule,
-        onSuccess: response => {
+    // const updateScheduleMutation = useMutation({
+    //     mutationKey: "updateScheduleMutation",
+    //     mutationFn: updateSchedule,
+    //     onSuccess: response => {
 
-        },
-        onError: error => {
+    //     },
+    //     onError: error => {
 
-        }
-    })
+    //     }
+    // })
 
     const selectDayList = (date) => {
         if(clickDayList.indexOf(date.startStr) > -1) {
