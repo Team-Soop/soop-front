@@ -4,62 +4,62 @@ import * as s from "./style";
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInput } from "../../hooks/useInput";
 import Select from "react-select";
-import { useMutation, useQueryClient } from "react-query";
-import { addSchedule, updateSchedule } from "../../apis/api/schedule";
-import { set } from "firebase/database";
+import { useMutation } from "react-query";
+import { addSchedule, deleteSchedule, updateSchedule } from "../../apis/api/schedule";
 
-export default function AddClassSchedule({ viewScheduleDate, originScheduleDate }) {
+export default function AddClassSchedule({ viewScheduleDate, originScheduleDate, selectTimeOption }) {
+    const [ clickDayList ] = useState([]);
     const [ classScheduleId, setClassScheduleId ] = useState(0);
     const [ classScheduleTitle, classScheduleTitleChange, unusedTitle, setClassScheduleTitle ] = useInput("");
     const [ classScheduleTeacher, classScheduleTeacherChange, unusedTeacher, setClassScheduleTeacher ] = useInput("");
     const [ classLocationId, classLocationIdChange, unusedLocationId, setClassLocationId ] = useInput("");
-    const [ classScheduleStartDate, setClassScheduleStartDate ] = useState("");
-    const [ classScheduleEndDate, setClassScheduleEndDate ] = useState("");
-    const [ selectTimeOption ] = useState([]);
     const [ startDateOption, setStartDateOption ] = useState({})
     const [ endDateOption, setEndDateOption] = useState({});
-    const [ clickDayList ] = useState([]);
     const [ updateDay, setUpdateDay ] = useState("");
     const scheduleRef = useRef(0);
-
+    
     useEffect(() => {
-        console.log(startDateOption.lable);
-        console.log(originScheduleDate);
-    }, [])
-
-    useMemo(() => {
-        for(let i = 0; i < 24; i++) {
-            for (let j = 0; j <= 1; j++) {
-                let timeSet = {};
-                timeSet.value = ('0' + i).slice(-2) + ":" + ('0' + (j * 30)).slice(-2);
-                timeSet.label = ('0' + i).slice(-2) + "시 " +  ('0' + (j * 30)).slice(-2) + "분";
-                selectTimeOption.push(timeSet);
-            };
-        };
-    }, [])
+        console.log(updateDay);
+    }, [updateDay])
+    
     
     const addScheduleMutation = useMutation({
         mutationKey: "addScheduleMutation",
         mutationFn: addSchedule,
         onSuccess: response => {
+            alert("데이터 추가 완료")
+            window.location.replace("/schedule")
         },
         onError: error => {
         }
     });
 
-    // const updateScheduleMutation = useMutation({
-    //     mutationKey: "updateScheduleMutation",
-    //     mutationFn: updateSchedule,
-    //     onSuccess: response => {
+    const updateScheduleMutation = useMutation({
+        mutationKey: "updateScheduleMutation",
+        mutationFn: updateSchedule,
+        onSuccess: response => {
+            alert("데이터 수정 완료")
+            window.location.replace("/schedule")
+        },
+        onError: error => {
 
-    //     },
-    //     onError: error => {
+        }
+    })
 
-    //     }
-    // })
+    const deleteScheduleMutation = useMutation({
+        mutationKey: "deleteScheduleMutation",
+        mutationFn: deleteSchedule,
+        onSuccess: response => {
+            alert("데이터 삭제 완료")
+            window.location.replace("/schedule")
+        },
+        onError: error => {
+
+        }
+    })
 
     const selectDayList = (date) => {
         if(clickDayList.indexOf(date.startStr) > -1) {
@@ -73,12 +73,16 @@ export default function AddClassSchedule({ viewScheduleDate, originScheduleDate 
     }
 
     const handleOnChangeStartTime = (e) => {
-        console.log(e.value);
-        setClassScheduleStartDate(e.value);
+        setStartDateOption({
+            value: e.value,
+            label: e.label
+        })
     }
     const handleOnChangeEndTime = (e) => {
-        console.log(e.label);
-        setClassScheduleEndDate(e.value);
+        setEndDateOption({
+            value: e.value,
+            label: e.label
+        })
     }
    
 
@@ -90,15 +94,15 @@ export default function AddClassSchedule({ viewScheduleDate, originScheduleDate 
                 classScheduleTitle: classScheduleTitle,
                 classScheduleTeacher: classScheduleTeacher,
                 classLocationId: classLocationId,
-                classScheduleStartDate: day + "T" + classScheduleStartDate + ":00+09:00",
-                classScheduleEndDate: day + "T" + classScheduleEndDate + ":00+09:00"
+                classScheduleStartDate: day + "T" + startDateOption.value + ":00+09:00",
+                classScheduleEndDate: day + "T" + endDateOption.value + ":00+09:00"
             })
         }
         console.log(addDateList);
         addScheduleMutation.mutate(addDateList);
     }
 
-    const handleUpdateClick = (ScheduleId) => {
+    const handleUpdateClick = () => {
         const updateDate = {
             classScheduleId: classScheduleId,
             classScheduleTitle: classScheduleTitle,
@@ -107,9 +111,12 @@ export default function AddClassSchedule({ viewScheduleDate, originScheduleDate 
             classScheduleStartDate: updateDay + "T" + startDateOption.value + ":00+09:00",
             classScheduleEndDate: updateDay + "T" + endDateOption.value + ":00+09:00"
         }
+        updateScheduleMutation.mutate(updateDate)
+    }
 
-        console.log(updateDate)
-
+    const handleDeleteClick = () => {
+        console.log(parseInt(classScheduleId))
+        deleteScheduleMutation.mutate(parseInt(classScheduleId))
     }
 
   return (
@@ -129,23 +136,18 @@ export default function AddClassSchedule({ viewScheduleDate, originScheduleDate 
                             setClassScheduleTitle(scheduleDate.classScheduleTitle)
                             setClassScheduleTeacher(scheduleDate.classScheduleTeacher)
                             setClassLocationId(scheduleDate.classLocationId)
-                            // setStartDateOption()
-                            // setEndDateOption()
-                            console.log(scheduleDate)
                         }
                     }
-                    setUpdateDay(info.event.start.getFullYear() + "-" + ("0" + info.event.start.getMonth()).slice(-2) + "-" + ("0" + info.event.start.getDay()).slice(-2))
+                    setUpdateDay(info.event.startStr.substring(0, 10))
+                    
                     setStartDateOption({
                         label: ("0" + info.event.start.getHours()).slice(-2) + "시 " + ("0" + info.event.start.getMinutes()).slice(-2) + "분",
                         value: ("0" + info.event.start.getHours()).slice(-2) + ":" + ("0" + info.event.start.getMinutes()).slice(-2)
                     })
-                    setClassScheduleStartDate(startDateOption.value)
                     setEndDateOption({
                         label: ("0" + info.event.end.getHours()).slice(-2) + "시 " + ("0" + info.event.end.getMinutes()).slice(-2) + "분",
                         value: ("0" + info.event.end.getHours()).slice(-2) + ":" + ("0" + info.event.end.getMinutes()).slice(-2)
                     })
-                    setClassScheduleEndDate(endDateOption.value)
-                    console.log()
                 }}
                 select={(date) => {
                     selectDayList(date)
@@ -172,7 +174,10 @@ export default function AddClassSchedule({ viewScheduleDate, originScheduleDate 
             <button onClick={handleSubmitClick}>확인</button>
         </div>
         <div>
-            <button onClick={handleUpdateClick}>업데이트 버튼</button>
+            <button onClick={handleUpdateClick}>업데이트</button>
+        </div>
+        <div>
+            <button onClick={handleDeleteClick}>삭제</button>
         </div>
     </div>
   )
