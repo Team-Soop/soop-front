@@ -15,7 +15,7 @@ export const useQuillContent = (property) => {
 
 
     for(let [ k, v ] of regexEntries) {
-      console.log(v.regexr.test(value));
+      
       if(property === k) {
         if(!v.regexr.test(value)) {
           setMessage(() => {
