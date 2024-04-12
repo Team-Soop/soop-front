@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { feedListGet } from "../../apis/api/feed";
-import { useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import AddFeed from "../../components/AddFeed/AddFeed";
 
 
@@ -11,9 +11,9 @@ function FeedPage(props) {
 
 
   useEffect(() => {
-    const getFeedList = async () => {
+    const getFeedList = () => {
       try {
-        const response = await feedListGet();
+        const response = feedListGet();
         setFeedList(response);
         console.log(response);
       } catch (error) {
@@ -22,6 +22,21 @@ function FeedPage(props) {
     }
     getFeedList();
   }, [])
+
+  // const getFeedListQuery = useQuery(
+  //   "getFeedDataList", feedListGet ,
+  //   {
+  //     retry: 0,
+  //     onSuccess: response => {
+  //       console.log("onSuccess");
+  //       console.log(response);
+  //   },
+  //   onError: error => {
+  //       console.log("오류");
+  //       console.log(error);
+  //   }
+  //   }
+  // );
 
 
   // <p></p> 태그 없이 본문만 출력
