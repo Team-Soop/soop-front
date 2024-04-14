@@ -2,23 +2,22 @@
 import { useEffect } from "react";
 import * as s from "./style";
 
-export default function DailyClassSchedule({originScheduleData, selectTimeOption, selectDay}) {
+export default function DailyClassSchedule({originScheduleData, selectTimeOption, dailyScheduleData}) {
+    
+    let optionNumber = 0;
+
     useEffect(() => {
-        console.log(originScheduleData)
-        console.log(selectDay)
+        console.log(dailyScheduleData)
     })
+
+    let test = {
+        value: 1,
+        babel: 2
+    }
+    
 
   return (
     <div>
-        <div>
-            헤더
-        </div>
-        <div>
-            클래스
-        </div>
-        <div>
-            데이터
-        </div>
         <table css={s.table}>
             <thead css={s.thead}>
                 <tr>
@@ -34,28 +33,67 @@ export default function DailyClassSchedule({originScheduleData, selectTimeOption
                 {
                     selectTimeOption.map(
                         time => {
-                            const rowSpans = [1, 1, 1, 1, 1];
+                            if(dailyScheduleData.length === 0){
+                                return (
+                                    <tr css={s.tableLayout}>
+                                        <td>{time.label}</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                )
+                            } else {
+                                return (
+                                    <>
+                                        {
+                                            dailyScheduleData.map(
+                                                data => {
+                                                        let startHour = new Date(data.classScheduleStartDate).getHours();
+                                                        let startMinute = new Date(data.classScheduleStartDate).getMinutes();
+                                                        let startValue = ("0" + startHour).slice(-2) + ":" + ("0" + startMinute).slice(-2)
 
-                            originScheduleData.forEach(data => {
-                                console.log(new Date(data.classScheduleStartDate).getHours())
-                                console.log(new Date(data.classScheduleStartDate).getMinutes())
-                            })
-                            return (
-                                <tr>
-                                    <td>{time.label}</td>
-                                    <td rowSpan={rowSpans[0]}>1</td>
-                                    <td rowSpan={rowSpans[1]}>1</td>
-                                    <td rowSpan={rowSpans[2]}>1</td>
-                                    <td rowSpan={rowSpans[3]}>1</td>
-                                    <td rowSpan={rowSpans[4]}>1</td>
-                                </tr>
-                            )
+                                                    return (
+                                                        <tr css={s.tableLayout}>
+                                                        <td>{time.label}</td>
+                                                        {
+                                                            time.value === startValue && data.classLocationId == 1
+                                                            ? <td rowSpan={3}>{data.classScheduleTitle}<br/>{data.classScheduleTeacher}<br/>{data.classLocationName}</td>
+                                                            : <td></td>
+                                                        }
+                                                        {
+                                                            time.value === startValue && data.classLocationId == 2
+                                                            ? <td>{data.classScheduleTitle}<br/>{data.classScheduleTeacher}<br/>{data.classLocationName}</td>
+                                                            : <td></td>
+                                                        }
+                                                        {
+                                                            time.value === startValue && data.classLocationId == 3
+                                                            ? <td colSpan={3}>{data.classScheduleTitle}<br/>{data.classScheduleTeacher}<br/>{data.classLocationName}</td>
+                                                            : <td></td>
+                                                        }
+                                                        {
+                                                            time.value === startValue && data.classLocationId == 4
+                                                            ? <td>{data.classScheduleTitle}<br/>{data.classScheduleTeacher}<br/>{data.classLocationName}</td>
+                                                            : <td></td>
+                                                        }
+                                                        {
+                                                            time.value === startValue && data.classLocationId == 5
+                                                            ? <td>{data.classScheduleTitle}<br/>{data.classScheduleTeacher}<br/>{data.classLocationName}</td>
+                                                            : <td></td>
+                                                        }
+                                                        </tr>   
+                                                    )
+                                                }
+                                            )
+                                        }
+                                    </>
+                                )
+                            }
                         }
                     )
                 }
             </tbody>
-
-            
         </table>
     </div>
   )

@@ -16,7 +16,7 @@ export const thead = css`
 `
 
 export const tbody = css`
-
+    
     & > * {
         display: flex;
         justify-content: center;
@@ -30,4 +30,8 @@ export const tbody = css`
         width: 200px;
         height: 100px;
     }
+`
+
+export const tableLayout = css`
+    white-space: pre-wrap;
 `

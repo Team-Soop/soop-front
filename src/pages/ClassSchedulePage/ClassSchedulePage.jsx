@@ -15,7 +15,8 @@ function ClassSchedulePage(props) {
   const [ scheduleList, setScheduleList ] = useState([]);
   const [ originScheduleDate, setOriginScheduleData ] = useState([]);
   const [ viewScheduleDate, setViewScheduleData ] = useState([]);
-  const [ selectDay, setSelectDay ] = useState("")
+  const [ selectDay, setSelectDay ] = useState("2024-04-24")
+  const [ dailyScheduleData, setDailyScheduleData ] = useState([])
   
   const [ selectTimeOption ] = useState([]);
 
@@ -52,6 +53,14 @@ function ClassSchedulePage(props) {
       }
     })
 
+    useEffect(() => {
+        setDailyScheduleData(originScheduleDate.filter(originScheduleDate => originScheduleDate.classScheduleStartDate.substring(0, 10) == selectDay))
+    }, [selectDay])
+
+    useEffect(() => {
+        console.log(dailyScheduleData)
+    }, [dailyScheduleData])
+
   return (
     <>
       <div css={s.calendar}>
@@ -63,6 +72,7 @@ function ClassSchedulePage(props) {
               plugins={[ dayGridPlugin ]}
             />
           : <FullCalendar
+            locale={"ko"}
             initialView="dayGridMonth"
             selectable="true"
             plugins={[ dayGridPlugin, interactionPlugin ]}
@@ -87,7 +97,7 @@ function ClassSchedulePage(props) {
             // ]
             }
             eventClick={(date) => {
-              console.log(date)
+              setSelectDay(date.event.startStr.substring(0, 10))
             }}
             select={(date) => {
               console.log(date)
@@ -99,7 +109,9 @@ function ClassSchedulePage(props) {
       {
         !searchAllScheduleQuery.isLoading && <AddClassSchedule viewScheduleDate={viewScheduleDate} originScheduleDate={originScheduleDate} selectTimeOption={selectTimeOption}/>
       }
-      <DailyClassSchedule originScheduleData={originScheduleDate} selectTimeOption={selectTimeOption} selectDay={selectDay}/>
+      {
+        <DailyClassSchedule originScheduleData={originScheduleDate} selectTimeOption={selectTimeOption} dailyScheduleData={dailyScheduleData}/>
+      }
     </>
   );
 }
