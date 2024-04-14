@@ -12,8 +12,6 @@ function AuthPage(props) {
   const queryClient = useQueryClient();
   const principalData = queryClient.getQueryData("principalQuery");
 
-  console.log(!!principalData);
-
   useEffect(() => {
     if (!!principalData) {
       alert("잘못된 접근입니다, 닌 토큰있다")
