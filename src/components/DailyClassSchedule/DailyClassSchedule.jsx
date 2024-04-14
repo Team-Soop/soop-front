@@ -1,20 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { useEffect } from "react";
 import * as s from "./style";
 
-export default function DailyClassSchedule({originScheduleData, selectTimeOption, dailyScheduleData}) {
-    
-    let optionNumber = 0;
-
-    useEffect(() => {
-        console.log(dailyScheduleData)
-    })
-
-    let test = {
-        value: 1,
-        babel: 2
-    }
-    
+export default function DailyClassSchedule({selectTimeOption, dailyScheduleData}) {
 
   return (
     <div>
@@ -33,63 +20,50 @@ export default function DailyClassSchedule({originScheduleData, selectTimeOption
                 {
                     selectTimeOption.map(
                         time => {
-                            if(dailyScheduleData.length === 0){
-                                return (
-                                    <tr css={s.tableLayout}>
-                                        <td>{time.label}</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                    </tr>
-                                )
-                            } else {
-                                return (
-                                    <>
-                                        {
-                                            dailyScheduleData.map(
-                                                data => {
-                                                        let startHour = new Date(data.classScheduleStartDate).getHours();
-                                                        let startMinute = new Date(data.classScheduleStartDate).getMinutes();
-                                                        let startValue = ("0" + startHour).slice(-2) + ":" + ("0" + startMinute).slice(-2)
+                            return (
+                                <>
+                                    {
+                                        dailyScheduleData.map(
+                                            data => {
+                                                    let startHour = new Date(data.classScheduleStartDate).getHours();
+                                                    let startMinute = new Date(data.classScheduleStartDate).getMinutes();
+                                                    let startValue = ("0" + startHour).slice(-2) + ":" + ("0" + startMinute).slice(-2)
 
-                                                    return (
-                                                        <tr css={s.tableLayout}>
-                                                        <td>{time.label}</td>
-                                                        {
-                                                            time.value === startValue && data.classLocationId == 1
-                                                            ? <td rowSpan={3}>{data.classScheduleTitle}<br/>{data.classScheduleTeacher}<br/>{data.classLocationName}</td>
-                                                            : <td></td>
-                                                        }
-                                                        {
-                                                            time.value === startValue && data.classLocationId == 2
-                                                            ? <td>{data.classScheduleTitle}<br/>{data.classScheduleTeacher}<br/>{data.classLocationName}</td>
-                                                            : <td></td>
-                                                        }
-                                                        {
-                                                            time.value === startValue && data.classLocationId == 3
-                                                            ? <td colSpan={3}>{data.classScheduleTitle}<br/>{data.classScheduleTeacher}<br/>{data.classLocationName}</td>
-                                                            : <td></td>
-                                                        }
-                                                        {
-                                                            time.value === startValue && data.classLocationId == 4
-                                                            ? <td>{data.classScheduleTitle}<br/>{data.classScheduleTeacher}<br/>{data.classLocationName}</td>
-                                                            : <td></td>
-                                                        }
-                                                        {
-                                                            time.value === startValue && data.classLocationId == 5
-                                                            ? <td>{data.classScheduleTitle}<br/>{data.classScheduleTeacher}<br/>{data.classLocationName}</td>
-                                                            : <td></td>
-                                                        }
-                                                        </tr>   
-                                                    )
-                                                }
-                                            )
-                                        }
-                                    </>
-                                )
-                            }
+                                                return (
+                                                    <tr css={s.tableLayout}>
+                                                    <td>{time.label}</td>
+                                                    {
+                                                        time.value === startValue && data.classLocationId == 1
+                                                        ? <td rowSpan={3}>{data.classScheduleTitle}<br/>{data.classScheduleTeacher}<br/>{data.classLocationName}</td>
+                                                        : <td></td>
+                                                    }
+                                                    {
+                                                        time.value === startValue && data.classLocationId == 2
+                                                        ? <td>{data.classScheduleTitle}<br/>{data.classScheduleTeacher}<br/>{data.classLocationName}</td>
+                                                        : <td></td>
+                                                    }
+                                                    {
+                                                        time.value === startValue && data.classLocationId == 3
+                                                        ? <td colSpan={3}>{data.classScheduleTitle}<br/>{data.classScheduleTeacher}<br/>{data.classLocationName}</td>
+                                                        : <td></td>
+                                                    }
+                                                    {
+                                                        time.value === startValue && data.classLocationId == 4
+                                                        ? <td>{data.classScheduleTitle}<br/>{data.classScheduleTeacher}<br/>{data.classLocationName}</td>
+                                                        : <td></td>
+                                                    }
+                                                    {
+                                                        time.value === startValue && data.classLocationId == 5
+                                                        ? <td>{data.classScheduleTitle}<br/>{data.classScheduleTeacher}<br/>{data.classLocationName}</td>
+                                                        : <td></td>
+                                                    }
+                                                    </tr>
+                                                )
+                                            }
+                                        )
+                                    }
+                                </>
+                            )
                         }
                     )
                 }
