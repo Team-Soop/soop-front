@@ -19,7 +19,7 @@ function AddFeed(props) {
     mutationFn: feedRequest,
     onSuccess: response => {
       alert("작성이 완료되었습니다.");
-      // window.location.replace("/feed")
+      window.location.replace("/feed")
     },
     onError: error => {
       console.log(error);
