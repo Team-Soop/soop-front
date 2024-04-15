@@ -2,15 +2,15 @@ import { atom } from "recoil";
 
 export const lunchMapTitlState = atom({
   key: "lunchMapTitlState",
-  default: null
+  default: ""
 });
 
 export const lunchMapXState = atom({
   key: "lunchMapXState",
-  default: null
+  default: ""
 });
 
 export const lunchMapYState = atom({
   key: "lunchMapYState",
-  default: null
+  default: ""
 });
