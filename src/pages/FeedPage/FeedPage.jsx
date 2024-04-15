@@ -10,33 +10,21 @@ function FeedPage(props) {
   const [ feedList, setFeedList ] = useState([]);
 
 
-  useEffect(() => {
-    const getFeedList = () => {
-      try {
-        const response = feedListGet();
-        setFeedList(response);
-        console.log(response);
-      } catch (error) {
+  const getFeedListQuery = useQuery(
+    "getFeedDataList", feedListGet ,
+    {
+      retry: 0,
+      onSuccess: response => {
+        console.log("onSuccess");
+        console.log(response.data);
+        setFeedList(response.data)
+    },
+    onError: error => {
+        console.log("오류");
         console.log(error);
-      }
     }
-    getFeedList();
-  }, [])
-
-  // const getFeedListQuery = useQuery(
-  //   "getFeedDataList", feedListGet ,
-  //   {
-  //     retry: 0,
-  //     onSuccess: response => {
-  //       console.log("onSuccess");
-  //       console.log(response);
-  //   },
-  //   onError: error => {
-  //       console.log("오류");
-  //       console.log(error);
-  //   }
-  //   }
-  // );
+    }
+  );
 
 
   // <p></p> 태그 없이 본문만 출력
@@ -51,6 +39,7 @@ function FeedPage(props) {
     // 게시글 (피드)
     <div>
       <ul>
+        
           <li>
             <div>
               <img src="" alt="" />
@@ -60,6 +49,7 @@ function FeedPage(props) {
                 <div>test text</div>
                 <div>test img</div>
               </div>
+              
             <div>
               <div>좋아요</div>
               <div>댓글</div>
