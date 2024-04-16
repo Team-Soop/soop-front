@@ -16,16 +16,16 @@ import LunchPage from '../pages/LunchPage/LunchPage';
 function AuthRoute(props) {
   const principalQuery = useQuery(["principalQuery"], getPrincipalRequest,
     {
-        retry: 0,
-        refetchOnWindowFocus: false,
-        onSuccess: response => {
-            console.log("onSuccess");
-            console.log(response);
-        },
-        onError: error => {
-            console.log("토큰 없음");
-            console.log(error);
-        }
+      retry: 0,
+      refetchOnWindowFocus: false,
+      onSuccess: response => {
+          console.log("onSuccess");
+          console.log(response);
+      },
+      onError: error => {
+          console.log("토큰 없음");
+          console.log(error);
+      }
     });
 
 

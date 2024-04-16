@@ -3,9 +3,23 @@ import * as s from "./style";
 
 import LunchWrite from '../../components/LunchWrite/LunchWrite';
 import { useState } from "react";
+import { useQuery } from "react-query";
+import { searchAllLunch } from "../../apis/api/lunch";
 
 function LunchPage(props) {
   const [ writeButton, setWriteButton ] = useState(false);
+
+  const searchAllLunchQuery = useQuery("searchAllLunchQuery", searchAllLunch,
+  {
+    retry: 0,
+    refetchOnWindowFocus: false,
+    onSuccess: response => {
+      console.log(response);
+    },
+    onError: error => {
+      console.log(error);
+    }
+  })
 
 
   
@@ -28,7 +42,7 @@ function LunchPage(props) {
         카테고리 필터 체크박스
       </div>
       <div>
-        런치피드 컨테이너
+        런치피드 컨포넌트
       </div>
 
       <div css={s.componentsLayout}>
