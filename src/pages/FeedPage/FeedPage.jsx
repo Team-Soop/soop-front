@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+import * as s from "./style";
 import { useEffect, useState } from "react";
 import { feedListGet } from "../../apis/api/feed";
 import { useQuery, useQueryClient } from "react-query";
@@ -10,33 +12,21 @@ function FeedPage(props) {
   const [ feedList, setFeedList ] = useState([]);
 
 
-  useEffect(() => {
-    const getFeedList = () => {
-      try {
-        const response = feedListGet();
-        setFeedList(response);
-        console.log(response);
-      } catch (error) {
+  const getFeedListQuery = useQuery(
+    "getFeedDataList", feedListGet ,
+    {
+      retry: 0,
+      onSuccess: response => {
+        console.log("onSuccess");
+        console.log(response.data);
+        setFeedList(response.data);
+    },
+    onError: error => {
+        console.log("오류");
         console.log(error);
-      }
     }
-    getFeedList();
-  }, [])
-
-  // const getFeedListQuery = useQuery(
-  //   "getFeedDataList", feedListGet ,
-  //   {
-  //     retry: 0,
-  //     onSuccess: response => {
-  //       console.log("onSuccess");
-  //       console.log(response);
-  //   },
-  //   onError: error => {
-  //       console.log("오류");
-  //       console.log(error);
-  //   }
-  //   }
-  // );
+    }
+  );
 
 
   // <p></p> 태그 없이 본문만 출력
@@ -50,23 +40,34 @@ function FeedPage(props) {
     
     // 게시글 (피드)
     <div>
-      <ul>
-          <li>
-            <div>
-              <img src="" alt="" />
-              <div>유저네임</div>
-            </div>
-              <div >
-                <div>test text</div>
-                <div>test img</div>
+      
+      {feedList.length > 0 
+      ? (
+        <ul css={s.feedrootlayout}>
+          {feedList.map(feed => (
+            <li key={feed.feedId} css={s.feedlayout}>
+              <div>
+                <img src={feed.profileImgUrl} alt="" />
+                <div>{feed.username}</div>
               </div>
-            <div>
-              <div>좋아요</div>
-              <div>댓글</div>
-              <div>신고하기</div>
-            </div>
-          </li>
-      </ul>
+                <div >
+                  <div>{feed.feedContent}</div>
+                  {feed.feedImgUrl.map((imgUrl, index) => (
+                    <img key={index} src={imgUrl} alt="" />
+                  ))}
+                </div>
+                
+              <div>
+                <div>좋아요</div>
+                <div>댓글</div>
+                <div>신고하기</div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )
+      : <div>빈 게시글</div>
+      }
 
       {/* 우측 하단 버튼 */}
       <div>
