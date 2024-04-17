@@ -24,8 +24,7 @@ export default function AddClassSchedule({ viewScheduleDate, originScheduleDate,
     useEffect(() => {
         console.log(updateDay);
     }, [updateDay])
-    
-    
+
     const addScheduleMutation = useMutation({
         mutationKey: "addScheduleMutation",
         mutationFn: addSchedule,
@@ -61,6 +60,7 @@ export default function AddClassSchedule({ viewScheduleDate, originScheduleDate,
         }
     })
 
+    // 데이터 추가를 위한 캘린더 select 날짜 List 저장 (다중 선택 가능)
     const selectDayList = (date) => {
         if(clickDayList.indexOf(date.startStr) > -1) {
             clickDayList.splice(clickDayList.indexOf(date.startStr), 1)

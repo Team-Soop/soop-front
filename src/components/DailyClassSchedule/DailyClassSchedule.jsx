@@ -1,61 +1,57 @@
 /** @jsxImportSource @emotion/react */
-import { useEffect, useMemo } from "react";
 import * as s from "./style";
 
-export default function DailyClassSchedule({selectTimeOption, dailyScheduleData}) {
-    
+export default function DailyClassSchedule({ selectTimeOption, dailyScheduleData }) {
+    // 테이블의 열과 행 수를 정의합니다.
+    const numCols = 6;
     const numRows = selectTimeOption.length;
-    const numCols = 6; // 열의 개수를 6으로 변경
+    // JSX 요소를 저장할 빈 테이블 배열을 초기화합니다.
     const table = [];
 
-    // useEffect(() => {
-        for (let i = 0; i < numRows; i++) {
-            const row = [];
-            const timeValue = selectTimeOption[i].value; // 현재 시간값
-            for (let j = 0; j < numCols; j++) {
-                // 첫 번째 열에는 시간 레이블 삽입
-                if (j === 0) {
-                    row.push(selectTimeOption[i].label);
-                } else {
-                    // dailyScheduleData에서 해당 시간에 해당하는 데이터 찾기
-                    const scheduleData = dailyScheduleData.find(classSchedule => {
-                        // classScheduleStartDate를 "02:00" 형식으로 변환하여 비교
-                        const startHour = new Date(classSchedule.classScheduleStartDate).getHours();
-                        const startMinute = new Date(classSchedule.classScheduleStartDate).getMinutes();
-                        const startValue = ("0" + startHour).slice(-2) + ":" + ("0" + startMinute).slice(-2);
-                        return startValue === timeValue;
-                    });
-                    console.log(scheduleData)
-                    if (scheduleData) {
-                        // 해당 시간에 해당하는 데이터가 있을 경우 시작 시간과 종료 시간 삽입
-                        let startHour = new Date(scheduleData.classScheduleStartDate).getHours();
-                        let startMinute = new Date(scheduleData.classScheduleStartDate).getMinutes();
-                        let startValue = ("0" + startHour).slice(-2) + ":" + ("0" + startMinute).slice(-2);
+    // Table 기본값 구성 (6x47 크기)
+    for (let i = 0; i < numRows; i++) {
+        const row = [];
+        for (let j = 0; j < numCols; j++) {
+            if (j === 0) { // 첫번째 행 timeOption 지정 (HH시 MM분 ~ HH시 MM분)
+                row.push(<div>{selectTimeOption[i].label}</div>)
+            } else { // body 데이터 기본값 "-" 설정
+                row.push(<div>-</div>)
+            }
+        }
+        table.push(row);
+    }
 
-                        let endHour = new Date(scheduleData.classScheduleEndDate).getHours();
-                        let endMinute = new Date(scheduleData.classScheduleEndDate).getMinutes();
-                        let endValue = ("0" + endHour).slice(-2) + ":" + ("0" + endMinute).slice(-2);
+    for (let i = 0; i < numRows; i++) {
+        for (let j = 0; j < numCols; j++) {
+            for (let scheduleData of dailyScheduleData) {
+                // scheduleData Start/End Date의 시간/분 추출
+                let startHour = new Date(scheduleData.classScheduleStartDate).getHours();
+                let startMinute = new Date(scheduleData.classScheduleStartDate).getMinutes();
+                let startValue = ("0" + startHour).slice(-2) + ":" + ("0" + startMinute).slice(-2);
 
-                        // 시작 시간과 종료 시간을 삽입
-                        if (scheduleData.classLocationId === j) {
-                            row.push(endValue);
-                        } else {
-                            row.push("1");
-                        }
-                    } else {
-                        // 해당 시간에 해당하는 데이터가 없을 경우 "-" 삽입
-                        row.push("2");
+                let endHour = new Date(scheduleData.classScheduleEndDate).getHours();
+                let endMinute = new Date(scheduleData.classScheduleEndDate).getMinutes();
+                let endValue = ("0" + endHour).slice(-2) + ":" + ("0" + endMinute).slice(-2);
+
+                // scheduleData 강의실 일치하는 행 찾기
+                if (scheduleData.classLocationId === j) {
+                    // 시작시간 ~ 종료시간 이내 행에 schedule 데이터 저장
+                    if (startValue <= selectTimeOption[i].value && selectTimeOption[i].value < endValue) {
+                        table[i][j] = (
+                            <div style={{ backgroundColor: scheduleData.classLocationColor }}>
+                                <div>{scheduleData.classScheduleTitle}</div>
+                                <div>{scheduleData.classScheduleTeacher}</div>
+                            </div>
+                        )
                     }
                 }
             }
-            table.push(row);
         }
-    // }, [dailyScheduleData])
+    }
 
-    // 2차원 배열 출력
     return (
-        <table>
-            <thead>
+        <table css={s.table}>
+            <thead css={s.thead}>
                 <tr>
                     <th>시간</th>
                     <th>A 강의실</th>
@@ -67,9 +63,11 @@ export default function DailyClassSchedule({selectTimeOption, dailyScheduleData}
             </thead>
             <tbody>
                 {table.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
+                    <tr key={rowIndex} css={s.bodyLayout}>
                         {row.map((cell, colIndex) => (
-                            <td key={`${rowIndex}-${colIndex}`}>{cell}</td>
+                            <td key={`${rowIndex}-${colIndex}`} css={s.tableData}>
+                                {cell}
+                            </td>
                         ))}
                     </tr>
                 ))}
