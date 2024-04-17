@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { feedListGet } from "../../apis/api/feed";
 import { useQuery, useQueryClient } from "react-query";
 import AddFeed from "../../components/AddFeed/AddFeed";
+import DOMPurify from "dompurify";
 
 
 function FeedPage(props) {
   const queryClient = useQueryClient();
   const principalData = queryClient.getQueryData("principalQuery");
   const [ feedList, setFeedList ] = useState([]);
+  const sanitizer = DOMPurify.sanitize;
 
 
   const getFeedListQuery = useQuery(
@@ -18,7 +20,7 @@ function FeedPage(props) {
       retry: 0,
       onSuccess: response => {
         console.log("onSuccess");
-        console.log(response.data);
+        // console.log(response.data);
         setFeedList(response.data);
     },
     onError: error => {
@@ -27,14 +29,6 @@ function FeedPage(props) {
     }
     }
   );
-
-
-  // <p></p> 태그 없이 본문만 출력
-  const removeHTMLTags = (html) => {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    return doc.body.textContent || "";
-  };
-  // console.log(removeHTMLTags(newFeedContent));
   
   return (
     
@@ -50,17 +44,17 @@ function FeedPage(props) {
                 <img src={feed.profileImgUrl} alt="" />
                 <div>{feed.username}</div>
               </div>
-                <div >
-                  <div>{feed.feedContent}</div>
+                <div css={s.feedcontents}>
+                <div dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
                   {feed.feedImgUrl.map((imgUrl, index) => (
-                    <img key={index} src={imgUrl} alt="" />
+                    <img key={index} src={imgUrl} alt="" css={s.feedImg}/>
                   ))}
                 </div>
                 
               <div>
-                <div>좋아요</div>
-                <div>댓글</div>
-                <div>신고하기</div>
+                <button>좋아요</button>
+                <button>댓글</button>
+                <button>신고</button>
               </div>
             </li>
           ))}
