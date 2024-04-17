@@ -17,6 +17,7 @@ function ClassSchedulePage() {
   const [ dailyScheduleData, setDailyScheduleData ] = useState([])
   const [ selectTimeOption ] = useState([]);
 
+  // timeOption 설정 (i = Hour, j = Minute)
   useMemo(() => {
       for(let i = 0; i <= 23; i++) {
           for (let j = 0; j <= 1; j++) {
@@ -28,6 +29,7 @@ function ClassSchedulePage() {
       };
   }, [])
 
+  // DB에 저장된 ScheduleDate 전체 조회
   const searchAllScheduleQuery = useQuery("searchAllScheduleQuery", searchAllSchedule, 
     {
       retry: 0,
@@ -50,6 +52,7 @@ function ClassSchedulePage() {
       }
     })
 
+    // 캘린더 내에서 날짜 select시 선택한 날짜 데이터 저장
     useEffect(() => {
         setDailyScheduleData(originScheduleDate.filter(originScheduleDate => originScheduleDate.classScheduleStartDate.substring(0, 10) == selectDay))
     }, [selectDay])
@@ -81,10 +84,13 @@ function ClassSchedulePage() {
           //   }
           }
           eventClick={(date) => {
+            console.log(date)
+            console.log(date.event._def.ui.backgroundColor)
             setSelectDay(date.event.startStr.substring(0, 10))
           }}
           select={(date) => {
             console.log(date)
+            setSelectDay(date.startStr)
           }}
         />
         : <FullCalendar 
