@@ -12,21 +12,24 @@ import { getPrincipalRequest } from '../apis/api/principal';
 import PasswordEditPage from '../pages/PasswordEditPage/PasswordEditPage';
 import { searchAllSchedule } from '../apis/api/schedule';
 import LunchPage from '../pages/LunchPage/LunchPage';
+import LunchDetail from '../components/LunchDetail/LunchDetail';
 
 function AuthRoute(props) {
+
   const principalQuery = useQuery(["principalQuery"], getPrincipalRequest,
     {
       retry: 0,
       refetchOnWindowFocus: false,
       onSuccess: response => {
-          console.log("onSuccess");
-          console.log(response);
+        console.log("onSuccess");
+        console.log(response);
       },
       onError: error => {
-          console.log("토큰 없음");
-          console.log(error);
+        console.log("토큰 없음");
+        console.log(error);
       }
     });
+
 
 
 
@@ -35,20 +38,22 @@ function AuthRoute(props) {
       <Routes>
         <Route path="/auth/*" element={<AuthPage />} />
         {/* Admin 권한만 접근 가능 */}
-        <Route path='' element={<Admin />} />                    
+        <Route path='' element={<Admin />} />
         <Route path='/' element={<MainPage />} />
         {/* 토큰이 있어야지만 접근 가능 */}
-        <Route path='/account/mypage' element={<Mypage />} />     
+        <Route path='/account/mypage' element={<Mypage />} />
         {/* 임시회원, 일반회원은 접근 불가  */}
-        <Route path='/account/edit/password' element={<PasswordEditPage />} />     
+        <Route path='/account/edit/password' element={<PasswordEditPage />} />
         {/* 임시회원, 일반회원은 접근 불가  */}
-        <Route path='/schedule' element={<ClassSchedulePage />} />   
+        <Route path='/schedule' element={<ClassSchedulePage />} />
         {/* 임시회원, 일반회원은 접근 불가 */}
-        <Route path='' element={<StudyGroupPage />} />  
+        <Route path='' element={<StudyGroupPage />} />
         {/* 임시회원 글작성 불가  */}
-        <Route path='/lunch' element={<LunchPage />} />  
+        <Route path='/lunch/*' element={<LunchPage />} />
+        {/* 임시회원 글작성 불가 
+        <Route path='/lunch/Detail/:id' element={<LunchDetail />} />   */}
         {/* 임시회원 글작성 불가 */}
-        <Route path='/feed' element={<FeedPage />} />                 
+        <Route path='/feed' element={<FeedPage />} />
       </Routes>
     </>
   );

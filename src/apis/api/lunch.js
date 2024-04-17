@@ -7,3 +7,7 @@ export const lunchRequest = async (data) => {
 export const searchAllLunch = async () => {
     return await instance.get("/lunch/search");
 }
+
+// export const searchLunchDetailComponent = async (data) => {
+//     return await instance.get("/lunch/detail", data);
+// }
