@@ -12,6 +12,7 @@ function AddFeed(props) {
   const [ uploadPhotos, setUploadPhotos ] = useState([]);
   const [ newFeedContent, setNewFeedContent ] = useState("");
   const [ contentImg, setContentImg ] = useState([]);
+  const [ loadPhotos, setLoadPhotos ] = useState([]);
   const imgFileRef = useRef();
 
   const saveFeed = useMutation({
@@ -42,12 +43,6 @@ function AddFeed(props) {
   //   }
   // }, [contentImg])
 
-  const handleSubmitFeed = () => {
-    if(contentImg.length > 0) {
-      handleImageUpload();
-    }
-  }
-
   const handleCancelFeed = () => {
       if (!newFeedContent) return;
       setNewFeedContent("");
@@ -77,6 +72,35 @@ function AddFeed(props) {
     }
 
     setUploadPhotos(fileArray);
+
+    // 미리보기
+    const filePromiseArray = fileArray.map(
+      (file) =>
+        new Promise(
+          (resolve) => {
+            const fileReader = new FileReader();
+
+            fileReader.onload = (e) => {
+              resolve(e.target.result);
+            }
+
+            fileReader.readAsDataURL(file);
+          }
+        )
+    );
+
+    Promise.all(filePromiseArray).then(
+      (result) => {
+        setLoadPhotos(() => result.map(
+          (dataUrl, index) => {
+            return {
+              id: index + 1,
+              dataUrl
+            }
+          }
+        ));
+      }
+    );
 
   }
 
@@ -114,15 +138,12 @@ function AddFeed(props) {
         feedContent: newFeedContent,
         feedImgUrls: urls
       })
-      handleSubmitFeed();
     })
     .catch(error => {
       console.log(error);
     })
   }
 
-
- 
 
   return (
     <div>
@@ -132,6 +153,17 @@ function AddFeed(props) {
           <div>{principalData?.data.username}</div>
         </div>
         <div >
+          <div>
+            미리보기
+            {
+              loadPhotos.map(
+                photo =>
+                  <div key={photo.id}>
+                    <img src={photo.dataUrl} alt="" />
+                  </div>
+              )
+            }
+          </div>
           <ReactQuill 
             modules={modules} 
             value={newFeedContent} 
