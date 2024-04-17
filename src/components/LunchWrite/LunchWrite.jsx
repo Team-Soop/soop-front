@@ -10,8 +10,6 @@ import LunchMap from "./LunchMap/LunchMap";
 import { lunchMapTitlState, lunchMapXState, lunchMapYState } from "../../atoms/luchMapAtom";
 import { useRecoilState } from "recoil";
 
-const { kakao } = window;
-
 
 function LunchWrite() {
 

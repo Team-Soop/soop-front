@@ -57,12 +57,13 @@ function LunchMap(props) {
         position: new kakao.maps.LatLng(place.y, place.x)
       });
 
-      console.log(place);
+      
       // 마커에 클릭이벤트를 등록합니다
       kakao.maps.event.addListener(marker, 'click', function () {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
         infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
         infowindow.open(map, marker);
+        console.log(place);
         setPlaceX(parseFloat(place.x))
         setPlaceY(parseFloat(place.y))
         setPlaceName(place.place_name)
@@ -92,9 +93,9 @@ function LunchMap(props) {
       </form>
       <div>
         <div id="map" style={{ width: "100%", height: "350px" }}></div>
-        <div>{palceX}</div>
+        {/* <div>{palceX}</div>
         <div>{palceY}</div>
-        <div>{placeName}</div>
+        <div>{placeName}</div> */}
       </div>
     </>
   );
