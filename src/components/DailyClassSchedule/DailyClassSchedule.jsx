@@ -32,17 +32,23 @@ export default function DailyClassSchedule({ selectTimeOption, dailyScheduleData
                 let endHour = new Date(scheduleData.classScheduleEndDate).getHours();
                 let endMinute = new Date(scheduleData.classScheduleEndDate).getMinutes();
                 let endValue = ("0" + endHour).slice(-2) + ":" + ("0" + endMinute).slice(-2);
-
+                console.log(selectTimeOption[i].value)
+                console.log(startValue)
+                console.log(endValue)
                 // scheduleData 강의실 일치하는 행 찾기
                 if (scheduleData.classLocationId === j) {
+                    let count = 0;
                     // 시작시간 ~ 종료시간 이내 행에 schedule 데이터 저장
                     if (startValue <= selectTimeOption[i].value && selectTimeOption[i].value < endValue) {
-                        table[i][j] = (
+                        table[i][j] = {
+                            id: 0,
+                            rowSpan: 1,
+                            elements: 
                             <div style={{ backgroundColor: scheduleData.classLocationColor }}>
                                 <div>{scheduleData.classScheduleTitle}</div>
                                 <div>{scheduleData.classScheduleTeacher}</div>
                             </div>
-                        )
+                        }
                     }
                 }
             }
@@ -66,7 +72,7 @@ export default function DailyClassSchedule({ selectTimeOption, dailyScheduleData
                     <tr key={rowIndex} css={s.bodyLayout}>
                         {row.map((cell, colIndex) => (
                             <td key={`${rowIndex}-${colIndex}`} css={s.tableData}>
-                                {cell}
+                                {cell.elements}
                             </td>
                         ))}
                     </tr>
