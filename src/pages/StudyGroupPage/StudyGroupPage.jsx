@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import SaveStudyGroup from '../../components/SaveStudyGroup/SaveStduyGroup'
 
 function StudyGroupPage(props) {
+	
   return (
-    <div>
-      
-    </div>
+    <>
+		<header>
+			<button>글쓰기</button>
+		</header>
+		<body>
+
+		</body>
+		<SaveStudyGroup/>
+	</>
   );
 }
 
