@@ -7,7 +7,7 @@ import { lunchRequest } from "../../apis/api/lunch";
 import { quillContent, useQuillContent } from "../../hooks/quillContent";
 import { useLunchCategory } from "../../hooks/lunchCategory";
 import LunchMap from "./LunchMap/LunchMap";
-import { lunchMapTitlState, lunchMapXState, lunchMapYState } from "../../atoms/luchMapAtom";
+import { lunchMapPlaceUrlState, lunchMapTitlState, lunchMapXState, lunchMapYState } from "../../atoms/luchMapAtom";
 import { useRecoilState } from "recoil";
 
 
@@ -69,6 +69,7 @@ function LunchWrite() {
   const [placeName, setPlaceName] = useRecoilState(lunchMapTitlState);
   const [placeX, setPlaceX] = useRecoilState(lunchMapXState);
   const [placeY, setPlaceY] = useRecoilState(lunchMapYState);
+  const [placeUrl, setPlaceUrl] = useRecoilState(lunchMapPlaceUrlState);
   const [uploadPhotos, setUploadPhotos] = useState([]);
   const [lunchContent, lunchContentChange, lunchContentMessage] = useQuillContent("quilContent");
   const [checkCategories, setcheckCategories] = useState([]);
@@ -96,7 +97,7 @@ function LunchWrite() {
     mutationFn: lunchRequest,
     onSuccess: response => {
       alert("작성이 완료되었습니다.");
-      // window.location.replace("/feed")
+      // window.location.replace("/")
       // saveFeedList(principalData.data.userId, newFeedContent, contentImg);
     },
     onError: error => {
@@ -198,6 +199,7 @@ function LunchWrite() {
             placeName: placeName,
             placeX: placeX,
             placeY: placeY,
+            placeUrl: placeUrl,
             lunchImgUrls: urls
           })
         }

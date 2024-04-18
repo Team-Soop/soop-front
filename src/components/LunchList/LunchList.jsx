@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import DOMPurify from "dompurify";
 import * as s from "./style";
+import DOMPurify from "dompurify";
 import { useQuery } from "react-query";
 
 function LunchList({profileImgUrl, nickName, placeName, categroies, title, imgUrls, content}) {

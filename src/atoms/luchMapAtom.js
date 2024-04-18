@@ -14,3 +14,8 @@ export const lunchMapYState = atom({
   key: "lunchMapYState",
   default: ""
 });
+
+export const lunchMapPlaceUrlState = atom({
+  key: "lunchMapPlaceUrlState",
+  default: ""
+})

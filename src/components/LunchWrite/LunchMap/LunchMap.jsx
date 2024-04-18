@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { lunchMapTitlState, lunchMapXState, lunchMapYState } from '../../../atoms/luchMapAtom';
+import { lunchMapPlaceUrlState, lunchMapTitlState, lunchMapXState, lunchMapYState } from '../../../atoms/luchMapAtom';
 const { kakao } = window;
 
 function LunchMap(props) {
@@ -9,6 +9,7 @@ function LunchMap(props) {
   const [placeName, setPlaceName] = useRecoilState(lunchMapTitlState);
   const [palceX, setPlaceX] = useRecoilState(lunchMapXState);
   const [palceY, setPlaceY] = useRecoilState(lunchMapYState);
+  const [placeUrl, setPlaceUrl] = useRecoilState(lunchMapPlaceUrlState);
 
 
   useEffect(() => {
@@ -67,7 +68,7 @@ function LunchMap(props) {
         setPlaceX(parseFloat(place.x))
         setPlaceY(parseFloat(place.y))
         setPlaceName(place.place_name)
-
+        setPlaceUrl(place.place_url)
       });
     }
   }, [searchPlace])
@@ -93,9 +94,6 @@ function LunchMap(props) {
       </form>
       <div>
         <div id="map" style={{ width: "100%", height: "350px" }}></div>
-        {/* <div>{palceX}</div>
-        <div>{palceY}</div>
-        <div>{placeName}</div> */}
       </div>
     </>
   );
