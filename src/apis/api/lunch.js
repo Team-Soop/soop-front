@@ -8,6 +8,10 @@ export const searchAllLunch = async () => {
     return await instance.get("/lunch/search");
 }
 
-// export const searchLunchDetailComponent = async (data) => {
-//     return await instance.get("/lunch/detail", data);
-// }
+export const lunchCommentRequest = async (data) => {
+    return await instance.post("/lunch/comment/save", data)
+}
+
+export const searchComment = async (data) => {
+    return await instance.post("/lunch/comment/search", data)
+}

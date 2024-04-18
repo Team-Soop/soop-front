@@ -26,6 +26,7 @@ function LunchPage(props) {
     refetchOnWindowFocus: false,
     onSuccess: response => {
       console.log(response);
+      // List를 위한 data
       setLunchListsData(() => response.data.map(response => {
         return {
           lunchId: response.lunchId,
@@ -38,16 +39,21 @@ function LunchPage(props) {
           content: response.lunchContent
         }
       }))
+      // 상세페이지를 위한 data
       setLunchDetailData(() =>response.data.map(response => {
         return {
           lunchId: response.lunchId,
           nickName: response.nickName,
           profileImgUrl: response.profileImgUrl,
-          PlaceName: response.lunchPlaceName,
+          placeName: response.lunchPlaceName,
           categroies: response.lunchCategoryNames,
           title: response.lunchTitle,
           imgUrls: response.lunchImgUrls,
-          content: response.lunchContent
+          content: response.lunchContent,
+          likeUserId: response.lunchLikeUserIds,
+          placeX: response.lunchPlaceX,
+          placeY: response.lunchPlaceY,
+          placeUrl: response.lunchPlaceUrl
         }
       }))
     },
