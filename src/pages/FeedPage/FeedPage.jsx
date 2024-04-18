@@ -1,10 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import * as s from "./style";
 import { useEffect, useState } from "react";
-import { feedListGet } from "../../apis/api/feed";
-import { useQuery, useQueryClient } from "react-query";
+import { feedLikes, feedListGet } from "../../apis/api/feed";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import AddFeed from "../../components/AddFeed/AddFeed";
 import DOMPurify from "dompurify";
+import { AiOutlineLike, AiFillLike } from "react-icons/ai";
+import { FaRegCommentAlt } from "react-icons/fa";
+import { BsExclamationCircle } from "react-icons/bs";
 
 
 function FeedPage(props) {
@@ -12,7 +15,7 @@ function FeedPage(props) {
   const principalData = queryClient.getQueryData("principalQuery");
   const [ feedList, setFeedList ] = useState([]);
   const sanitizer = DOMPurify.sanitize;
-
+  const [ like, setLike ] = useState();
 
   const getFeedListQuery = useQuery(
     "getFeedDataList", feedListGet ,
@@ -29,6 +32,32 @@ function FeedPage(props) {
     }
     }
   );
+  
+  const handleClickLike = (feedId) => {
+    let Like = {
+      feedId: feedId,
+      userId: principalData.data.userId
+    }
+    
+      likesFeed.mutate(Like);
+  }
+
+  const likesFeed = useMutation({
+    mutationKey: "likesFeed",
+    mutationFn: feedLikes,
+    onSuccess: response => {
+      console.log(response);
+    },
+    onError: error => {
+      console.log(error);
+    }
+  })
+
+  const [ feedIdTest, setFeedIdTest ] = useState();
+  
+  useEffect(() => {
+    console.log(feedIdTest)
+  }, [feedIdTest])
   
   return (
     
@@ -50,11 +79,13 @@ function FeedPage(props) {
                     <img key={index} src={imgUrl} alt="" css={s.feedImg}/>
                   ))}
                 </div>
+              
                 
               <div>
-                <button>좋아요</button>
-                <button>댓글</button>
-                <button>신고</button>
+                {/* 좋아요, 댓글, 신고하기 */}
+                <button onClick={() => handleClickLike(feed.feedId)}> <AiOutlineLike /> <AiFillLike /></button>
+                <button><FaRegCommentAlt /></button>
+                <button><BsExclamationCircle /></button>
               </div>
             </li>
           ))}
