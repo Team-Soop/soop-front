@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import * as s from "./style";
 import { useEffect, useState } from "react";
-import { feedLikes, feedListGet } from "../../apis/api/feed";
+import { feedDeleteLike, feedGetLike, feedLike, feedListGet } from "../../apis/api/feed";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import AddFeed from "../../components/AddFeed/AddFeed";
 import DOMPurify from "dompurify";
@@ -15,7 +15,7 @@ function FeedPage(props) {
   const principalData = queryClient.getQueryData("principalQuery");
   const [ feedList, setFeedList ] = useState([]);
   const sanitizer = DOMPurify.sanitize;
-  const [ like, setLike ] = useState();
+  const [ isLike, setIsLike ] = useState(false)
 
   const getFeedListQuery = useQuery(
     "getFeedDataList", feedListGet ,
@@ -25,26 +25,30 @@ function FeedPage(props) {
         console.log("onSuccess");
         // console.log(response.data);
         setFeedList(response.data);
-    },
-    onError: error => {
+      },
+      onError: error => {
         console.log("오류");
         console.log(error);
-    }
+      }
     }
   );
+
+
   
   const handleClickLike = (feedId) => {
-    let Like = {
-      feedId: feedId,
-      userId: principalData.data.userId
-    }
-    
+    if(isLike === false) {
+      let Like = {
+        feedId: feedId,
+        userId: principalData.data.userId
+      }
       likesFeed.mutate(Like);
-  }
+    } else if(isLike === true) {
 
-  const likesFeed = useMutation({
-    mutationKey: "likesFeed",
-    mutationFn: feedLikes,
+    }
+  }
+  const deleteLike = useMutation({
+    mutationKey: "deleteLike",
+    mutationFn: feedDeleteLike,
     onSuccess: response => {
       console.log(response);
     },
@@ -52,6 +56,19 @@ function FeedPage(props) {
       console.log(error);
     }
   })
+
+  const likesFeed = useMutation({
+    mutationKey: "likesFeed",
+    mutationFn: feedLike,
+    onSuccess: response => {
+      console.log(response);
+    },
+    onError: error => {
+      console.log(error);
+    }
+  })
+
+  
 
   const [ feedIdTest, setFeedIdTest ] = useState();
   
