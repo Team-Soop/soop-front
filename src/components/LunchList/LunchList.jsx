@@ -12,6 +12,10 @@ function LunchList({profileImgUrl, nickName, placeName, categroies, title, imgUr
     <div css={s.Layout}>
 
       <div>
+        저장하기
+      </div>
+
+      <div>
         카테고리: {categroies}
       </div>
 

@@ -28,7 +28,8 @@ function AuthRoute(props) {
         console.log("토큰 없음");
         console.log(error);
       }
-    });
+    }
+  );
 
 
 

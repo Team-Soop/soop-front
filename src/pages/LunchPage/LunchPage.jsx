@@ -36,7 +36,6 @@ function LunchPage(props) {
           categroies: response.lunchCategoryNames,
           title: response.lunchTitle,
           imgUrls: response.lunchImgUrls,
-          content: response.lunchContent
         }
       }))
       // 상세페이지를 위한 data
@@ -124,7 +123,7 @@ function LunchPage(props) {
       <div>
         런치피드 순위 필터 컨테이너
       </div>
-
+      
     </div>
   );
 }
