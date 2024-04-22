@@ -24,4 +24,3 @@ export const deleteComment = async (data) => {
     return await instance.delete(`/lunch/comment/delete/${data}`);
 }
 
-// export const 

@@ -99,6 +99,7 @@ function LunchPage(props) {
               onClick={() => handleOnLunchDetail(listData.lunchId)}
             >
               <LunchList
+                lunchId={listData.lunchId}
                 profileImgUrl={listData.profileImgUrl}
                 nickName={listData.nickName}
                 placeName={listData.PlaceName}

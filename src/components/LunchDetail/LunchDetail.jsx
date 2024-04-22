@@ -14,31 +14,31 @@ function LunchDetail() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const principalData = queryClient.getQueryData("principalQuery");
-  const [ searchParams, setSearchParams ] = useSearchParams();
-  const [ lunchDetailData, setLunchDetailData ] = useRecoilState(lunchDetailState);
-  const [ commentSaveInputValue, setCommentSaveInputValue ] = useState("");
-  const [ commentPutInputValue, setCommentPutInputValue ] = useState("");
-  const [ commentList, setCommentList ] = useState([]);
-  const [ putCommentId, setPutCommentId ] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [lunchDetailData, setLunchDetailData] = useRecoilState(lunchDetailState);
+  const [commentSaveInputValue, setCommentSaveInputValue] = useState("");
+  const [commentPutInputValue, setCommentPutInputValue] = useState("");
+  const [commentList, setCommentList] = useState([]);
+  const [putCommentId, setPutCommentId] = useState(0);
 
 
-  const detailLunchId  = parseInt(searchParams.get("lunchId"))
-  
+  const detailLunchId = parseInt(searchParams.get("lunchId"))
+
   const dataResult = lunchDetailData.filter(detailData => detailData.lunchId === detailLunchId)[0];
-  
+
   useEffect(() => {
-    
-  },[detailLunchId])
+    queryClient.invalidateQueries(["searchLunchCommentQuery"]);
+  }, [])
 
 
   const searchLunchCommentQuery = useQuery(
-    ["searchLunchCommentQuery", detailLunchId], 
+    ["searchLunchCommentQuery", detailLunchId],
     () => searchComment(detailLunchId),
     {
       retry: 0,
       refetchOnWindowFocus: false,
       onSuccess: response => {
-        console.log("댓글Listget","onSuccess");
+        console.log("댓글Listget", "onSuccess");
         setCommentList(() => response.data.map(response => {
           return {
             commentId: response.lunchCommentId,
@@ -62,7 +62,7 @@ function LunchDetail() {
     mutationKey: "saveLunchComment",
     mutationFn: lunchCommentRequest,
     onSuccess: response => {
-      console.log("작성됨"+response);
+      console.log("작성됨" + response);
       searchLunchCommentQuery.refetch();
       // navigate(/)
     },
@@ -76,7 +76,7 @@ function LunchDetail() {
     mutationKey: "putLunchComment",
     mutationFn: updateComment,
     onSuccess: response => {
-      console.log("수정됨"+response);
+      console.log("수정됨" + response);
       searchLunchCommentQuery.refetch()
     },
     onError: error => {
@@ -89,7 +89,7 @@ function LunchDetail() {
     mutationKey: "deleteLunchComment",
     mutationFn: deleteComment,
     onSuccess: response => {
-      console.log("삭제됨"+response);
+      console.log("삭제됨" + response);
       searchLunchCommentQuery.refetch()
     },
     onError: error => {
@@ -152,81 +152,81 @@ function LunchDetail() {
 
       <div>
         {
-          !!dataResult?.imgUrls ? 
-          dataResult.imgUrls.map((imgUrl, idx) => 
-            <img css={s.imgLayOut} 
-              key={idx} 
-              src={imgUrl}
-            />
-          )
-          :
-          <p>사진없음</p>
+          !!dataResult?.imgUrls ?
+            dataResult.imgUrls.map((imgUrl, idx) =>
+              <img css={s.imgLayOut}
+                key={idx}
+                src={imgUrl}
+              />
+            )
+            :
+            <p>사진없음</p>
         }
       </div>
 
       <div>
-        <div dangerouslySetInnerHTML={{__html: sanitizer(dataResult?.content)}}></div>
+        <div dangerouslySetInnerHTML={{ __html: sanitizer(dataResult?.content) }}></div>
       </div>
 
       <div>
         {
           !!dataResult?.likeUserId ?
-          dataResult?.likeUserId.length
-          :
-          0
+            dataResult?.likeUserId.length
+            :
+            0
         }
       </div>
 
       <div>
         <LunchDetailMap
-          placeName = {dataResult?.placeName}
-          placeX = {dataResult?.placeX}
-          placeY = {dataResult?.placeY}
-          placeUrl = {dataResult?.placeUrl}
+          placeName={dataResult?.placeName}
+          placeX={dataResult?.placeX}
+          placeY={dataResult?.placeY}
+          placeUrl={dataResult?.placeUrl}
         />
       </div>
-      
+
       {/* 댓글 리스트 */}
       <div>
         {
           commentList.map(listData => (
-            listData.commentId === putCommentId ? 
-            
-            // 수정하기 클릭했을때 input창 띄우기
-            <div key={listData.commentId}>
-              <input 
-                type="text" 
-                defaultValue={listData.commentContent} 
-                onChange={e => setCommentPutInputValue(e.target.value)}
-              />
-              <button onClick={() => putClickComment(listData.commentId, listData.commentUserId)}>수정하기</button>
-            </div>
+            listData.commentId === putCommentId ?
 
-            :
+              // 수정하기 클릭했을때 input창 띄우기
+              <div key={listData.commentId}>
+                <input
+                  type="text"
+                  defaultValue={listData.commentContent}
+                  onChange={e => setCommentPutInputValue(e.target.value)}
+                />
+                <button onClick={() => putClickComment(listData.commentId, listData.commentUserId)}>수정하기</button>
+              </div>
 
-            <div key={listData.commentId}>
-              <div>
-                {listData.commentNickName}
+              :
+
+              <div key={listData.commentId}>
+                <div>
+                  {listData.commentNickName}
+                </div>
+                <div>
+                  {listData.commentUserProfileImgUrl}
+                </div>
+                <div>
+                  {listData.commentContent}
+                </div>
+                <div>
+                  {
+                    listData.commentUserId === principalData.data.userId
+                      ?
+                      <div>
+                        <button onClick={() => openClickCommentInput(listData.commentId)}>수정</button>
+                        <button onClick={() => deleteClickComment(listData.commentId)}>삭제</button>
+                      </div>
+                      :
+                      <div></div>
+                  }
+                </div>
               </div>
-              <div>
-                {listData.commentUserProfileImgUrl}
-              </div>
-              <div>
-                {listData.commentContent}
-              </div>
-              <div>
-                {
-                  listData.commentUserId === principalData.data.userId 
-                  ? 
-                  <div>
-                    <button onClick={() => openClickCommentInput(listData.commentId)}>수정</button>
-                    <button onClick={() => deleteClickComment(listData.commentId)}>삭제</button>
-                  </div>
-                  :
-                  <div></div>
-                }
-              </div>
-            </div>
           ))
         }
       </div>
@@ -241,7 +241,7 @@ function LunchDetail() {
         />
         <button onClick={addClickSaveComment}>게시</button>
       </div>
-      
+
 
     </div>
   );
