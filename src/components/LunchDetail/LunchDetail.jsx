@@ -14,29 +14,47 @@ function LunchDetail() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const principalData = queryClient.getQueryData("principalQuery");
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [ lunchDetailData, setLunchDetailData] = useRecoilState(lunchDetailState);
-  const [ detailData, setDetailData ] = useState("");
-  const [ commentValue, setCommentValue] = useState("");
+  const [ searchParams, setSearchParams ] = useSearchParams();
+  const [ lunchDetailData, setLunchDetailData ] = useRecoilState(lunchDetailState);
+  const [ commentSaveInputValue, setCommentSaveInputValue ] = useState("");
+  const [ commentPutInputValue, setCommentPutInputValue ] = useState("");
+  const [ commentList, setCommentList ] = useState([]);
+  const [ putCommentId, setPutCommentId ] = useState(0);
 
 
-  let detailLunchId  = parseInt(searchParams.get("lunchId"))
+  const detailLunchId  = parseInt(searchParams.get("lunchId"))
   
   const dataResult = lunchDetailData.filter(detailData => detailData.lunchId === detailLunchId)[0];
-
-  console.log(dataResult);
   
-  // const searchLunchCommentQuery = useMutation({
-  //   mutationKey: "sasearchLunchCommentQueryve",
-  //   mutationFn: searchComment,
-  //   onSuccess: response => {
-  //     console.log("작성됨"+response);
-  //   },
-  //   onError: error => {
-  //     console.log(error);
-  //   }
-  // })
 
+  const searchLunchCommentQuery = useQuery(
+    ["searchLunchCommentQuery", detailLunchId], 
+    () => searchComment(detailLunchId),
+    {
+      retry: 0,
+      refetchOnWindowFocus: false,
+      onSuccess: response => {
+        console.log("onSuccess");
+        console.log(response);
+        setCommentList(() => response.data.map(response => {
+          return {
+            commentId: response.lunchCommentId,
+            commentUserId: response.lunchCommentUserId,
+            commentNickName: response.lunchCommentNickName,
+            commentUserProfileImgUrl: response.lunchCommentUserProfileImgUrl,
+            commentContent: response.lunchCommentContent,
+            createDate: response.createDate,
+            updateDate: response.updateDate
+          }
+        }))
+      },
+      onError: error => {
+        console.log(error);
+      }
+    }
+  );
+
+  // 댓글 작성 
   const saveLunchComment = useMutation({
     mutationKey: "saveLunchComment",
     mutationFn: lunchCommentRequest,
@@ -46,12 +64,19 @@ function LunchDetail() {
     onError: error => {
       console.log(error);
     }
-
   })
 
-
-
-  
+  // 댓글 수정
+  const putLunchComment = useMutation({
+    mutationKey: "putLunchComment",
+    // mutationFn: a,
+    onSuccess: response => {
+      console.log("작성됨"+response);
+    },
+    onError: error => {
+      console.log(error);
+    }
+  })
 
 
   // 댓글 save 버튼
@@ -59,8 +84,19 @@ function LunchDetail() {
     saveLunchComment.mutate({
       lunchId: detailLunchId,
       commentUserId: principalData.data.userId,
-      commentContent: commentValue,
+      commentContent: commentSaveInputValue,
     })
+  }
+
+  // 댓글 put 버튼
+  const putClickComment = () => {
+    putLunchComment.mutate({})
+  }
+
+
+  // 댓글 put input open버튼
+  const openClickCommentInput = (commentId) => {
+    setPutCommentId(commentId)
   }
 
   // 뒤로 가기버튼
@@ -68,7 +104,7 @@ function LunchDetail() {
     navigate('/lunch')
   }
 
-
+  console.log(principalData.data.userId);
   return (
     <div>
       <button onClick={handleClickBack}>뒤로가기</button>
@@ -118,16 +154,55 @@ function LunchDetail() {
       </div>
       
       <div>
-        <button>댓글 펼치기</button>
+        {
+          commentList.map(listData => (
+            listData.commentId === putCommentId ? 
+            
+            <div>
+              <input 
+                type="text" 
+                value={listData.commentContent} 
+                onChange={e => setCommentPutInputValue(e.target.value)}
+              />
+              <button onClick={putClickComment}>수정하기</button>
+            </div>
+
+            :
+
+            <div key={listData.commentId}>
+              <div>
+                {listData.commentNickName}
+              </div>
+              <div>
+                {listData.commentUserProfileImgUrl}
+              </div>
+              <div>
+                {listData.commentContent}
+              </div>
+              <div>
+                {
+                  listData.commentUserId === principalData.data.userId 
+                  ? 
+                  <div>
+                    <button onClick={() => openClickCommentInput(listData.commentId)}>수정</button>
+                    <button>삭제</button>
+                  </div>
+                  :
+                  <div></div>
+                }
+              </div>
+            </div>
+          ))
+        }
       </div>
 
       <div>
         댓글작성
         <input
           type="text"
-          value={commentValue}
+          value={commentSaveInputValue}
           placeholder="댓글 달기..."
-          onChange={e => setCommentValue(e.target.value)}
+          onChange={e => setCommentSaveInputValue(e.target.value)}
         />
         <button onClick={addClickSaveComment}>게시</button>
       </div>

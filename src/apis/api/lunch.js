@@ -13,5 +13,5 @@ export const lunchCommentRequest = async (data) => {
 }
 
 export const searchComment = async (data) => {
-    return await instance.post("/lunch/comment/search", data)
+    return await instance.post(`/lunch/comment/search?detailLunchId=${data}`)
 }
