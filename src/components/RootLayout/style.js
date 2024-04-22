@@ -9,8 +9,3 @@ export const background = css`
     height: 100%;
     background-color: #ffffff;
 `;
-
-export const layout = css`
-    
-
-`;
