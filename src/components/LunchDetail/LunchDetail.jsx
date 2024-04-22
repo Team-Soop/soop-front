@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil';
 import DOMPurify from "dompurify";
 import LunchDetailMap from "./LunchDetailMap/LunchDetailMap";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { lunchCommentRequest, searchComment } from "../../apis/api/lunch";
+import { deleteComment, lunchCommentRequest, searchComment, updateComment } from "../../apis/api/lunch";
 
 function LunchDetail() {
   const sanitizer = DOMPurify.sanitize;
@@ -26,6 +26,10 @@ function LunchDetail() {
   
   const dataResult = lunchDetailData.filter(detailData => detailData.lunchId === detailLunchId)[0];
   
+  useEffect(() => {
+    
+  },[detailLunchId])
+
 
   const searchLunchCommentQuery = useQuery(
     ["searchLunchCommentQuery", detailLunchId], 
@@ -34,8 +38,7 @@ function LunchDetail() {
       retry: 0,
       refetchOnWindowFocus: false,
       onSuccess: response => {
-        console.log("onSuccess");
-        console.log(response);
+        console.log("댓글Listget","onSuccess");
         setCommentList(() => response.data.map(response => {
           return {
             commentId: response.lunchCommentId,
@@ -60,6 +63,8 @@ function LunchDetail() {
     mutationFn: lunchCommentRequest,
     onSuccess: response => {
       console.log("작성됨"+response);
+      searchLunchCommentQuery.refetch();
+      // navigate(/)
     },
     onError: error => {
       console.log(error);
@@ -69,9 +74,23 @@ function LunchDetail() {
   // 댓글 수정
   const putLunchComment = useMutation({
     mutationKey: "putLunchComment",
-    // mutationFn: a,
+    mutationFn: updateComment,
     onSuccess: response => {
-      console.log("작성됨"+response);
+      console.log("수정됨"+response);
+      searchLunchCommentQuery.refetch()
+    },
+    onError: error => {
+      console.log(error);
+    }
+  })
+
+  // 댓글 삭제
+  const deleteLunchComment = useMutation({
+    mutationKey: "deleteLunchComment",
+    mutationFn: deleteComment,
+    onSuccess: response => {
+      console.log("삭제됨"+response);
+      searchLunchCommentQuery.refetch()
     },
     onError: error => {
       console.log(error);
@@ -89,9 +108,20 @@ function LunchDetail() {
   }
 
   // 댓글 put 버튼
-  const putClickComment = () => {
-    putLunchComment.mutate({})
+  const putClickComment = (commentId, userId) => {
+    putLunchComment.mutate({
+      commentId: commentId,
+      lunchId: detailLunchId,
+      commentUserId: userId,
+      commentContent: commentPutInputValue,
+    })
   }
+
+  // 댓글 delete 버튼
+  const deleteClickComment = (commentId) => {
+    deleteLunchComment.mutate(commentId)
+  }
+
 
 
   // 댓글 put input open버튼
@@ -104,10 +134,13 @@ function LunchDetail() {
     navigate('/lunch')
   }
 
-  console.log(principalData.data.userId);
   return (
     <div>
       <button onClick={handleClickBack}>뒤로가기</button>
+
+      <div>
+        저장
+      </div>
 
       <div>
         {dataResult?.placeName}
@@ -153,18 +186,20 @@ function LunchDetail() {
         />
       </div>
       
+      {/* 댓글 리스트 */}
       <div>
         {
           commentList.map(listData => (
             listData.commentId === putCommentId ? 
             
-            <div>
+            // 수정하기 클릭했을때 input창 띄우기
+            <div key={listData.commentId}>
               <input 
                 type="text" 
-                value={listData.commentContent} 
+                defaultValue={listData.commentContent} 
                 onChange={e => setCommentPutInputValue(e.target.value)}
               />
-              <button onClick={putClickComment}>수정하기</button>
+              <button onClick={() => putClickComment(listData.commentId, listData.commentUserId)}>수정하기</button>
             </div>
 
             :
@@ -185,7 +220,7 @@ function LunchDetail() {
                   ? 
                   <div>
                     <button onClick={() => openClickCommentInput(listData.commentId)}>수정</button>
-                    <button>삭제</button>
+                    <button onClick={() => deleteClickComment(listData.commentId)}>삭제</button>
                   </div>
                   :
                   <div></div>
