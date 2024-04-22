@@ -35,17 +35,20 @@ function FeedPage(props) {
 
 
   
+  // 좋아요 버튼
   const handleClickLike = (feedId) => {
-    if(isLike === false) {
-      let Like = {
-        feedId: feedId,
-        userId: principalData.data.userId
-      }
-      likesFeed.mutate(Like);
-    } else if(isLike === true) {
+    let Like = {
+      feedId: feedId,
+      userId: principalData.data.userId
+    }
 
+    if(!isLike) {
+      likesFeed.mutate(Like);
+    } else if(isLike) {
+      deleteLike.mutate(Like);
     }
   }
+  
   const deleteLike = useMutation({
     mutationKey: "deleteLike",
     mutationFn: feedDeleteLike,
@@ -100,7 +103,12 @@ function FeedPage(props) {
                 
               <div>
                 {/* 좋아요, 댓글, 신고하기 */}
-                <button onClick={() => handleClickLike(feed.feedId)}> <AiOutlineLike /> <AiFillLike /></button>
+                <button onClick={() => handleClickLike(feed.feedId)}> 
+                  {isLike 
+                  ? <AiFillLike /> 
+                  : <AiOutlineLike /> }
+                  {likeCount}
+                </button>
                 <button><FaRegCommentAlt /></button>
                 <button><BsExclamationCircle /></button>
               </div>
