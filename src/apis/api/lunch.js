@@ -15,3 +15,13 @@ export const lunchCommentRequest = async (data) => {
 export const searchComment = async (data) => {
     return await instance.post(`/lunch/comment/search?detailLunchId=${data}`)
 }
+
+export const updateComment = async (data) => {
+    return await instance.put("/lunch/comment/update", data)
+}
+
+export const deleteComment = async (data) => {
+    return await instance.delete(`/lunch/comment/delete/${data}`);
+}
+
+// export const 

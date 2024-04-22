@@ -107,7 +107,6 @@ function FeedPage(props) {
                   {isLike 
                   ? <AiFillLike /> 
                   : <AiOutlineLike /> }
-                  {likeCount}
                 </button>
                 <button><FaRegCommentAlt /></button>
                 <button><BsExclamationCircle /></button>
