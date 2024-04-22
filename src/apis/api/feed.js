@@ -8,14 +8,14 @@ export const feedListGet = async () => {
     return await instance.get("/feed");
 }
 
-export const feedLike = async (data) => {
-    return await instance.post("/feed/like", data);
+export const feedLike = async (feedId) => {
+    return await instance.post(`/feed/${feedId}/like`);
 }
 
-export const feedGetLike = async () => {
-    return await instance.get("/feed/like")
+export const feedDeleteLike = async (feedId) => {
+   return await instance.delete(`/feed/${feedId}/like`);
 }
- 
-export const feedDeleteLike = async (data) => {
-    return await instance.delete("/feed/like", {data});
+
+export const feedGetLike = async (feedId) => {
+    return await instance.get(`/feed/${feedId}/like`);
 }
