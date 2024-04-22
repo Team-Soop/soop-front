@@ -36,6 +36,10 @@ function AuthRoute(props) {
 
   return (
     <>
+    {
+      principalQuery.isLoading 
+      ? <></> 
+      :
       <Routes>
         <Route path="/auth/*" element={<AuthPage />} />
         {/* Admin 권한만 접근 가능 */}
@@ -56,6 +60,7 @@ function AuthRoute(props) {
         {/* 임시회원 글작성 불가 */}
         <Route path='/feed' element={<FeedPage />} />
       </Routes>
+    }
     </>
   );
 }
