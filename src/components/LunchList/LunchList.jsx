@@ -1,18 +1,37 @@
 /** @jsxImportSource @emotion/react */
 import * as s from "./style";
 import DOMPurify from "dompurify";
-import { useQuery } from "react-query";
+import { IoBookmark, IoBookmarkOutline  } from "react-icons/io5";
+import { useMutation, useQuery } from "react-query";
+import { saveLunchBoard } from "../../apis/api/saveBoards";
 
-function LunchList({profileImgUrl, nickName, placeName, categroies, title, imgUrls, content}) {
+function LunchList({lunchId, profileImgUrl, nickName, placeName, categroies, title, imgUrls, content}) {
 
   const sanitizer = DOMPurify.sanitize;
 
+  const lunchBoardSave = useMutation({
+    mutationKey: "lunchBoardSave",
+    mutationFn: saveLunchBoard,
+    onSuccess: response => {
+      console.log(response);
+    },
+    onError: error => {
+      console.log(error);
+    }
+  }) 
 
+  
+
+  
   return (
     <div css={s.Layout}>
 
       <div>
         저장하기
+        <button onClick={() => lunchBoardSave.mutate(lunchId)}>
+          <IoBookmark />
+          <IoBookmarkOutline/>
+        </button>
       </div>
 
       <div>
