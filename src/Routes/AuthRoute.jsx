@@ -13,6 +13,9 @@ import PasswordEditPage from '../pages/PasswordEditPage/PasswordEditPage';
 import { searchAllSchedule } from '../apis/api/schedule';
 import LunchPage from '../pages/LunchPage/LunchPage';
 import LunchDetail from '../components/LunchDetail/LunchDetail';
+import RootSideMenuLeft from '../components/RootSideMenuLeft/RootSideMenuLeft';
+import RootContainer from '../components/RootContainer/RootContainer';
+import PageContainer from '../components/PageContainer/PageContainer';
 
 function AuthRoute(props) {
 
@@ -36,31 +39,37 @@ function AuthRoute(props) {
 
   return (
     <>
-    {
-      principalQuery.isLoading 
-      ? <></> 
-      :
-      <Routes>
-        <Route path="/auth/*" element={<AuthPage />} />
-        {/* Admin 권한만 접근 가능 */}
-        <Route path='' element={<Admin />} />
-        <Route path='/' element={<MainPage />} />
-        {/* 토큰이 있어야지만 접근 가능 */}
-        <Route path='/account/mypage' element={<Mypage />} />
-        {/* 임시회원, 일반회원은 접근 불가  */}
-        <Route path='/account/edit/password' element={<PasswordEditPage />} />
-        {/* 임시회원, 일반회원은 접근 불가  */}
-        <Route path='/schedule' element={<ClassSchedulePage />} />
-        {/* 임시회원, 일반회원은 접근 불가 */}
-        <Route path='/study' element={<StudyGroupPage />} />
-        {/* 임시회원 글작성 불가  */}
-        <Route path='/lunch/*' element={<LunchPage />} />
-        {/* 임시회원 글작성 불가 
-        <Route path='/lunch/Detail/:id' element={<LunchDetail />} />   */}
-        {/* 임시회원 글작성 불가 */}
-        <Route path='/feed' element={<FeedPage />} />
-      </Routes>
-    }
+      <RootSideMenuLeft />
+      <PageContainer>
+      
+        {
+          principalQuery.isLoading 
+          ? <></> 
+          :
+          <Routes>
+            <Route path="/auth/*" element={<AuthPage />} />
+            {/* Admin 권한만 접근 가능 */}
+            <Route path='' element={<Admin />} />
+            <Route path='/' element={<MainPage />} />
+            {/* 토큰이 있어야지만 접근 가능 */}
+            <Route path='/account/mypage' element={<Mypage />} />
+            {/* 임시회원, 일반회원은 접근 불가  */}
+            <Route path='/account/edit/password' element={<PasswordEditPage />} />
+            {/* 임시회원, 일반회원은 접근 불가  */}
+            <Route path='/schedule' element={<ClassSchedulePage />} />
+            {/* 임시회원, 일반회원은 접근 불가 */}
+            <Route path='/study' element={<StudyGroupPage />} />
+            {/* 임시회원 글작성 불가  */}
+            <Route path='/lunch/*' element={<LunchPage />} />
+            {/* 임시회원 글작성 불가 
+            <Route path='/lunch/Detail/:id' element={<LunchDetail />} />   */}
+            {/* 임시회원 글작성 불가 */}
+            <Route path='/feed' element={<FeedPage />} />
+          </Routes>
+        }
+
+      </PageContainer>
+
     </>
   );
 }

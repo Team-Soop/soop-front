@@ -1,7 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import AuthRoute from './Routes/AuthRoute';
-import FeedPage from './pages/FeedPage/FeedPage';
+import RootContainer from './components/RootContainer/RootContainer';
+import RootLayout from './components/RootLayout/RootLayout';
 
 function App() {
   return (
@@ -9,7 +10,12 @@ function App() {
       {/* // layout
       // container
       // sidebar */}
-      <AuthRoute/>
+      
+      <RootLayout>
+        <RootContainer>
+          <AuthRoute/>
+        </RootContainer>
+      </RootLayout>
     </>
   );
 }
