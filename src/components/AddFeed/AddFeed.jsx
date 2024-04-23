@@ -1,9 +1,12 @@
+/** @jsxImportSource @emotion/react */
+import * as s from "./style";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../apis/firebase/firebaseConfig";
 import { feedListGet, feedRequest } from "../../apis/api/feed";
 import { QueryClient, useMutation, useQueryClient } from "react-query";
+import { FaRegUser } from "react-icons/fa6";
 
 
 function AddFeed(props) {
@@ -146,15 +149,19 @@ function AddFeed(props) {
 
 
   return (
-    <div>
-      <div>
-        <div>
-          <img src="" alt="" />
+    <div css={s.addFeedRootLayout}>
+      <div css={s.addFeedLayout}>
+
+        <div css={s.addFeedHeader}>
+          <div css={s.addFeedProfileImg}>
+            <img src="" alt="" />
+            <FaRegUser />   {/* 프로필 이미지 없을 때 아이콘*/}
+          </div>
           <div>{principalData?.data.username}</div>
         </div>
-        <div >
-          <div>
-            미리보기
+
+        <div css={s.addFeedContents}>
+          <div css={s.addFeedImgPrievew}>
             {
               loadPhotos.map(
                 photo =>
@@ -164,22 +171,27 @@ function AddFeed(props) {
               )
             }
           </div>
-          <ReactQuill 
-            modules={modules} 
-            value={newFeedContent} 
-            onChange={setNewFeedContent}
-            style={{width: "400px"}}
-          />
-          <input 
-            type="file" 
-            style={{display: "none"}} 
-            onChange={handleFileChange} 
-            ref={imgFileRef} 
-            multiple={true} 
-          />
-          <button onClick={() => imgFileRef.current.click()}>사진 선택</button>
-          <button onClick={() => {handleImageUpload()}}>작성 완료</button>
-          <button onClick={handleCancelFeed}>취소</button>
+          <div>
+            <ReactQuill 
+              modules={modules} 
+              value={newFeedContent} 
+              onChange={setNewFeedContent}
+              css={s.addFeedQuill}
+            />
+            <input 
+              type="file" 
+              style={{display: "none"}} 
+              onChange={handleFileChange} 
+              ref={imgFileRef} 
+              multiple={true} 
+            />
+          </div>
+
+          <div css={s.addFeedFooter}>
+            <button onClick={() => imgFileRef.current.click()}>사진 선택</button>
+            <button onClick={() => {handleImageUpload()}}>작성 완료</button>
+            <button onClick={handleCancelFeed}>취소</button>
+          </div>
           {/* 취소누르면 add창 없어지게 하기 */}
         </div>
       </div>
