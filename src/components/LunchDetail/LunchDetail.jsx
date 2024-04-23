@@ -164,9 +164,6 @@ function LunchDetail() {
 
   
 
-
-
-
   // 댓글 put input open버튼
   const openClickCommentInput = (commentId) => {
     setPutCommentId(commentId)
@@ -177,6 +174,7 @@ function LunchDetail() {
     navigate('/lunch')
   }
 
+  
   return (
     <div>
       <button onClick={handleClickBack}>뒤로가기</button>
