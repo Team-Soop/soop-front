@@ -3,18 +3,25 @@ import { css } from "@emotion/react";
 export const layout = css`
     position: absolute;
     box-sizing: border-box;
+    left: 0;
+    top: 0;
     width: 200px;
     height: 100%;
-    background-color: transparent;
+    background-color: #999999;
 `;
 
 export const sideMenuList = css`
     margin: 10px;
     padding: 15px 15px 15px 5px;
+    cursor: pointer;
+    &:hover{
+        color: #3b84e2;
+    }
 `;
 
 export const sideMenuProfile = css`
     box-sizing: border-box;
+    margin: 15px 5px;
     width: 100%;
     padding: 0 10px;
 `;

@@ -3,7 +3,7 @@ import * as s from "./style";
 
 function RootContainer({ children }) {
     return (
-        <div>
+        <div css={s.container}>
             {children}
         </div>
     );

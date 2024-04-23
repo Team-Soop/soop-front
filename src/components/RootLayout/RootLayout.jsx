@@ -7,8 +7,7 @@ function RootLayout({ children }) {
 
     return (
         <>
-            <div css={s.background}></div>
-            <div>
+            <div css={s.background}>
                 {children}
             </div>
         </>

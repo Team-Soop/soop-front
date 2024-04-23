@@ -52,9 +52,9 @@ function FeedCard({feed}) {
   
     return (
         <li key={feed.feedId} css={s.feedlayout}>
-            <div>
-            <img src={feed.profileImgUrl} alt="" />
-            <div>{feed.username}</div>
+            <div css={s.feedHeader}>
+                <img src={feed.profileImgUrl} alt="" />
+                <div>{feed.username}</div>
             </div>
             <div css={s.feedcontents}>
             <div dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
@@ -64,24 +64,24 @@ function FeedCard({feed}) {
             </div>
             
             
-            <div>
-            {/* 좋아요, 댓글, 신고하기 */}
+            <div css={s.feedFooter}>
+                {/* 좋아요, 댓글, 신고하기 */}
 
-            {
-                likeQuery.isLoading 
-                ? <></>
-                : likeQuery.data.data.likeStatus > 0 
-                    ? 
-                        <button onClick={() => deleteLike.mutate(feed.feedId)}> 
-                            <AiFillLike /> <span>{likeQuery.data.data.totalCount}</span>
-                        </button>
-                    :
-                        <button onClick={() => likeFeed.mutate(feed.feedId)}> 
-                            <AiOutlineLike /> <span>{likeQuery.data.data.totalCount}</span>
-                        </button>
-            }
-            <button><FaRegCommentAlt /></button>
-            <button><BsExclamationCircle /></button>
+                {
+                    likeQuery.isLoading 
+                    ? <></>
+                    : likeQuery.data.data.likeStatus > 0 
+                        ? 
+                            <button onClick={() => deleteLike.mutate(feed.feedId)}> 
+                                <AiFillLike /> <span>{likeQuery.data.data.totalCount}</span>
+                            </button>
+                        :
+                            <button onClick={() => likeFeed.mutate(feed.feedId)}> 
+                                <AiOutlineLike /> <span>{likeQuery.data.data.totalCount}</span>
+                            </button>
+                }
+                <button><FaRegCommentAlt /></button>
+                <button><BsExclamationCircle /></button>
             </div>
         </li>
     );
