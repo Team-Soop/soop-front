@@ -19,3 +19,11 @@ export const feedDeleteLike = async (feedId) => {
 export const feedGetLike = async (feedId) => {
     return await instance.get(`/feed/${feedId}/like`);
 }
+
+export const feedCommentRequest = async (data) => {
+    return await instance.post("/feed/comment/save", data)
+}
+
+export const searchfeedComment = async (feedId) => {
+    return await instance.get(`feed/${feedId}/comment`)
+}

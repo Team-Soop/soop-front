@@ -2,36 +2,75 @@
 import * as s from "./style";
 import DOMPurify from "dompurify";
 import { IoBookmark, IoBookmarkOutline  } from "react-icons/io5";
-import { useMutation, useQuery } from "react-query";
-import { saveLunchBoard } from "../../apis/api/saveBoards";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { saveBoard, saveDeleteBoard, saveGetBoard } from "../../apis/api/saveBoards";
+import { useEffect } from "react";
 
 function LunchList({lunchId, profileImgUrl, nickName, placeName, categroies, title, imgUrls, content}) {
-
   const sanitizer = DOMPurify.sanitize;
+  const queryClient = useQueryClient();
 
+  useEffect(() => {
+    return () => {
+      queryClient.invalidateQueries([`BoardSaveQuery${lunchId}`]);
+    }
+  }, [])
+
+
+
+  // 저장된 board 들고오기
+  const BoardSaveQuery = useQuery([`BoardSaveQuery${lunchId}`],
+    () => saveGetBoard(lunchId, 2),
+    {
+      refetchOnWindowFocus: false,
+      retry: 0
+    }
+  )
+
+  // 저장하기 버튼
   const lunchBoardSave = useMutation({
     mutationKey: "lunchBoardSave",
-    mutationFn: saveLunchBoard,
+    mutationFn: saveBoard,
     onSuccess: response => {
-      console.log(response);
+      BoardSaveQuery.refetch();
     },
     onError: error => {
       console.log(error);
     }
   }) 
 
+  // 저장취소 버튼
+  const deleteLunchBoardSave = useMutation({
+    mutationKey: "deleteLunchBoardSave",
+    mutationFn: saveDeleteBoard,
+    onSuccess: response => {
+      BoardSaveQuery.refetch();
+    },
+    onError: error => {
+      console.log(error);
+    }
+  })
   
-
+  console.log();
   
   return (
     <div css={s.Layout}>
 
       <div>
         저장하기
-        <button onClick={() => lunchBoardSave.mutate(lunchId)}>
-          <IoBookmark />
-          <IoBookmarkOutline/>
-        </button>
+        {
+          BoardSaveQuery.isLoading
+          ? <></>
+          : BoardSaveQuery.data.data.saveBoardStatus > 0
+            ? 
+              <button onClick={() => deleteLunchBoardSave.mutate({boardId :lunchId, menuId: 2})}>
+                <IoBookmark />
+              </button>
+            : 
+              <button onClick={() => lunchBoardSave.mutate({boardId :lunchId, menuId: 2})}>
+                <IoBookmarkOutline/>
+              </button>
+        }
       </div>
 
       <div>
