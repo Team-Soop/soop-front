@@ -58,7 +58,7 @@ function AuthRoute(props) {
             {/* 임시회원, 일반회원은 접근 불가  */}
             <Route path='/schedule' element={<ClassSchedulePage />} />
             {/* 임시회원, 일반회원은 접근 불가 */}
-            <Route path='/study' element={<StudyGroupPage />} />
+            <Route path='/study/boardlist' element={<StudyGroupPage />} />
             {/* 임시회원 글작성 불가  */}
             <Route path='/lunch/*' element={<LunchPage />} />
             {/* 임시회원 글작성 불가 
