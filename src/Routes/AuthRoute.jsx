@@ -39,6 +39,7 @@ function AuthRoute(props) {
     <>
       <RootSideMenuLeft />
       <PageContainer>
+
           {
             principalQuery.isLoading 
             ? <></> 
@@ -64,6 +65,7 @@ function AuthRoute(props) {
               <Route path='/feed' element={<FeedPage />} />
             </Routes>
           }
+
       </PageContainer>
 
     </>
