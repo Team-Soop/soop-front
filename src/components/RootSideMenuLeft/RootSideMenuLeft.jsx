@@ -20,7 +20,7 @@ function RootSideMenuLeft(props) {
         <div css={s.sideMenuUserImg}>
           <img src="" alt="" />
         </div>
-        <div>{principalQueryState.data.data.username}</div>
+        {/* <div>{principalQueryState.data.data.username}</div> */}
       </div>
       <div>
         <div css={s.sideMenuList}>자유게시판</div>

@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import * as s from "./style";
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { IoBookmark, IoBookmarkOutline  } from "react-icons/io5";
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { lunchDetailState } from '../../atoms/lunchDetailAtom';
 import { useRecoilState } from 'recoil';
@@ -8,6 +9,7 @@ import DOMPurify from "dompurify";
 import LunchDetailMap from "./LunchDetailMap/LunchDetailMap";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { deleteComment, lunchCommentRequest, searchComment, updateComment } from "../../apis/api/lunch";
+import { saveBoard, saveDeleteBoard, saveGetBoard } from "../../apis/api/saveBoards";
 
 function LunchDetail() {
   const sanitizer = DOMPurify.sanitize;
@@ -30,7 +32,13 @@ function LunchDetail() {
     queryClient.invalidateQueries(["searchLunchCommentQuery"]);
   }, [])
 
+  useEffect(() => {
+    return () => {
+      queryClient.invalidateQueries([`boardSaveQuery${detailLunchId}`]);
+    }
+  }, [])
 
+  // 댓글 get
   const searchLunchCommentQuery = useQuery(
     ["searchLunchCommentQuery", detailLunchId],
     () => searchComment(detailLunchId),
@@ -38,7 +46,6 @@ function LunchDetail() {
       retry: 0,
       refetchOnWindowFocus: false,
       onSuccess: response => {
-        console.log("댓글Listget", "onSuccess");
         setCommentList(() => response.data.map(response => {
           return {
             commentId: response.lunchCommentId,
@@ -57,6 +64,15 @@ function LunchDetail() {
     }
   );
 
+  // 저장된 board 들고오기
+  const boardSaveQuery = useQuery([`boardSaveQuery${detailLunchId}`],
+    () => saveGetBoard(detailLunchId, 2),
+    {
+      refetchOnWindowFocus: false,
+      retry: 0
+    }
+  )
+
   // 댓글 작성 
   const saveLunchComment = useMutation({
     mutationKey: "saveLunchComment",
@@ -64,7 +80,6 @@ function LunchDetail() {
     onSuccess: response => {
       console.log("작성됨" + response);
       searchLunchCommentQuery.refetch();
-      // navigate(/)
     },
     onError: error => {
       console.log(error);
@@ -97,6 +112,31 @@ function LunchDetail() {
     }
   })
 
+  // 저장하기 버튼
+  const boardSave = useMutation({
+    mutationKey: "boardSave",
+    mutationFn: saveBoard,
+    onSuccess: response => {
+      boardSaveQuery.refetch();
+    },
+    onError: error => {
+      console.log(error);
+    }
+  }) 
+
+  // 저장취소 버튼
+  const deleteBoardSave = useMutation({
+    mutationKey: "deleteBoardSave",
+    mutationFn: saveDeleteBoard,
+    onSuccess: response => {
+      boardSaveQuery.refetch();
+    },
+    onError: error => {
+      console.log(error);
+    }
+  })
+
+
 
   // 댓글 save 버튼
   const addClickSaveComment = () => {
@@ -122,6 +162,9 @@ function LunchDetail() {
     deleteLunchComment.mutate(commentId)
   }
 
+  
+
+
 
 
   // 댓글 put input open버튼
@@ -139,7 +182,20 @@ function LunchDetail() {
       <button onClick={handleClickBack}>뒤로가기</button>
 
       <div>
-        저장
+        저장하기
+        {
+          boardSaveQuery.isLoading
+          ? <></>
+          : boardSaveQuery.data.data.saveBoardStatus > 0
+            ? 
+              <button onClick={() => deleteBoardSave.mutate({boardId:detailLunchId, menuId: 2})}>
+                <IoBookmark />
+              </button>
+            : 
+              <button onClick={() => boardSave.mutate({boardId:detailLunchId, menuId: 2})}>
+                <IoBookmarkOutline/>
+              </button>
+        }
       </div>
 
       <div>

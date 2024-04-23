@@ -5,7 +5,6 @@ import { feedDeleteLike, feedGetLike, feedLike, feedListGet } from "../../apis/a
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import AddFeed from "../../components/AddFeed/AddFeed";
 import DOMPurify from "dompurify";
-
 import { useSearchParams } from "react-router-dom";
 import FeedCard from "../../components/FeedCard/FeedCard";
 
@@ -38,7 +37,7 @@ function FeedPage(props) {
       ? (
         <ul css={s.feedrootlayout}>
           {
-          feedList.map(feed => <FeedCard feed={feed}/>
+          feedList.map(feed => <FeedCard feed={feed} key={feed.feedId}/>
           )}
         </ul>
       )

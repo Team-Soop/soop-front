@@ -96,8 +96,11 @@ function LunchPage(props) {
           lunchListsData.map(listData => (
             <div 
               key={listData.lunchId}
-              onClick={() => handleOnLunchDetail(listData.lunchId)}
+              
             >
+              <button onClick={() => handleOnLunchDetail(listData.lunchId)}>
+                상세보기
+              </button>
               <LunchList
                 lunchId={listData.lunchId}
                 profileImgUrl={listData.profileImgUrl}
