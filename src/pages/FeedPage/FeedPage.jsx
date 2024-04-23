@@ -13,6 +13,8 @@ function FeedPage(props) {
   const queryClient = useQueryClient();
   const principalData = queryClient.getQueryData("principalQuery");
   const [ feedList, setFeedList ] = useState([]);
+  const [ modal, setModal ] = useState(false);
+
   // 피드 리스트 get
   const getFeedListQuery = useQuery(
     "getFeedDataList", feedListGet ,
@@ -28,14 +30,14 @@ function FeedPage(props) {
       }
     }
   );
-  
+
   return (
     
     // 게시글 (피드)
-    <div>
+    <div css={s.feedPageRootLayout}>
       {feedList.length > 0 
       ? (
-        <ul css={s.feedrootlayout}>
+        <ul css={s.feedlayout}>
           {
           feedList.map(feed => <FeedCard feed={feed} key={feed.feedId}/>
           )}
@@ -45,7 +47,7 @@ function FeedPage(props) {
       }
 
       {/* 우측 하단 버튼 */}
-      <div>
+      <div css={s.FeedPageOptions}>
         <button>필터</button>
         <button>글 쓰기</button>
       </div>

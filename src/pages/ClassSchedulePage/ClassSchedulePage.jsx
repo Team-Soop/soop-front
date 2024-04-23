@@ -32,6 +32,7 @@ function ClassSchedulePage() {
   // DB에 저장된 ScheduleDate 전체 조회
   const searchAllScheduleQuery = useQuery("searchAllScheduleQuery", searchAllSchedule, 
     {
+
       retry: 0,
       refetchOnWindowFocus: false,
       onSuccess: response => {

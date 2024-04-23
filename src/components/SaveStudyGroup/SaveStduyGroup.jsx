@@ -1,26 +1,44 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useMemo, useState } from "react";
 import * as s from "./style";
-
-
 import ReactQuill from 'react-quill'
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useInput } from "../../hooks/useInput";
-import { useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { saveStudyGroup, searchStudyCategories } from "../../apis/api/study";
 
 
 export default function SaveStduyGroup() {
     const queryClient = useQueryClient();
     const principalData = queryClient.getQueryData("principalQuery");
     const memberCountList = [1, 2, 3, 4, 5, 6];
-
     const [ studyTitle, titleOnChange ] = useInput("")
     const [ studyContent, setStudyContent] = useState("")
     const [ endDate, setEndDate ] = useState(new Date)
     const [ MemberListView, setMemberListView ] = useState(false);
     const [ memberLimitedCount, setMemberLimitedCount] = useState("최대 멤버 제한")
-    const [ studySkils, setStudySkils ] = useState([])
+    const [ studySkills, setStudySkills ] = useState([])
+
+    const searchStduyCategories = useQuery("searchStduyCategories", searchStudyCategories,
+        {
+            refetchOnWindowFocus: false,
+            onSuccess: response => {
+                console.log(response)
+                setStudySkills(response.data)
+            }
+        })
+
+    const saveStudyGroupMutation = useMutation({
+        mutationKey: "saveStudyGroupMutation",
+        mutationFn: saveStudyGroup,
+        onSuccess: response => {
+            console.log(response)
+        },
+        onError: error => {
+            console.log(error)
+        }
+    })
 
     const modules = useMemo(
         () => ({
@@ -37,44 +55,24 @@ export default function SaveStduyGroup() {
         }),
       );
 
-    useEffect(() => {
-        console.log(studyContent)
-    }, [studyContent])
-
-    const [checkboxListTest] = useState([
-        {
-            id: 1,
-            name: 'Java',
-            state: false
-        },
-        {
-            id: 2,
-            name: 'JavaScript',
-            state: true
-        },
-        {
-            id: 3,
-            name: 'React',
-            state: false
-        }
-    ])
+    const checkedOnChange = (index) => {
+        let changeSkills = [...studySkills]
+        changeSkills[index].checkState = !studySkills[index].checkState
+        setStudySkills(changeSkills)
+    }
 
 
     const saveClickButton = () => {
-        // let studyPost = {
-        //     managerUserId: ,
-        //     studyTitle: ,
-        //     studyContent: ,
-        //     studySkils: ,
-        //     studyMemberLimited: ,
-        //     studyPeriodEnd: ,
-        // }
-        console.log(principalData.data.userId)
-        console.log(studyTitle)
-        console.log(studyContent)
-        console.log(studySkils)
-        console.log(memberLimitedCount)
-        console.log(endDate)
+        let studyPost = {
+            managerUserId: principalData.data.userId,
+            studyTitle: studyTitle,
+            studyContent: studyContent,
+            studySkills: studySkills.filter(skill => skill.checkState === true),
+            studyMemberLimited: memberLimitedCount,
+            studyPeriodEnd: endDate,
+        }
+
+        saveStudyGroupMutation.mutate(studyPost)
     }
 
 
@@ -94,11 +92,11 @@ export default function SaveStduyGroup() {
             <div>
                 <div>언어, 프레임워크</div>
                 <div>
-                    {checkboxListTest.map((checkbox, index) => {
+                    {studySkills.map((checkbox, index) => {
                         return(
                             <div key={index} css={s.checkBoxList}>
-                                <input type="checkBox" checked={checkbox.state} key={checkbox.id}/>
-                                <div>{checkbox.name}</div>
+                                <input type="checkBox" checked={checkbox.checkState} key={checkbox.studyCategoryId} onChange={() => {checkedOnChange(index)}}/>
+                                <div>{checkbox.studyCategoryName}</div>
                             </div>
                         )
                     })}
@@ -109,7 +107,7 @@ export default function SaveStduyGroup() {
                 <ul onClick={() => setMemberListView(!MemberListView)}> {memberLimitedCount}
                 {MemberListView && memberCountList.map((count) => {
                     return(
-                        <li onClick={() => {setMemberLimitedCount(count)}}>{count}</li>
+                        <li key={count} onClick={() => {setMemberLimitedCount(count)}}>{count}</li>
                     )
                 })}
                 </ul>

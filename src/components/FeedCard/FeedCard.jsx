@@ -88,9 +88,9 @@ function FeedCard({feed}) {
   
     return (
         <li key={feed.feedId} css={s.feedlayout}>
-            <div>
-            <img src={feed.profileImgUrl} alt="" />
-            <div>{feed.username}</div>
+            <div css={s.feedHeader}>
+                <img src={feed.profileImgUrl} alt="" />
+                <div>{feed.username}</div>
             </div>
             <div css={s.feedcontents}>
             <div dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
@@ -117,9 +117,8 @@ function FeedCard({feed}) {
             </div>
             
             
-            <div>
+            <div css={s.feedFooter}>
             {/* 좋아요, 댓글, 신고하기 */}
-
             {
                 likeQuery.isLoading 
                 ? <></>
