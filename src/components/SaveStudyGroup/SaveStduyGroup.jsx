@@ -1,8 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useMemo, useState } from "react";
 import * as s from "./style";
-
-
 import ReactQuill from 'react-quill'
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -14,7 +12,6 @@ export default function SaveStduyGroup() {
     const queryClient = useQueryClient();
     const principalData = queryClient.getQueryData("principalQuery");
     const memberCountList = [1, 2, 3, 4, 5, 6];
-
     const [ studyTitle, titleOnChange ] = useInput("")
     const [ studyContent, setStudyContent] = useState("")
     const [ endDate, setEndDate ] = useState(new Date)
