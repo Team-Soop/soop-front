@@ -10,6 +10,7 @@ import LunchDetail from "../../components/LunchDetail/LunchDetail";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { lunchDetailState } from "../../atoms/lunchDetailAtom";
+import Report from "../../components/Report/Report";
 
 function LunchPage(props) {
   const navigate = useNavigate();
@@ -49,7 +50,6 @@ function LunchPage(props) {
           title: response.lunchTitle,
           imgUrls: response.lunchImgUrls,
           content: response.lunchContent,
-          likeUserId: response.lunchLikeUserIds,
           placeX: response.lunchPlaceX,
           placeY: response.lunchPlaceY,
           placeUrl: response.lunchPlaceUrl
@@ -61,7 +61,7 @@ function LunchPage(props) {
     }
   })
 
-
+  
 
 
   // 상세보기 컴포넌트 클릭 버튼
@@ -70,16 +70,20 @@ function LunchPage(props) {
     navigate(`/lunch/Detail?lunchId=${lunchId}`)
   }
 
-
   // 글쓰기 컴포넌트 클릭 버튼
   const handleOnLunchWrite = () => {
     setWriteOpen(!writeOpen);
   }
 
+  // 신고하기 컴포넌트 클릭 버튼
+
+  console.log(lunchDetailData);
+
   return (
     <div>
       <Routes>
         <Route path='/Detail' element={<LunchDetail />}/>
+        <Route path='/report' element={<Report/>}/>
       </Routes>
 
       <div>
@@ -93,7 +97,7 @@ function LunchPage(props) {
       {/* lunch List 피드 컴포넌트 */}
       <div>
         {
-          lunchListsData.map(listData => (
+          lunchDetailData.map(listData => (
             <div 
               key={listData.lunchId}
               
@@ -120,7 +124,7 @@ function LunchPage(props) {
         <h1>글쓰기 컴포넌트</h1>
         <button onClick={handleOnLunchWrite}>글쓰기</button>
         {
-          writeOpen ? <LunchWrite/> : "닫힘"
+          writeOpen ? <LunchWrite/> : <></>
         }
       </div>
 

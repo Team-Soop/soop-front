@@ -22,8 +22,7 @@ function AuthRoute(props) {
       retry: 0,
       refetchOnWindowFocus: false,
       onSuccess: response => {
-        console.log("onSuccess");
-        console.log(response);
+        console.log("토큰 있음");
       },
       onError: error => {
         console.log("토큰 없음");
@@ -47,7 +46,7 @@ function AuthRoute(props) {
             <Routes>
               <Route path="/auth/*" element={<AuthPage />} />
               {/* Admin 권한만 접근 가능 */}
-              <Route path='' element={<Admin />} />
+              <Route path='/admin' element={<Admin />} />
               <Route path='/' element={<MainPage />} />
               {/* 토큰이 있어야지만 접근 가능 */}
               <Route path='/account/mypage' element={<Mypage />} />

@@ -2,9 +2,11 @@
 import * as s from "./style";
 import DOMPurify from "dompurify";
 import { IoBookmark, IoBookmarkOutline  } from "react-icons/io5";
+import { BsExclamationCircle } from "react-icons/bs";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { saveBoard, saveDeleteBoard, saveGetBoard } from "../../apis/api/saveBoards";
 import { useEffect } from "react";
+import { lunchGetLike } from "../../apis/api/lunch";
 
 function LunchList({lunchId, profileImgUrl, nickName, placeName, categroies, title, imgUrls, content}) {
   const sanitizer = DOMPurify.sanitize;
@@ -13,6 +15,7 @@ function LunchList({lunchId, profileImgUrl, nickName, placeName, categroies, tit
   useEffect(() => {
     return () => {
       queryClient.invalidateQueries([`BoardSaveQuery${lunchId}`]);
+      queryClient.invalidateQueries([`likeLunchQuery${lunchId}`]);
     }
   }, [])
 
@@ -24,6 +27,15 @@ function LunchList({lunchId, profileImgUrl, nickName, placeName, categroies, tit
     {
       refetchOnWindowFocus: false,
       retry: 0
+    }
+  )
+
+  // 좋아요,추천 들고오기
+  const likeLunchQuery = useQuery([`likeLunchQuery${lunchId}`],
+    () => lunchGetLike(lunchId),
+    {
+      refetchOnWindowFocus: false,
+      retry: 0,
     }
   )
 
@@ -51,10 +63,29 @@ function LunchList({lunchId, profileImgUrl, nickName, placeName, categroies, tit
     }
   })
   
-  console.log();
+  // 신고 창 opne 버튼
+  const isReportOpen = () => {
+    if(window.confirm("이 게시물을 신고 하시겠습니까?")){
+      alert("만드는중")
+    }
+    return;
+  }
   
   return (
     <div css={s.Layout}>
+
+      <div>
+        신고버튼
+        <button onClick={() => isReportOpen()}><BsExclamationCircle /></button>
+      </div>
+
+      <div>추천수
+        {
+          likeLunchQuery.isLoading
+          ? <></>
+          : likeLunchQuery.data.data.totalCount
+        }
+      </div>
 
       <div>
         저장하기
@@ -92,7 +123,10 @@ function LunchList({lunchId, profileImgUrl, nickName, placeName, categroies, tit
       <div>
         글 제목: {title}
       </div>
-
+      <div>
+        글 내용:<div dangerouslySetInnerHTML={{__html: sanitizer(content)}}></div>
+      </div>
+      
       <div>
         {
           !!imgUrls ? 
@@ -107,9 +141,7 @@ function LunchList({lunchId, profileImgUrl, nickName, placeName, categroies, tit
         }
       </div>
 
-      <div>
-        글 내용:<div dangerouslySetInnerHTML={{__html: sanitizer(content)}}></div>
-      </div>
+      
 
 
     </div>

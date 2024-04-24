@@ -11,7 +11,7 @@ import LunchDetailMap from "./LunchDetailMap/LunchDetailMap";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { saveBoard, saveDeleteBoard, saveGetBoard } from "../../apis/api/saveBoards";
 import LunchComment from "./LunchComment/LunchComment";
-import { lunchLike } from "../../apis/api/lunch";
+import { lunchDeleteLike, lunchGetLike, lunchLike } from "../../apis/api/lunch";
 
 function LunchDetail() {
   const sanitizer = DOMPurify.sanitize;
@@ -29,6 +29,7 @@ function LunchDetail() {
   useEffect(() => {
     return () => {
       queryClient.invalidateQueries([`boardSaveQuery${detailLunchId}`]);
+      queryClient.invalidateQueries([`likeLunchQuery${detailLunchId}`]);
     }
   }, [])
 
@@ -42,14 +43,14 @@ function LunchDetail() {
     }
   )
 
-  // 추천 들고오기
-  // const likeLunchQuery = useQuery([`likeLunchQuery${detailLunchId}`],
-  //   () => lunchGetLike(detailLunchId),
-  //   {
-  //     refetchOnWindowFocus: false,
-  //     retry: 0,
-  //   }
-  // )
+  // 좋아요,추천 들고오기
+  const likeLunchQuery = useQuery([`likeLunchQuery${detailLunchId}`],
+    () => lunchGetLike(detailLunchId),
+    {
+      refetchOnWindowFocus: false,
+      retry: 0,
+    }
+  )
 
 
   // 저장하기 버튼
@@ -77,11 +78,25 @@ function LunchDetail() {
   })
 
   // 추천,좋아요 버튼
-  const likelunch = useMutation({
-    mutationKey: "likelunch",
+  const likeLunch = useMutation({
+    mutationKey: "likeLunch",
     mutationFn: lunchLike,
     onSuccess: response => {
       console.log(response);
+      likeLunchQuery.refetch();
+    },
+    onError: error => {
+      console.log(error);
+    }
+  })
+
+  // 추천,좋아요 취소 버튼
+  const unLikeLunch = useMutation({
+    mutationKey: "unLikeLunch",
+    mutationFn: lunchDeleteLike,
+    onSuccess: response => {
+      console.log(response);
+      likeLunchQuery.refetch();
     },
     onError: error => {
       console.log(error);
@@ -89,13 +104,12 @@ function LunchDetail() {
   })
 
 
-
   // 뒤로 가기버튼
   const handleClickBack = () => {
     navigate('/lunch')
   }
 
-  
+
   return (
     <div>
       <button onClick={handleClickBack}>뒤로가기</button>
@@ -147,14 +161,6 @@ function LunchDetail() {
         <div dangerouslySetInnerHTML={{ __html: sanitizer(dataResult?.content) }}></div>
       </div>
 
-      <div>
-        {
-          !!dataResult?.likeUserId ?
-            dataResult?.likeUserId.length
-            :
-            0
-        }
-      </div>
 
       {/* 가게 지도 */}
       <div>
@@ -182,9 +188,20 @@ function LunchDetail() {
 
       {/* 좋아요/추천 */}
       <div>
-        <button onClick={() => likelunch.mutate(detailLunchId)}> 
-          <AiOutlineLike /> <span></span>
-        </button>
+        {
+          likeLunchQuery.isLoading
+          ? <></>
+          : likeLunchQuery.data.data.likeStatus > 0
+            ?
+              <button onClick={() => unLikeLunch.mutate(detailLunchId)}>
+                <AiFillLike /> <span>{likeLunchQuery.data.data.totalCount}</span>
+              </button>
+            :
+              <button onClick={() => likeLunch.mutate(detailLunchId)}> 
+                <AiOutlineLike /> <span>{likeLunchQuery.data.data.totalCount}</span>
+              </button>
+
+        }
       </div>
 
 
