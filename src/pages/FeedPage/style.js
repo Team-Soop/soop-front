@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 
 export const feedPageRootLayout = css`
   position: relative;
+  width: 100%;
 `;
 
 export const feedlayout= css`

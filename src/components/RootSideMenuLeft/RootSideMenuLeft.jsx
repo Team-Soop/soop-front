@@ -28,8 +28,9 @@ function RootSideMenuLeft(props) {
         <div css={s.sideMenuList}><a href="http://localhost:3000/study">스터디</a></div>
         <div css={s.sideMenuList}><a href="http://localhost:3000/lunch">오늘 뭐 먹지?</a></div>
 
-        <div>즐겨찾기, 쪽지, 하단-로그아웃 (추가하기) </div>
-        <div>화면 좁게하면 left메뉴 없어지거나 작아지게</div>
+        <div>즐겨찾기</div>
+        <div>쪽지</div>
+        <div>로그인/로그아웃</div>
         
       </div>
     </div>
