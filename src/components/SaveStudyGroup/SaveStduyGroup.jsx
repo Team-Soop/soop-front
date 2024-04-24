@@ -20,14 +20,13 @@ export default function SaveStduyGroup() {
     const [ memberLimitedCount, setMemberLimitedCount] = useState("최대 멤버 제한")
     const [ studySkills, setStudySkills ] = useState([])
 
-    const searchStduyCategories = useQuery("searchStduyCategories", searchStudyCategories,
-        {
-            refetchOnWindowFocus: false,
-            onSuccess: response => {
-                console.log(response)
-                setStudySkills(response.data)
-            }
-        })
+    const searchStudyCategories = queryClient.getQueryData("searchStduyCategories");
+
+    useEffect(() => {
+        if(searchStudyCategories.data) {
+            setStudySkills(searchStudyCategories.data)
+        }
+    }, [searchStudyCategories.data])
 
     const saveStudyGroupMutation = useMutation({
         mutationKey: "saveStudyGroupMutation",
