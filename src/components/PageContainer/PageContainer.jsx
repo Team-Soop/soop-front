@@ -4,7 +4,7 @@ import * as s from "./style";
 
 function PageContainer({ children }) {
     return (
-        <div css={s.container}>
+        <div css={s.container} id="PageContainer">
             {children}
         </div>
     );

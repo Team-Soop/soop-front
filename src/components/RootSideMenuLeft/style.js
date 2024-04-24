@@ -8,14 +8,29 @@ export const layout = css`
     width: 200px;
     height: 100%;
     background-color: #999999;
+    /* @media screen and (max-width: 1024px) {
+        left: -200px;
+    } */
 `;
 
 export const sideMenuList = css`
     margin: 10px;
     padding: 15px 15px 15px 5px;
     cursor: pointer;
-    &:hover{
+    &>a{
+        text-decoration: none;
+    }
+    a:link{
+        color: black;
+    }
+    a:visited{
+        color: black;
+    }
+    a:hover{
         color: #3b84e2;
+    }
+    a:active{
+        color: #0065e9;
     }
 `;
 
