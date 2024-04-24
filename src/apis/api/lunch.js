@@ -29,3 +29,11 @@ export const deleteComment = async (data) => {
 export const lunchLike = async (lunchId) => {
     return await instance.post(`/lunch/${lunchId}/like`);
 }
+
+export const lunchGetLike = async (lunchId) => {
+    return await instance.get(`/lunch/${lunchId}/like`)
+}
+
+export const lunchDeleteLike = async (lunchId) => {
+    return await instance.delete(`/lunch/${lunchId}/like`)
+}

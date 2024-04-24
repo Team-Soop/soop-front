@@ -12,7 +12,6 @@ function RootSideMenuLeft(props) {
     setLogin(() => principalQueryState.status === "success");
   }, [principalQueryState.status]);
 
-  console.log(principalQueryState);
 
   return (
     <div css={s.layout}>
