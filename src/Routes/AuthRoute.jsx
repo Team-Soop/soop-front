@@ -14,6 +14,7 @@ import { searchAllSchedule } from '../apis/api/schedule';
 import LunchPage from '../pages/LunchPage/LunchPage';
 import RootSideMenuLeft from '../components/RootSideMenuLeft/RootSideMenuLeft';
 import PageContainer from '../components/PageContainer/PageContainer';
+import StudyGroupDetailPage from '../pages/StudyGroupDetailPage/StudyGroupDetailPage';
 
 function AuthRoute(props) {
 
@@ -55,8 +56,9 @@ function AuthRoute(props) {
               {/* 임시회원, 일반회원은 접근 불가  */}
               <Route path='/schedule' element={<ClassSchedulePage />} />
               {/* 임시회원, 일반회원은 접근 불가 */}
-              <Route path='/study' element={<StudyGroupPage />} />
-              {/* 임시회원 글작성 불가  */}
+              <Route path='/study/board/:id' element={<StudyGroupDetailPage />} />
+              <Route path='/study/boardlist' element={<StudyGroupPage />} />
+               {/* 임시회원 글작성 불가  */}
               <Route path='/lunch/*' element={<LunchPage />} />
               {/* 임시회원 글작성 불가 
               <Route path='/lunch/Detail/:id' element={<LunchDetail />} />   */}
