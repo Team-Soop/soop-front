@@ -8,9 +8,6 @@ export const layout = css`
     width: 200px;
     height: 100%;
     background-color: #999999;
-    /* @media screen and (max-width: 1024px) {
-        left: -200px;
-    } */
 `;
 
 export const sideMenuList = css`

@@ -90,37 +90,37 @@ function FeedCard({feed}) {
   
     return (
         <li key={feed.feedId} css={s.feedlayout}>
+            {/* 유저정보 */}
             <div css={s.feedHeader}>
                 <img src={feed.profileImgUrl} alt="" />
                 <div>{feed.username}</div>
             </div>
+            {/* 피드(이미지, 게시글) */}
             <div css={s.feedcontents}>
-            <div dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
+                <div dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
                 {feed.feedImgUrl.map((imgUrl, index) => (
-                <img key={index} src={imgUrl} alt="" css={s.feedImg}/>
+                    <img key={index} src={imgUrl} alt="" css={s.feedImg}/>
                 ))}
             </div>
-
             {/* 저장하기 */}
-            <div>
-            {
-                boardSaveQuery.isLoading
-                ? <></>
-                : boardSaveQuery.data.data.saveBoardStatus > 0
-                    ? 
-                    <button onClick={() => deleteLunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
-                        <IoBookmark />
-                    </button>
-                    : 
-                    <button onClick={() => lunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
-                        <IoBookmarkOutline/>
-                    </button>
+            <div css={s.feedfavorite}>
+                {
+                    boardSaveQuery.isLoading
+                    ? <></>
+                    : boardSaveQuery.data.data.saveBoardStatus > 0
+                        ? 
+                        <button onClick={() => deleteLunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
+                            <IoBookmark />
+                        </button>
+                        : 
+                        <button onClick={() => lunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
+                            <IoBookmarkOutline/>
+                        </button>
                 }
             </div>
             
-            
             <div css={s.feedFooter}>
-            {/* 좋아요, 댓글, 신고하기 */}
+            {/* 좋아요 */}
             {
                 likeQuery.isLoading 
                 ? <></>
@@ -134,9 +134,7 @@ function FeedCard({feed}) {
                             <AiOutlineLike /> <span>{likeQuery.data.data.totalCount}</span>
                         </button>
             }
-            
             </div>
-                <button><BsExclamationCircle /></button>
             {/* 댓글 */}
             <div>
                 <button onClick={() => setIsCommentOpen(!isCommentOpen)}><FaRegCommentAlt /></button>
@@ -147,6 +145,8 @@ function FeedCard({feed}) {
                     <></>
                 }
             </div>
+            {/* 신고하기 */}
+            <button><BsExclamationCircle /></button>
         </li>
     );
 }

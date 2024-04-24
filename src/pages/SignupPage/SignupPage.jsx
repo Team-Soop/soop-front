@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+import * as s from "./style";
 import React, { useEffect, useState } from 'react';
 import AuthPageInput from '../../components/AuthPageInput/AuthPageInput';
 import { useNavigate } from 'react-router-dom';
@@ -87,18 +89,22 @@ function SignupPage(props) {
 
 
   return (
-    <>
-      <div>
-        <h1>회원가입</h1>
-        <button onClick={handleSignupSubmit}>가입하기</button>
+    <div css={s.root}>
+      <div css={s.signupLayout}>
+        <div>
+          <h1>회원가입</h1>
+        </div>
+        <div css={s.authPageInput}>
+          <AuthPageInput type={"text"} name={"username"} placeholder={"아이디"} value={username} onChange={userNameChange} message={usernameMessage} />
+          <AuthPageInput type={"text"} name={"nickname"} placeholder={"닉네임"} value={nickname} onChange={nickNameChange} message={nicknameMessage} />
+          <AuthPageInput type={"password"} name={"password"} placeholder={"비밀번호"} value={password} onChange={passwordChange} message={passwordMessage} />
+          <AuthPageInput type={"password"} name={"checkPassword"} placeholder={"비밀번호 확인"} value={checkPassword} onChange={checkPasswordChange} message={checkPasswordMessage} />
+          <AuthPageInput type={"text"} name={"name"} placeholder={"성명"} value={name} onChange={nameChange} message={nameMessage} />
+          <AuthPageInput type={"text"} name={"email"} placeholder={"이메일"} value={email} onChange={emailChange} message={emailMessage} />
+        </div>
+        <button css={s.signinButton} onClick={handleSignupSubmit}>가입하기</button>
       </div>
-      <AuthPageInput type={"text"} name={"username"} placeholder={"아이디"} value={username} onChange={userNameChange} message={usernameMessage} />
-      <AuthPageInput type={"text"} name={"nickname"} placeholder={"닉네임"} value={nickname} onChange={nickNameChange} message={nicknameMessage} />
-      <AuthPageInput type={"password"} name={"password"} placeholder={"비밀번호"} value={password} onChange={passwordChange} message={passwordMessage} />
-      <AuthPageInput type={"password"} name={"checkPassword"} placeholder={"비밀번호 확인"} value={checkPassword} onChange={checkPasswordChange} message={checkPasswordMessage} />
-      <AuthPageInput type={"text"} name={"name"} placeholder={"성명"} value={name} onChange={nameChange} message={nameMessage} />
-      <AuthPageInput type={"text"} name={"email"} placeholder={"이메일"} value={email} onChange={emailChange} message={emailMessage} />
-    </>
+    </div>
   );
 }
 
