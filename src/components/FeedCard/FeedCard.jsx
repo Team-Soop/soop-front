@@ -23,6 +23,7 @@ function FeedCard({feed}) {
         }
     }, [])
 
+    // 좋아요 들고오기
     const likeQuery = useQuery([`likeQuery${feed.feedId}`], 
         () => feedGetLike(feed.feedId),
         {
@@ -30,6 +31,7 @@ function FeedCard({feed}) {
             retry: 0,
         }
     )
+
     // 저장된 board 들고오기
     const boardSaveQuery = useQuery([`boardSaveQuery${feed.feedId}`],
         () => saveGetBoard(feed.feedId, 1),
@@ -66,10 +68,10 @@ function FeedCard({feed}) {
         mutationKey: "lunchBoardSave",
         mutationFn: saveBoard,
         onSuccess: response => {
-        boardSaveQuery.refetch();
+            boardSaveQuery.refetch();
         },
         onError: error => {
-        console.log(error);
+            console.log(error);
         }
     }) 
 
@@ -78,10 +80,10 @@ function FeedCard({feed}) {
         mutationKey: "deleteLunchBoardSave",
         mutationFn: saveDeleteBoard,
         onSuccess: response => {
-        boardSaveQuery.refetch();
+            boardSaveQuery.refetch();
         },
         onError: error => {
-        console.log(error);
+            console.log(error);
         }
     })
 
@@ -135,6 +137,7 @@ function FeedCard({feed}) {
             
             </div>
                 <button><BsExclamationCircle /></button>
+            {/* 댓글 */}
             <div>
                 <button onClick={() => setIsCommentOpen(!isCommentOpen)}><FaRegCommentAlt /></button>
                 {
