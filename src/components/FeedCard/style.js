@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 
 
 export const feedlayout= css`
+  
   border: 1px solid #dbdbdb;
   margin-bottom: 10px;
   min-height: 150px;
@@ -26,5 +27,6 @@ export const feedcontents = css`
 `;
 
 export const feedFooter = css`
+
 
 `;
