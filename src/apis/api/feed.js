@@ -24,6 +24,14 @@ export const feedCommentRequest = async (data) => {
     return await instance.post("/feed/comment/save", data)
 }
 
-export const searchfeedComment = async (feedId) => {
+export const searchFeedComment = async (feedId) => {
     return await instance.get(`feed/${feedId}/comment`)
+}
+
+export const updateFeedComment = async (data) => {
+    return await instance.put("/feed/comment/update", data)
+}
+
+export const deleteFeedComment = async (data) => {
+    return await instance.delete(`/feed/comment/delete/${data}`);
 }

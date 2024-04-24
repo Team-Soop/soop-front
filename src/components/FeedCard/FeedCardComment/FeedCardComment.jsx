@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { useMutation, useQueries, useQuery, useQueryClient } from 'react-query';
-import { feedCommentRequest, searchfeedComment } from '../../../apis/api/feed';
+import { deleteFeedComment, feedCommentRequest, searchFeedComment, updateFeedComment } from '../../../apis/api/feed';
+import { deleteComment } from '../../../apis/api/lunch';
 
 function FeedCardComment({feedId}) {
   const queryClient = useQueryClient();
   const principalData = queryClient.getQueryData("principalQuery")
-  const [ commentSaveInputValue, setCommentSaveInputValue ] = useState("");
-  const [ commentList, setCommentList ] = useState([]);
+  const [commentSaveInputValue, setCommentSaveInputValue] = useState("");
+  const [commentList, setCommentList] = useState([]);
+  const [putCommentId, setPutCommentId] = useState(0);
+  const [putChangeComment, setPutChangeComment] = useState("");
 
   //댓글 get
   const searchFeedCommentQuery = useQuery(
     ["searchFeedCommentQuery", feedId],
-    () => searchfeedComment(feedId),
+    () => searchFeedComment(feedId),
     {
       retry:0,
       refetchOnWindowFocus: false,
@@ -27,11 +30,9 @@ function FeedCardComment({feedId}) {
 
   )
 
-  console.log(commentList);
-
   // 댓글 작성
-  const saveFeedComment = useMutation({
-    mutationKey: "saveFeedComment",
+  const saveFeedCommentMutation = useMutation({
+    mutationKey: "saveFeedCommentMutation",
     mutationFn: feedCommentRequest,
     onSuccess: response => {
       console.log("작성됨" + response);
@@ -42,42 +43,102 @@ function FeedCardComment({feedId}) {
     }
   })
 
-
+  // 댓글 수정
+  const putFeedCommentMutation = useMutation({
+    mutationKey: "putFeedCommentMutation",
+    mutationFn: updateFeedComment,
+    onSuccess: response => {
+      console.log("수정됨" + response);
+      searchFeedCommentQuery.refetch()
+      setPutCommentId(0)
+    },
+    onError: error => {
+      console.log(error);
+    }
+  })
   
+  //댓글 삭제
+  const deleteFeedCommentMutation = useMutation({
+    mutationKey: "deleteFeedCommentMutation",
+    mutationFn: deleteFeedComment,
+    onSuccess: response => {
+      console.log("삭제됨" + response);
+      searchFeedCommentQuery.refetch()
+    },
+    onError: error => {
+      console.log(error);
+    }
+  })
+
 
 
   // 댓글 save 버튼
   const addClickSaveComment = () => {
-    saveFeedComment.mutate({
+    saveFeedCommentMutation.mutate({
       feedId: feedId,
       commentContent: commentSaveInputValue,
     })
   }
 
+  // 댓글 put 버튼
+  const putClickFeedComment = (commentId, userId) => {
+    putFeedCommentMutation.mutate({
+      commentId: commentId,
+      feedId: feedId,
+      commentUserId: userId,
+      commentContent: putChangeComment,
+    })
+  }
+
+  // 댓글 삭제 버튼
+  const deletClickFeedComment = (commentId) => {
+    deleteFeedCommentMutation.mutate(commentId)
+  }
+
+  // 수정 input 창 open 
+  const openClickCommentInput = (feedCommentId) => {
+    setPutCommentId(feedCommentId)
+  }
+
   return (
     <div>
       {
-        commentList.map(commentInfo => (
-          <div key={commentInfo.feedCommentId}>
+        commentList.map(comment => (
+          comment.feedCommentId === putCommentId ?
+
+          // 수정클릭 했을때 input창
+          <div key={comment.feedCommentId}>
+            <input 
+              type="text" 
+              defaultValue={comment.commentContent}
+              onChange={e => setPutChangeComment(e.target.value)}
+            />
+            <button onClick={() => setPutCommentId(0)}>취소</button>
+            <button onClick={() => putClickFeedComment(comment.feedCommentId, comment.feedCommentUserId)}>게시</button>
+          </div>
+
+          :
+
+          <div key={comment.feedCommentId}>
             <div>
-              {commentInfo.feedCommentNickName}
+              {comment.feedCommentNickName}
             </div>
 
             <div>
-              {commentInfo.feedCommentUserProfileImgUrl}
+              {comment.feedCommentUserProfileImgUrl}
             </div>
 
             <div>
-              {commentInfo.feedCommentContent}
+              {comment.feedCommentContent}
             </div>
 
             <div>
               {
-                commentInfo.feedCommentUserId === principalData.data.userId
+                comment.feedCommentUserId === principalData.data.userId
                   ?
                   <div>
-                    <button>수정</button>
-                    <button>삭제</button>
+                    <button onClick={() => openClickCommentInput(comment.feedCommentId)}>수정</button>
+                    <button onClick={() => deletClickFeedComment(comment.feedCommentId)}>삭제</button>
                   </div>
                   :
                   <div></div>
