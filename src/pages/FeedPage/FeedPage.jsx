@@ -32,31 +32,34 @@ function FeedPage(props) {
   );
 
   return (
-    
-    // 게시글 (피드)
     <div css={s.feedPageRootLayout}>
-      {feedList.length > 0 
-      ? (
-        <ul css={s.feedlayout}>
-          {
-          feedList.map(feed => <FeedCard feed={feed} key={feed.feedId}/>
-          )}
-        </ul>
-      )
-      : <div>빈 게시글</div>
+      <div css={s.feedPageLayout}>
+      {/*  게시글 (피드) */}
+        {feedList.length > 0 
+        ? 
+          (
+            <ul>
+              {
+                feedList.map(feed => <FeedCard feed={feed} key={feed.feedId}/>
+              )}
+            </ul>
+          )
+        : <div>게시글을 작성해주세요.</div>
       }
-
-      {/* 우측 하단 버튼 */}
-      <div css={s.FeedPageOptions}>
-        <button>필터</button>
-        <button>글 쓰기</button>
       </div>
 
       {/* 글쓰기 창 */}
       <div>
         <AddFeed />        
       </div>
-     
+
+      {/* 우측 하단 버튼 */}
+      <div css={s.FeedPageOptions}>
+        <button>필터</button>
+        <button onClick={() => {
+          setModal(true);
+        }}>글 쓰기</button>
+      </div>
     </div>
   );
 }

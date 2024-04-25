@@ -17,9 +17,11 @@ function SignupPage(props) {
   const [email, emailChange, emailMessage] = useInput("email");
   const [checkPasswordMessage, setCheckPasswordMessage] = useState(null);
 
+  
+
   useEffect(() => {
     if (!checkPassword || !password) {
-      setCheckPasswordMessage(() => null);
+      setCheckPasswordMessage(() => null)
       return;
     }
 

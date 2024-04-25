@@ -1,13 +1,13 @@
 import { css } from "@emotion/react";
 
 export const layout = css`
-    position: absolute;
+    position: fixed;
     box-sizing: border-box;
     left: 0;
     top: 0;
     width: 200px;
     height: 100%;
-    background-color: #999999;
+    /* background-color: #999999; */
 `;
 
 export const sideMenuList = css`
