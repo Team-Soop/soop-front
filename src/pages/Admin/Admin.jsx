@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
+import AdminReport from '../../components/AdminReport/AdminReport';
 
 function Admin(props) {
   const queryClient = useQueryClient();
@@ -15,20 +16,16 @@ function Admin(props) {
       window.location.replace("/")
     }
 
-    // if(
-    //   principalData.data.authorities
-    //     .filter((authoritie) => 
-    //       authoritie.authority === "ROLE_ADMIN")[0].authority === "ROLE_ADMIN") {
-    //       alert("관리자만 접근 가능합니다")
-    // }
   },[principalData])
   
-  // console.log(principalData.data.authorities.filter((authoritie) => authoritie.authority === "ROLE_ADMIN")[0].authority === "ROLE_ADMIN");
-  
-  // console.log(principalData.data.authorities.filter((authoritie) => authoritie.authority === "ROLE_ADMIN").length === 0);
+
   return (
     <div>
       어드민 페이지 입니다.
+
+
+      {/* 신고 관리 */}
+      <AdminReport/>
     </div>
   );
 }

@@ -7,10 +7,12 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { saveBoard, saveDeleteBoard, saveGetBoard } from "../../apis/api/saveBoards";
 import { useEffect } from "react";
 import { lunchGetLike } from "../../apis/api/lunch";
+import { useNavigate } from "react-router-dom";
 
 function LunchList({lunchId, profileImgUrl, nickName, placeName, categroies, title, imgUrls, content}) {
   const sanitizer = DOMPurify.sanitize;
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   useEffect(() => {
     return () => {
@@ -66,7 +68,7 @@ function LunchList({lunchId, profileImgUrl, nickName, placeName, categroies, tit
   // 신고 창 opne 버튼
   const isReportOpen = () => {
     if(window.confirm("이 게시물을 신고 하시겠습니까?")){
-      alert("만드는중")
+      navigate(`/lunch/report/3/${lunchId}`)
     }
     return;
   }
