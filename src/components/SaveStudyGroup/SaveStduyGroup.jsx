@@ -6,27 +6,60 @@ import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useInput } from "../../hooks/useInput";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { saveStudyGroup, searchStudyCategories } from "../../apis/api/study";
+import { saveStudyGroup, searchStudyCategories, updateStudyGroup } from "../../apis/api/study";
 
 
-export default function SaveStduyGroup() {
+export default function SaveStduyGroup({ setState, studyId, title, content, memberLimited, periodEnd, skills, memberCount, setIsWrite }) {
     const queryClient = useQueryClient();
     const principalData = queryClient.getQueryData("principalQuery");
-    const memberCountList = [1, 2, 3, 4, 5, 6];
-    const [ studyTitle, titleOnChange ] = useInput("")
+    const [ memberCountList, setMemberCountList ] = useState([])
+    const [ nowMemberCount, setNowMemberCount ] = useState(0);
+    const [ studyTitle, setStudyTitle ] = useState("")
     const [ studyContent, setStudyContent] = useState("")
     const [ endDate, setEndDate ] = useState(new Date)
     const [ MemberListView, setMemberListView ] = useState(false);
     const [ memberLimitedCount, setMemberLimitedCount] = useState("최대 멤버 제한")
     const [ studySkills, setStudySkills ] = useState([])
 
-    const searchStudyCategories = queryClient.getQueryData("searchStduyCategories");
+    const searchStudyCategories = queryClient.getQueryData("searchStudyCategories");
 
     useEffect(() => {
-        if(searchStudyCategories.data) {
-            setStudySkills(searchStudyCategories.data)
+        if(setState === 1) {
+            setStudyTitle(title)
+            setStudyContent(content)
+            setMemberLimitedCount(memberLimited)
+            setEndDate(periodEnd)
+            setNowMemberCount(memberCount)
         }
-    }, [searchStudyCategories.data])
+    }, [])
+
+    useEffect(() => {
+        let memberCount = [];
+        for(let i = nowMemberCount; i < 6; i++) {
+            memberCount.push(i)
+        }
+        setMemberCountList(memberCount)
+    }, [nowMemberCount])
+
+    useEffect(() => {
+        if(searchStudyCategories?.data) {
+            if(setState === 1) {
+                let changeSkills = searchStudyCategories.data
+                console.log(changeSkills)
+                for(let i = 1; i < searchStudyCategories.data.length + 1; i++) {
+                    if(skills.includes(i)) {
+                        changeSkills[i-1].checkState = true;
+                        console.log(i)
+                    }
+                }
+                setStudySkills(changeSkills)
+            } else {
+                setStudySkills(searchStudyCategories.data)
+            }   
+        }
+    }, [searchStudyCategories])
+    
+    console.log(studySkills)
 
     const saveStudyGroupMutation = useMutation({
         mutationKey: "saveStudyGroupMutation",
@@ -37,6 +70,18 @@ export default function SaveStduyGroup() {
         onError: error => {
             console.log(error)
         }
+    })
+
+    const updateStudyGroupMutation = useMutation({
+        mutationKey: "updateStudyGroupMutation",
+        mutationFn: updateStudyGroup,
+        onSuccess: response => {
+
+        },
+        onError: error => {
+
+        }
+
     })
 
     const modules = useMemo(
@@ -71,7 +116,26 @@ export default function SaveStduyGroup() {
             studyPeriodEnd: endDate,
         }
 
-        saveStudyGroupMutation.mutate(studyPost)
+        if (setState === 1) {
+            updateStudyGroupMutation.mutate({id: studyId, data: studyPost})
+            console.log(studyPost)
+        } else {
+            saveStudyGroupMutation.mutate(studyPost)
+        }
+
+    }
+
+    const test = () => {
+        let studyPost = {
+            managerUserId: principalData.data.userId,
+            studyTitle: studyTitle,
+            studyContent: studyContent,
+            studySkills: studySkills.filter(skill => skill.checkState === true),
+            studyMemberLimited: memberLimitedCount,
+            studyPeriodEnd: endDate,
+        }
+        // setIsWrite(false)
+        console.log(studyPost)
     }
 
 
@@ -80,7 +144,7 @@ export default function SaveStduyGroup() {
     <>
         <h2>스터디 모집 게시글 작성</h2>
         <div>
-            <input type="text" placeholder="제목" onChange={titleOnChange}/>
+            <input type="text" placeholder="제목" onChange={(e) => setStudyTitle(e.target.value)} value={studyTitle||""}/>
             <ReactQuill 
                 modules={modules} 
                 value={studyContent}
@@ -122,7 +186,7 @@ export default function SaveStduyGroup() {
                     />
             </div>
             <div>
-                <button>취소</button>
+                <button onClick={test}>취소</button>
                 <button onClick={saveClickButton}>작성</button>
             </div>
         </div>
