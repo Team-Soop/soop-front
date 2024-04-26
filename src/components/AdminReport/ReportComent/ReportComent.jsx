@@ -1,11 +1,28 @@
 import DOMPurify from 'dompurify';
 import React from 'react';
+import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
+import { userBanRequest } from '../../../apis/api/userManagement';
 
-function ReportComent({ category, content, boardId }) {
+function ReportComent({ userId, category, content, boardId }) {
   const sanitizer = DOMPurify.sanitize;
   const navigate = useNavigate();
+
+  const banUser = useMutation({
+    mutationKey: "banUser",
+    mutationFn: userBanRequest,
+    onSuccess: response => {
+      alert("해당 유저가 정상적으로 정지 처리 되었습니다.")
+    }
+  })
+
+  const AddClickbanUser = () => {
+    if(window.confirm("해당 유저를 정시 시키시겠습니까?")) {
+      banUser.mutate(userId);
+    }
+    return;
+  }
 
 
   return (
@@ -55,8 +72,8 @@ function ReportComent({ category, content, boardId }) {
       </div>
 
       <div>
-        <button>
-          유저 밴하기
+        <button onClick={() => AddClickbanUser()}>
+          유저 정지시키기
         </button>
       </div>
       <div>

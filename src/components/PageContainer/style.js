@@ -6,7 +6,7 @@ export const container = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 600px;
+    width: 800px;
     left: 50%; 
     transform:translateX(-50%); 
     background-color: #888888;
