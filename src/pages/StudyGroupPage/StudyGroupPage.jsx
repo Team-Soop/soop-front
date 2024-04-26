@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import * as s from "./style";
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import { searchStudyCategory, searchStudyList } from '../../apis/api/study';
-import SaveStudyGroup from '../../components/SaveStudyGroup/SaveStduyGroup'
-import CheckStudyPeriod from "../../components/CheckStudyPeriod/CheckStudyPeriod";
+import { searchStudyList } from '../../apis/api/study';
+import SaveStudyGroup from '../../components/Study/SaveStudyGroup/SaveStduyGroup'
 import { useNavigate } from "react-router-dom";
 
 
@@ -14,25 +13,21 @@ function StudyGroupPage() {
 	const [ isWrite, setIsWrite ] = useState(false)
 	const [ studyBoardList, setStudyBoardList ] = useState([])
 	const [ categoryData, setCategoryData ] = useState([])
+	const queryClient = useQueryClient();
+	const searchStudyCategories = queryClient.getQueryData("searchStudyCategories");
 
 	const searchStudyGroupList = useQuery("searchStudyGroupList", searchStudyList, 
 	{
 		retry: 3,
 		refetchOnWindowFocus: false,
-		onSuccess: responce => {
-			setStudyBoardList(responce.data)
+		onSuccess: response => {
+			setStudyBoardList(response.data)
 		},
 		onError: error => {
 			console.log(error)
 		}
 	})
-
-	console.log(studyBoardList)
-	console.log(categoryData)
-
-	const queryClient = useQueryClient();
-    const searchStudyCategories = queryClient.getQueryData("searchStudyCategories");
-
+	
 	useEffect(() => {
 		if(!!searchStudyCategories) {
 			setCategoryData(searchStudyCategories.data)
@@ -42,7 +37,6 @@ function StudyGroupPage() {
 	const studyBoardOnClick = (studyId) => {
 		navigate(`/study/board/${studyId}`)
 	}
-	
 	
   return (
     <div css={s.layout}>

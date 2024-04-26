@@ -1,21 +1,19 @@
 /** @jsxImportSource @emotion/react */
 import * as s from "./style";
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useLocation, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { deleteStudyGroup, searchStudyBoard } from '../../apis/api/study';
-import SaveStduyGroup from "../../components/SaveStudyGroup/SaveStduyGroup";
+import SaveStduyGroup from "../../components/Study/SaveStudyGroup/SaveStduyGroup";
 
 export default function StudyGroupDetailPage() {
     const [ studyContent, setStudyContent ] = useState();
     const [ isWrite, setIsWrite ] = useState(false)
-
     const queryClient = useQueryClient();
     const searchStudyCategories = queryClient.getQueryData("searchStudyCategories");
-    console.log(searchStudyCategories)
-    
     const param = useParams();
+
     const searchStudyGroup = useQuery("searchStudyGroup", () => searchStudyBoard(param.id), 
         {
             retry: 0,
@@ -30,26 +28,21 @@ export default function StudyGroupDetailPage() {
         mutationKey: "deleteStudyGroup",
         mutationFn: deleteStudyGroup,
         onSuccess: response => {
-
         },
         onError: error => {
-
         }
     })
     
     const deleteStudyButton = () => {
         if(window.confirm("삭제하시겠습니까?") === true) {
             deleteStudyGroupMutation.mutate(studyContent.studyId)
-        } else {
-            return;
-        }
+        } else { return; }
     }
 
     return (
         <>
         {studyContent
-            ?
-            <div css={s.layout}>
+            ? <div css={s.layout}>
                 <button onClick={() => setIsWrite(true)}>수정</button>
                 <button onClick={deleteStudyButton}>삭제</button>
                 <div css={s.contentBox}>
@@ -71,8 +64,8 @@ export default function StudyGroupDetailPage() {
 									<div>모집 중</div>
 									<div>D{Math.round(studyContent.timeCount / (60 * 24))} Day</div>
 									</>
-								)
-							}
+                                )
+                            }
                         </div>
                         <div>스킬
                         </div>
@@ -90,11 +83,13 @@ export default function StudyGroupDetailPage() {
                     <div>
                         {studyContent.studyContent}
                     </div>
-                    <div>
+                    <div css={s.memberLayout}>
+                        <button>신청 현황</button>
+                        <button>인원 목록</button>
                         <button>가입 신청</button>
                     </div>
                 </div>
-                {isWrite && <SaveStduyGroup
+                { isWrite && <SaveStduyGroup
                     setState={1}
                     studyId={studyContent.studyId}
                     title={studyContent.studyTitle} 
@@ -104,7 +99,7 @@ export default function StudyGroupDetailPage() {
                     skills={studyContent.studySkills}
                     memberCount={studyContent.memberCount}
                     setIsWrite={setIsWrite}
-                />}
+                /> }
             </div>
             : null}
         </>

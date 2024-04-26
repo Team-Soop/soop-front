@@ -12,7 +12,6 @@ function RootSideMenuLeft(props) {
     setLogin(() => principalQueryState.status === "success");
   }, [principalQueryState.status]);
 
-
   return (
     <div css={s.layout}>
       <div css={s.sideMenuProfile}>
@@ -24,7 +23,7 @@ function RootSideMenuLeft(props) {
       <div>
         <div css={s.sideMenuList}><a href="http://localhost:3000/feed">자유게시판</a></div>
         <div css={s.sideMenuList}><a href="http://localhost:3000/schedule">강의스케줄</a></div>
-        <div css={s.sideMenuList}><a href="http://localhost:3000/study">스터디</a></div>
+        <div css={s.sideMenuList}><a href="http://localhost:3000/study/boardlist">스터디</a></div>
         <div css={s.sideMenuList}><a href="http://localhost:3000/lunch">오늘 뭐 먹지?</a></div>
 
         <div>즐겨찾기</div>
