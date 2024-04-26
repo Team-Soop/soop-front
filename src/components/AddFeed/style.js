@@ -3,6 +3,7 @@ import { css } from "@emotion/react";
 export const addFeedRootLayout = css`
     position: fixed;
     display: none;
+    z-index: 999;
     top: 0;
     left: 0;
     width: 100%;
@@ -15,7 +16,7 @@ export const addFeedLayout = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 50%;
+    top: 500px;
     left: 25%;
     transform: translateX(-50%);
     transform: translateY(-50%);

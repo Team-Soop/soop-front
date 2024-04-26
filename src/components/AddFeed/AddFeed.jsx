@@ -9,7 +9,7 @@ import { QueryClient, useMutation, useQueryClient } from "react-query";
 import { FaRegUser } from "react-icons/fa6";
 
 
-function AddFeed(props) {
+function AddFeed() {
   const queryClient = useQueryClient();
   const principalData = queryClient.getQueryData("principalQuery");
   const [ uploadPhotos, setUploadPhotos ] = useState([]);
@@ -147,7 +147,6 @@ function AddFeed(props) {
     })
   }
 
-
   return (
     <div css={s.addFeedRootLayout}>
       <div css={s.addFeedLayout}>
@@ -157,7 +156,7 @@ function AddFeed(props) {
             <img src="" alt="" />
             <FaRegUser />   {/* 프로필 이미지 없을 때 아이콘*/}
           </div>
-          <div>{principalData?.data.username}</div>
+          <div>{principalData?.data.nickname}</div>
         </div>
 
         <div css={s.addFeedContents}>
@@ -192,7 +191,6 @@ function AddFeed(props) {
             <button onClick={() => {handleImageUpload()}}>작성 완료</button>
             <button onClick={handleCancelFeed}>취소</button>
           </div>
-          {/* 취소누르면 add창 없어지게 하기 */}
         </div>
       </div>
     </div>

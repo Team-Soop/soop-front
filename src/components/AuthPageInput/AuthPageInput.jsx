@@ -1,9 +1,15 @@
 import React from 'react';
+/** @jsxImportSource @emotion/react */
+import * as s from "./style";
+import { MdCheckCircleOutline } from "react-icons/md";
+import { MdErrorOutline } from "react-icons/md";
 
 function AuthPageInput({ type, name, placeholder, value, onChange, onBlur, ref, message }) {
+    
     return (
-        <div>
+        <div css={s.inputBox}>
             <input
+                css={s.input}
                 type={type}
                 name={name}
                 placeholder={placeholder}
@@ -12,18 +18,16 @@ function AuthPageInput({ type, name, placeholder, value, onChange, onBlur, ref, 
                 onBlur={onBlur}
                 ref={ref}
             />
-            {/* <MdCheckCircleOutline /> 확인 임티*/}
-            {/* <MdErrorOutline /> 에러 임티 */}
 
             {
                 !!message &&
-                <div>
-                    {message.type === "error" ? "에러" : "확인"}
+                <div css={s.inputIcon(message.type)}>
+                    {message.type === "error" ? <MdErrorOutline />  : <MdCheckCircleOutline /> }
                 </div>
             }
             {
                 !!message &&
-                <div>
+                <div css={s.inputMessage(message.type)}>
                     {message.text}
                 </div>
             }

@@ -48,7 +48,7 @@ export const signinButton = css`
     height: 35px;
     width: 300px;
     margin-bottom: 5px;
-    background-color: #d5e6fc;
+    background-color: #b8d6fd;
     cursor: pointer;
     &:hover {
         background-color: #4494fc;
@@ -58,6 +58,7 @@ export const signinButton = css`
         background-color: #1071fa;
     }
     a{
+        display: block;
         text-decoration: none;
         padding: 5px;
     }
@@ -81,7 +82,7 @@ export const oauth2Signin = css`
     div {
         width: 98px;
         height: 25px;
-        background-color: #b8d6fd;
+        background-color: #d5e6fc;
         margin-bottom: 15px;
         cursor: pointer;
         &:hover{
@@ -92,9 +93,10 @@ export const oauth2Signin = css`
         }
     }
     a{
+        display: block;
         text-decoration: none;
-        padding: 5px;
         font-size: 12px;
+        padding: 5px;
     }
     a:link{
         color: #333333;

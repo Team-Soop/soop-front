@@ -14,6 +14,7 @@ import FeedCardComment from "./FeedCardComment/FeedCardComment";
 function FeedCard({feed}) {
     const sanitizer = DOMPurify.sanitize;
     const queryClient = useQueryClient();
+    const principalData = queryClient.getQueryData("principalQuery");
     const [ isCommentOpen, setIsCommentOpen ] = useState(false);
 
     useEffect(() => {
@@ -89,65 +90,70 @@ function FeedCard({feed}) {
 
   
     return (
-        <li key={feed.feedId} css={s.feedlayout}>
-            {/* 유저정보 */}
-            <div css={s.feedHeader}>
-                <img src={feed.profileImgUrl} alt="" />
-                <div>{feed.username}</div>
-            </div>
-            {/* 피드(이미지, 게시글) */}
-            <div css={s.feedcontents}>
-                <div dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
-                {feed.feedImgUrl.map((imgUrl, index) => (
-                    <img key={index} src={imgUrl} alt="" css={s.feedImg}/>
-                ))}
-            </div>
-            {/* 저장하기 */}
-            <div css={s.feedfavorite}>
+        <div css={s.feedCardRoot}>
+            <li key={feed.feedId} css={s.feedlayout}>
+                {/* 유저정보 */}
+                <div css={s.feedHeader}>
+                    <div css={s.feedHeaderProfileImg}><img src={feed.profileImgUrl} alt="" /></div>
+                    <div css={s.feedHeaderUser}>{feed.username}</div>
+                </div>
+
+                {/* 피드(이미지, 게시글) */}
+                <div css={s.feedcontents}>
+                    {feed.feedImgUrl.map((imgUrl, index) => (
+                        <img key={index} src={imgUrl} alt="" css={s.feedImg}/>
+                    ))}
+                    <div css={s.feedText} dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
+                </div>
+                {/* 저장하기 */}
+                <div css={s.feedfavorite}>
+                    {
+                        boardSaveQuery.isLoading
+                        ? <></>
+                        : boardSaveQuery.data.data.saveBoardStatus > 0
+                            ? 
+                            <button css={s.feedFavoriteButton} onClick={() => deleteLunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
+                                <IoBookmark />
+                            </button>
+                            : 
+                            <button css={s.feedFavoriteButton} onClick={() => lunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
+                                <IoBookmarkOutline/>
+                            </button>
+                    }
+                </div>
+                
+                <div css={s.feedFooter}>
+                {/* 좋아요 */}
+                
                 {
-                    boardSaveQuery.isLoading
+                    likeQuery.isLoading 
                     ? <></>
-                    : boardSaveQuery.data.data.saveBoardStatus > 0
+                    : likeQuery.data.data.likeStatus > 0 
                         ? 
-                        <button onClick={() => deleteLunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
-                            <IoBookmark />
-                        </button>
-                        : 
-                        <button onClick={() => lunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
-                            <IoBookmarkOutline/>
-                        </button>
+                            <button css={s.feedFooterButton} onClick={() => deleteLike.mutate(feed.feedId)}> 
+                                <AiFillLike /> <span>{likeQuery.data.data.totalCount}</span>
+                            </button>
+                        :
+                            <button css={s.feedFooterButton} onClick={() => likeFeed.mutate(feed.feedId)}> 
+                                <AiOutlineLike /> <span>{likeQuery.data.data.totalCount}</span>
+                            </button>
                 }
-            </div>
-            
-            <div css={s.feedFooter}>
-            {/* 좋아요 */}
-            {
-                likeQuery.isLoading 
-                ? <></>
-                : likeQuery.data.data.likeStatus > 0 
-                    ? 
-                        <button onClick={() => deleteLike.mutate(feed.feedId)}> 
-                            <AiFillLike /> <span>{likeQuery.data.data.totalCount}</span>
-                        </button>
-                    :
-                        <button onClick={() => likeFeed.mutate(feed.feedId)}> 
-                            <AiOutlineLike /> <span>{likeQuery.data.data.totalCount}</span>
-                        </button>
-            }
-            </div>
-            {/* 댓글 */}
-            <div>
-                <button onClick={() => setIsCommentOpen(!isCommentOpen)}><FaRegCommentAlt /></button>
+                
+                {/* 댓글 아이콘 */}
+                <button css={s.feedFooterButton} onClick={() => setIsCommentOpen(!isCommentOpen)}><FaRegCommentAlt /></button>
+                {/* 신고하기 */}
+                <button css={s.feedFooterButton}><BsExclamationCircle /></button>
+                </div>
+
+                {/* 댓글 아이콘 눌렀을 때 */}
                 {
                     isCommentOpen ?
-                        <FeedCardComment feedId={feed.feedId}/>
+                    <FeedCardComment feedId={feed.feedId}/>
                     :
                     <></>
                 }
-            </div>
-            {/* 신고하기 */}
-            <button><BsExclamationCircle /></button>
-        </li>
+            </li>
+        </div>
     );
 }
 

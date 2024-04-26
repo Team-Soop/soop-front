@@ -1,7 +1,10 @@
+/** @jsxImportSource @emotion/react */
+import * as s from "./style";
 import React, { useState } from 'react';
 import { useMutation, useQueries, useQuery, useQueryClient } from 'react-query';
 import { deleteFeedComment, feedCommentRequest, searchFeedComment, updateFeedComment } from '../../../apis/api/feed';
 import { deleteComment } from '../../../apis/api/lunch';
+import { FaRegUser } from "react-icons/fa6";
 
 function FeedCardComment({feedId}) {
   const queryClient = useQueryClient();
@@ -104,8 +107,8 @@ function FeedCardComment({feedId}) {
     <div>
       {
         commentList.map(comment => (
-          comment.feedCommentId === putCommentId ?
-
+          comment.feedCommentId === putCommentId 
+          ?
           // 수정클릭 했을때 input창
           <div key={comment.feedCommentId}>
             <input 
@@ -113,53 +116,50 @@ function FeedCardComment({feedId}) {
               defaultValue={comment.commentContent}
               onChange={e => setPutChangeComment(e.target.value)}
             />
-            <button onClick={() => setPutCommentId(0)}>취소</button>
             <button onClick={() => putClickFeedComment(comment.feedCommentId, comment.feedCommentUserId)}>게시</button>
+            <button onClick={() => setPutCommentId(0)}>취소</button>
           </div>
-
           :
-
           <div key={comment.feedCommentId}>
-            <div>
-              {comment.feedCommentNickName}
-            </div>
-
-            <div>
-              {comment.feedCommentUserProfileImgUrl}
-            </div>
-
-            <div>
-              {comment.feedCommentContent}
+            <div css={s.feedComments}>
+              <div css={s.feedCommentUser}>
+                {!!comment.feedCommentUserProfileImgUrl 
+                ? comment.feedCommentUserProfileImgUrl 
+                : <FaRegUser /> }
+                {comment.feedCommentNickName}
+              </div>
+              <div css={s.feedComment}>
+                {comment.feedCommentContent}
+              </div>
             </div>
 
             <div>
               {
                 comment.feedCommentUserId === principalData.data.userId
                   ?
-                  <div>
-                    <button onClick={() => openClickCommentInput(comment.feedCommentId)}>수정</button>
-                    <button onClick={() => deletClickFeedComment(comment.feedCommentId)}>삭제</button>
+                  <div css={s.commentEdit}>
+                    <button css={s.commentEditButton} onClick={() => openClickCommentInput(comment.feedCommentId)}>수정</button>
+                    <button css={s.commentEditButton}onClick={() => deletClickFeedComment(comment.feedCommentId)}>삭제</button>
                   </div>
                   :
                   <div></div>
               }
             </div>
-
-
           </div>
 
         ))
       }
 
-      <div>
+      <div css={s.commentReg}>
         댓글작성
         <input 
+          css={s.commentInput}
           type="text" 
           value={commentSaveInputValue}
           placeholder='댓글 입력'
           onChange={e => setCommentSaveInputValue(e.target.value)}
         />
-        <button onClick={addClickSaveComment}>게시</button>
+        <button css={s.commentInputButton} onClick={addClickSaveComment}>등록</button>
       </div>
     </div>
   );
