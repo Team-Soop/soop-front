@@ -6,8 +6,8 @@ export const container = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 800px;
+    width: 850px;
     left: 50%; 
     transform:translateX(-50%); 
-    background-color: #888888;
+    background-color: #fafafa;
 `;

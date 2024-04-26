@@ -95,7 +95,7 @@ function LunchPage(props) {
       </div>
 
       {/* lunch List 피드 컴포넌트 */}
-      <div>
+      <div >
         {
           lunchDetailData.map(listData => (
             <div 
