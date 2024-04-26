@@ -15,6 +15,7 @@ import LunchPage from '../pages/LunchPage/LunchPage';
 import RootSideMenuLeft from '../components/RootSideMenuLeft/RootSideMenuLeft';
 import PageContainer from '../components/PageContainer/PageContainer';
 import StudyGroupDetailPage from '../pages/StudyGroupDetailPage/StudyGroupDetailPage';
+import StudyRoute from './StudyRoute';
 
 function AuthRoute(props) {
 
@@ -31,9 +32,6 @@ function AuthRoute(props) {
       }
     }
   );
-
-
-
 
   return (
     <>
@@ -52,12 +50,11 @@ function AuthRoute(props) {
               {/* 토큰이 있어야지만 접근 가능 */}
               <Route path='/account/mypage' element={<Mypage />} />
               {/* 임시회원, 일반회원은 접근 불가  */}
-              <Route path='/account/edit/password' element={<PasswordEditPage />} />
+              <Route path='/account/edit/password' element={<PasswordEditPage />}/>
               {/* 임시회원, 일반회원은 접근 불가  */}
               <Route path='/schedule' element={<ClassSchedulePage />} />
               {/* 임시회원, 일반회원은 접근 불가 */}
-              <Route path='/study/board/:id' element={<StudyGroupDetailPage />} />
-              <Route path='/study/boardlist' element={<StudyGroupPage />} />
+              <Route path='/study/*' element={<StudyRoute />} />
                {/* 임시회원 글작성 불가  */}
               <Route path='/lunch/*' element={<LunchPage />} />
               {/* 임시회원 글작성 불가 

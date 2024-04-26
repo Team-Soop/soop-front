@@ -20,4 +20,6 @@ export const boardListLayout = css`
 
 export const boardContent = css`
     margin: 20px;
+    padding: 5px;
+    border: 1px solid white;
 `

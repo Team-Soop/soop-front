@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import * as s from "./style";
 
-import React, { useState } from 'react';
-import { useQuery } from 'react-query';
+import React, { useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 import { searchStudyCategory, searchStudyList } from '../../apis/api/study';
 import SaveStudyGroup from '../../components/SaveStudyGroup/SaveStduyGroup'
 import CheckStudyPeriod from "../../components/CheckStudyPeriod/CheckStudyPeriod";
 import { useNavigate } from "react-router-dom";
 
 
-function StudyGroupPage(props) {
+function StudyGroupPage() {
 	const navigate = useNavigate();
 	const [ isWrite, setIsWrite ] = useState(false)
 	const [ studyBoardList, setStudyBoardList ] = useState([])
@@ -17,6 +17,7 @@ function StudyGroupPage(props) {
 
 	const searchStudyGroupList = useQuery("searchStudyGroupList", searchStudyList, 
 	{
+		retry: 3,
 		refetchOnWindowFocus: false,
 		onSuccess: responce => {
 			setStudyBoardList(responce.data)
@@ -26,16 +27,20 @@ function StudyGroupPage(props) {
 		}
 	})
 
-	const searchStduyCategories = useQuery("searchStduyCategories", searchStudyCategory,
-	{
-		refetchOnWindowFocus: false,
-		onSuccess: response => {
-			setCategoryData(response.data)
+	console.log(studyBoardList)
+	console.log(categoryData)
+
+	const queryClient = useQueryClient();
+    const searchStudyCategories = queryClient.getQueryData("searchStudyCategories");
+
+	useEffect(() => {
+		if(!!searchStudyCategories) {
+			setCategoryData(searchStudyCategories.data)
 		}
-	})
+	}, [searchStudyCategories])
 
 	const studyBoardOnClick = (studyId) => {
-		navigate(`/study/studyId=${studyId}`)
+		navigate(`/study/board/${studyId}`)
 	}
 	
 	
@@ -64,19 +69,20 @@ function StudyGroupPage(props) {
 							}
 							<div>{board.nickname}</div>
 							<div>{board.studyTitle}</div>
-							<div>{categoryData.map((category) => {
+							<div>{categoryData.map((category, index) => {
 								return(
 								board.studySkills.includes(category.studyCategoryId) && 
-								<div>{category.studyCategoryName}</div>
+								<div key={index}>{category.studyCategoryName}</div>
 								)
-							})}</div>
+								})}
+							</div>
 							<div>{board.memberCount}/{board.studyMemberLimited}</div>
 						</div>
 				)})
 			}
 		</body>
 		<div>
-			{ isWrite && <SaveStudyGroup /> }
+			{ isWrite && <SaveStudyGroup setIsWrite={setIsWrite} /> }
 		</div>
 	</div>
   );
