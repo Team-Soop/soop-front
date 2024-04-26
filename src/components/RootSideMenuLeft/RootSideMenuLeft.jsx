@@ -20,13 +20,7 @@ function RootSideMenuLeft(props) {
     }
   }, [principalQueryState.status])
 
-  // useEffect(() => {
-  //   if(!!principal) {
-  //     console.log(principal.data)
-  //   }
-  // }, [principal])
 
-  // 로그아웃
   const handleLogoutClick = () => {
     localStorage.removeItem("AccessToken");
     instance.interceptors.request.use((config) => {
@@ -52,7 +46,7 @@ function RootSideMenuLeft(props) {
       <div css={s.sideMenu}>
         <div css={s.sideMenuList}><a href="http://localhost:3000/feed">자유게시판</a></div>
         <div css={s.sideMenuList}><a href="http://localhost:3000/schedule">강의스케줄</a></div>
-        <div css={s.sideMenuList}><a href="http://localhost:3000/study">스터디</a></div>
+        <div css={s.sideMenuList}><a href="http://localhost:3000/study/boardlist">스터디</a></div>
         <div css={s.sideMenuList}><a href="http://localhost:3000/lunch">오늘 뭐 먹지?</a></div>
 
         <div css={s.sideMenuList}>즐겨찾기</div>

@@ -34,3 +34,10 @@ export const skills = css`
         margin-right: 10px;
     }
 `
+
+export const memberLayout = css`
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    width: 100px;
+`

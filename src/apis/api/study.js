@@ -22,4 +22,4 @@ export const searchStudyBoard = async (id) => {
 
 export const deleteStudyGroup = async (id) => {
     return await instance.delete(`/study/delete/${id}`)
-}
+} 
