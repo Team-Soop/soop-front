@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import MainPage from '../pages/MainPage/MainPage';
 import Mypage from '../pages/Mypage/Mypage';
@@ -32,6 +32,12 @@ function AuthRoute(props) {
       }
     }
   );
+
+  // useEffect(() => {
+
+  // }, principalQuery)
+
+  
 
   return (
     <>

@@ -4,6 +4,7 @@ export const reportRequst = async(data) => {
   return await instance.post("/report/save", data)
 }
 
-export const searchAllReport = async() => {
-  return await instance.get("/report/search");
+
+export const searchReportRequest = async (params) => {
+  return await instance.get("/report/search", {params});
 }
