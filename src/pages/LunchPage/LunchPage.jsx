@@ -77,13 +77,13 @@ function LunchPage(props) {
 
   // 신고하기 컴포넌트 클릭 버튼
 
-  console.log(lunchDetailData);
+
 
   return (
     <div>
       <Routes>
         <Route path='/Detail' element={<LunchDetail />}/>
-        <Route path='/report' element={<Report/>}/>
+        <Route path='/report/:menuId/:boardId' element={<Report/>}/>
       </Routes>
 
       <div>
