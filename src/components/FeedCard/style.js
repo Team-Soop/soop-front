@@ -9,7 +9,8 @@ export const feedlayout= css`
   box-sizing: border-box;
   padding: 10px;
   border: 1px solid #dbdbdb;
-  margin-bottom: 10px;
+  border-radius: 5px;
+  margin: 30px 80px;
   min-height: 150px;
   max-height: 700px;
   list-style: none;
@@ -62,6 +63,11 @@ export const feedfavorite = css`
 export const feedFavoriteButton = css`
   border: none;
   background-color: transparent;
+  font-size: 20px;
+`;
+
+export const saveFavorite = css`
+  color: #71C9CE;
 `;
 
 export const feedFooter = css`

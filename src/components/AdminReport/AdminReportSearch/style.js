@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 export const tableLayout = css`
     position: relative;
     border: 1px solid #dbdbdb;
-    /* width: 1000px; */
+    width: 800px;
     height: 300px;
     background-color: white;
     overflow: auto;
@@ -101,4 +101,4 @@ export const theadTr = css`
     position: sticky;
     top: 0;
     background-color: #fdfdfd;
-    `
+`

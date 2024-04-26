@@ -56,9 +56,7 @@ function FeedPage(props) {
       {/* 우측 하단 버튼 */}
       <div css={s.FeedPageOptions}>
         <button>필터</button>
-        <button onClick={() => {
-          setModal(true);
-        }}>글 쓰기</button>
+        <button>글 쓰기</button>
       </div>
     </div>
   );

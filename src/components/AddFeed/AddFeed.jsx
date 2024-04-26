@@ -31,21 +31,6 @@ function AddFeed() {
     }
   })
 
-    // console.log(getFeedList);
-
-  // useEffect(() => {
-  //   if(isMountRef.current) {
-  //     saveFeed.mutate({
-  //       userId: principalData.data.userId,
-  //       feedContent: newFeedContent,
-  //       feedImgUrls: contentImg
-  //     })
-  //     window.location.replace("/feed")
-  //   } else {
-  //     isMountRef.current = true;
-  //   }
-  // }, [contentImg])
-
   const handleCancelFeed = () => {
       if (!newFeedContent) return;
       setNewFeedContent("");

@@ -26,7 +26,8 @@ export const authPageInput = css`
         padding: 0 5px;
         width: 300px;
         height: 45px;
-        border: 1px solid #b8d6fd;
+        /* border: 1px solid #b8d6fd; */
+        border: 1px solid #dbdbdb;
     }
     input:nth-of-type(1){
         margin-bottom: 5px;
@@ -48,14 +49,14 @@ export const signinButton = css`
     height: 35px;
     width: 300px;
     margin-bottom: 5px;
-    background-color: #b8d6fd;
+    background-color: #CBF1F5;
     cursor: pointer;
     &:hover {
-        background-color: #4494fc;
-        color: #c2dbff;
+        background-color: #B3E7EC;
+        
     }
     &:active{
-        background-color: #1071fa;
+        background-color: #97D7DB;
     }
     a{
         display: block;
