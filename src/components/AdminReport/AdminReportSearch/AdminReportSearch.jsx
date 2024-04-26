@@ -2,8 +2,10 @@
 import * as s from "./style";
 import { useState } from 'react';
 import { useQuery } from 'react-query';
-import { searchAllReport } from '../../../apis/api/report';
+import { searchAllReport, searchReportRequest } from '../../../apis/api/report';
 import ReportComent from "../ReportComent/ReportComent";
+import Select from "react-select";
+import { useReactSelect } from "../../../hooks/useReactSelect";
 
 
 function AdminReportSearch(props) {
@@ -14,11 +16,35 @@ function AdminReportSearch(props) {
     content: '',
     boardId: ''
   });
+  const selectedPageName = useReactSelect({value: 0, label: "전체"})
 
-  const searchAllReportQuery = useQuery(["searchAllReportQuery"],
-    searchAllReport,
+  
+  const selectOptions = [
     {
-      retry: 0,
+      value: 0,
+      label: "전체"
+    },
+    {
+      value: 1,
+      label: "자유게시판"
+    },
+    {
+      value: 2,
+      label: "스터디게시판"
+    },
+    {
+      value: 3,
+      label: "점심추천게시판"
+    },
+  ]
+
+
+  const searchReportQuery = useQuery(
+    ["searchReportQuery", selectedPageName.option.value], 
+    async () => await searchReportRequest({
+      menuCategoryId: selectedPageName.option.value
+    }),
+    {
       refetchOnWindowFocus: false,
       onSuccess: response => {
         console.log(response);
@@ -26,28 +52,31 @@ function AdminReportSearch(props) {
           return response
         }))
       },
-      onError: error => {
-        console.log(error);
-      }
     }
-  )
+    
+)
 
   // 신고 내용 컴포넌트 opne 버튼
-  const openContent = (reportCategories, reportContent, boardId) => {
+  const openContent = (userId, reportCategories, reportContent, boardId) => {
     setIsContentOpen(!isContentOpen)
     setSelectedReport({
+      userId: userId,
       category: reportCategories,
       content: reportContent,
       boardId: boardId
     })
   }
 
-  console.log(reportList);
 
   return (
     <div>
       <div>
-
+        <Select
+          options={selectOptions}
+          defaultValue={selectedPageName.defaultValue}
+          value={selectedPageName.option}
+          onChange={selectedPageName.handleOnChange}
+        />
       </div>
 
       <div css={s.tableLayout}>
@@ -70,7 +99,7 @@ function AdminReportSearch(props) {
                   <td>{report.menuCategoryId}</td>
                   <td>{report.boardId}</td>
                   <td>
-                    <button onClick={() => openContent(report.reportCategories, report.reportContent, report.boardId)}>
+                    <button onClick={() => openContent(report.userId, report.reportCategories, report.reportContent, report.boardId)}>
                       신고내용 보기
                     </button>
                   </td>
@@ -87,6 +116,7 @@ function AdminReportSearch(props) {
         {
           isContentOpen ? 
             <ReportComent
+              userId={selectedReport.userId}
               category={selectedReport.category}
               content={selectedReport.content}
               boardId={selectedReport.boardId}
