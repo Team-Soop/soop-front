@@ -33,7 +33,7 @@ export const addFeedHeader = css`
     background-color: #f3c1c1;
 `;
 export const addFeedProfileImg = css`
-     box-sizing: border-box;
+    box-sizing: border-box;
     border-radius: 50%;
     width: 40px;
     height: 40px;

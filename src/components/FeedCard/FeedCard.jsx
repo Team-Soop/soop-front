@@ -10,6 +10,7 @@ import { feedDeleteLike, feedGetLike, feedLike } from "../../apis/api/feed";
 import { useEffect, useState } from "react";
 import { saveBoard, saveDeleteBoard, saveGetBoard } from "../../apis/api/saveBoards";
 import FeedCardComment from "./FeedCardComment/FeedCardComment";
+import { AiOutlineAlert } from "react-icons/ai";
 
 function FeedCard({feed}) {
     const sanitizer = DOMPurify.sanitize;
@@ -113,7 +114,7 @@ function FeedCard({feed}) {
                         : boardSaveQuery.data.data.saveBoardStatus > 0
                             ? 
                             <button css={s.feedFavoriteButton} onClick={() => deleteLunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
-                                <IoBookmark />
+                                <IoBookmark css={s.saveFavorite}/>
                             </button>
                             : 
                             <button css={s.feedFavoriteButton} onClick={() => lunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
@@ -137,12 +138,13 @@ function FeedCard({feed}) {
                             <button css={s.feedFooterButton} onClick={() => likeFeed.mutate(feed.feedId)}> 
                                 <AiOutlineLike /> <span>{likeQuery.data.data.totalCount}</span>
                             </button>
-                }
-                
-                {/* 댓글 아이콘 */}
-                <button css={s.feedFooterButton} onClick={() => setIsCommentOpen(!isCommentOpen)}><FaRegCommentAlt /></button>
-                {/* 신고하기 */}
-                <button css={s.feedFooterButton}><BsExclamationCircle /></button>
+                    }
+                    
+                    {/* 댓글 아이콘 */}
+                    <button css={s.feedFooterButton} onClick={() => setIsCommentOpen(!isCommentOpen)}><FaRegCommentAlt /></button>
+                    {/* 신고하기 */}
+                    <button css={s.feedFooterButton}><BsExclamationCircle /></button>
+                    {/* <AiOutlineAlert /> 신고하기아이콘 */}
                 </div>
 
                 {/* 댓글 아이콘 눌렀을 때 */}
