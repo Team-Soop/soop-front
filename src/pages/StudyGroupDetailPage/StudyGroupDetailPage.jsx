@@ -6,10 +6,16 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom'
 import { deleteStudyGroup, searchStudyBoard } from '../../apis/api/study';
 import SaveStduyGroup from "../../components/Study/SaveStudyGroup/SaveStduyGroup";
+import WaitingParticleModal from "../../components/Study/Modal/WaitngParticleModal/WaitingParticleModal";
+import MemberListModal from "../../components/Study/Modal/MemberListModal/MemberListModal";
 
 export default function StudyGroupDetailPage() {
     const [ studyContent, setStudyContent ] = useState();
+    const [ waitingMember, setWaitingMember ] = useState();
+    const [ periodMember, setPeriodMember] = useState();
     const [ isWrite, setIsWrite ] = useState(false)
+    const [ isOpenWaitingModal, setIsOpenWaitingModal ] = useState(false);
+    const [ isOpenMemberListModal, setIsOpenMemberListModal] = useState(false);
     const queryClient = useQueryClient();
     const searchStudyCategories = queryClient.getQueryData("searchStudyCategories");
     const param = useParams();
@@ -37,6 +43,14 @@ export default function StudyGroupDetailPage() {
         if(window.confirm("삭제하시겠습니까?") === true) {
             deleteStudyGroupMutation.mutate(studyContent.studyId)
         } else { return; }
+    }
+    
+    const openWaitingModal = () => {
+        setIsOpenWaitingModal(!isOpenWaitingModal)
+    }
+
+    const openMemberListModal = () => {
+        setIsOpenMemberListModal(!isOpenMemberListModal)
     }
 
     return (
@@ -84,8 +98,8 @@ export default function StudyGroupDetailPage() {
                         {studyContent.studyContent}
                     </div>
                     <div css={s.memberLayout}>
-                        <button>신청 현황</button>
-                        <button>인원 목록</button>
+                        <button onClick={openWaitingModal}>신청 현황</button>
+                        <button onClick={openMemberListModal}>인원 목록</button>
                         <button>가입 신청</button>
                     </div>
                 </div>
@@ -100,6 +114,8 @@ export default function StudyGroupDetailPage() {
                     memberCount={studyContent.memberCount}
                     setIsWrite={setIsWrite}
                 /> }
+                <WaitingParticleModal isOpen={isOpenWaitingModal} isClose={openWaitingModal}/>
+                <MemberListModal isOpen={isOpenMemberListModal} isClose={openMemberListModal}/>
             </div>
             : null}
         </>

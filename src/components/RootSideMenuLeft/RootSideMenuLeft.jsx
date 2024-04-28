@@ -6,12 +6,17 @@ import { RiAccountPinBoxLine } from "react-icons/ri";
 import { HiOutlineBellAlert } from "react-icons/hi2";
 import { GoSignIn, GoSignOut } from "react-icons/go";
 import instance from "../../apis/utils/instance";
+import { useRecoilValue } from "recoil";
+import { sideMenuState } from "../../atoms/SideMenuAtom";
 
 function RootSideMenuLeft(props) {
   const [ isLogin, setLogin ] = useState(false);
   const [ principal, setPrincipal ] = useState();
   const queryClient = useQueryClient();
   const principalQueryState = queryClient.getQueryState("principalQuery");
+  const sideMenuNum = useRecoilValue(sideMenuState)
+  const [ isMyStudyView, setIsMyStudyView] = useState(false)
+  const [ isSaveBoardView, setIsSaveBoardView ] = useState(false)
   
   useEffect(() => {
     setLogin(() => principalQueryState.status === "success");
@@ -43,14 +48,42 @@ function RootSideMenuLeft(props) {
           <div css={s.sideMenuUser}>{principal.data.nickname}</div>
         }
       </div>
-      <div css={s.sideMenu}>
-        <div css={s.sideMenuList}><a href="http://localhost:3000/feed">자유게시판</a></div>
-        <div css={s.sideMenuList}><a href="http://localhost:3000/schedule">강의스케줄</a></div>
-        <div css={s.sideMenuList}><a href="http://localhost:3000/study/boardlist">스터디</a></div>
-        <div css={s.sideMenuList}><a href="http://localhost:3000/lunch">오늘 뭐 먹지?</a></div>
+      {
+        sideMenuNum === 1 
+        ?
+        <div css={s.sideMenu}>
+          <div css={s.sideMenuList}><a href="http://localhost:3000/feed">자유게시판</a></div>
+          <div css={s.sideMenuList}><a href="http://localhost:3000/schedule">강의스케줄</a></div>
+          <div css={s.sideMenuList}><a href="http://localhost:3000/study/boardlist">스터디</a></div>
+          <div css={s.sideMenuList}><a href="http://localhost:3000/lunch">오늘 뭐 먹지?</a></div>
+          <div css={s.sideMenuList}>즐겨찾기</div>
+        </div>
 
-        <div css={s.sideMenuList}>즐겨찾기</div>
-      </div>
+        :
+        <div css={s.sideMenu}>
+          <div css={s.sideMenuList}>자유게시판</div>
+          <ul css={s.sideMenuList} onClick={() => setIsMyStudyView(!isMyStudyView)}>스터디
+            {
+              isMyStudyView &&
+              <>
+                <li>진행 중 스터디</li>
+                <li>모집 중 스터디</li>
+              </>
+            }
+          </ul>
+          <div css={s.sideMenuList}>오늘 뭐 먹지?</div>
+          <ul css={s.sideMenuList} onClick={() => setIsSaveBoardView(!isSaveBoardView)}>즐겨찾기
+            {
+              isSaveBoardView &&
+              <>
+                <li>자유게시판</li>
+                <li>오늘 뭐 먹지?</li>
+              </>
+            }
+          </ul>
+          <div css={s.sideMenuList}>정보수정</div>
+        </div>
+      }
       <div css={s.sideMenuLeftFooter}>
         <button css={s.sideMenuLeftFooterOptions}><RiAccountPinBoxLine /></button>
         <button css={s.sideMenuLeftFooterOptions}><HiOutlineBellAlert /></button>
