@@ -17,6 +17,18 @@ export const sideMenuProfile = css`
     padding: 10px;
     width: 160px;
     height: 40px;
+    cursor: pointer;
+
+    a{
+        width: 100%;
+        display: block;
+    }
+    a:link{
+        color: black;
+    }
+    a:visited{
+        color: black;
+    }
 `;
 
 export const sideMenuUserImg = css`
@@ -51,15 +63,17 @@ export const sideMenuList = css`
     font-size: 18px;
     font-weight: 600;
     margin: 10px;
-    padding: 25px 10px;
-    &:hover{
-        background-color: #f2f2f2;
-        border-radius: 5px;
-    }
     cursor: pointer;
-    &>a{
+
+    a{
         display: block;
         text-decoration: none;
+        padding: 25px 10px;
+        width: 100%;
+    }
+    a:hover{
+        background-color: #f2f2f2;
+        border-radius: 5px;
     }
     a:link{
         color: black;
@@ -84,7 +98,26 @@ export const sideMenuLeftFooterOptions = css`
     width: 33%;
     border: none;
     background-color: transparent;
+    color: #333333;
     cursor: pointer;
+
+    a{
+        width: 100%;
+        display: block;
+    }
+    a:link{
+        color: #333333;
+    }
+    a:visited{
+        color: #333333;
+    }
+    a:hover{
+        color: #23d1e0;
+    }
+    a:active{
+        color: #14a6d1;
+    }
+
     &:hover{
         color: #23d1e0;
     }

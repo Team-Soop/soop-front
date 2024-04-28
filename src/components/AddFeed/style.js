@@ -1,14 +1,16 @@
 import { css } from "@emotion/react";
 
 export const addFeedRootLayout = css`
-    position: fixed;
-    display: none;
+    /* position: fixed;
     z-index: 999;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #33333399;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #33333399; */
 `;
 
 export const addFeedLayout = css`
@@ -16,13 +18,12 @@ export const addFeedLayout = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 500px;
-    left: 25%;
-    transform: translateX(-50%);
-    transform: translateY(-50%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 700px;
     height: 700px;
-    background-color: #E6E6E4;
+    background-color: #fafafa;
 `;
 
 export const addFeedHeader = css`
@@ -45,6 +46,7 @@ export const addFeedContents = css`
 `;
 
 export const addFeedImgPrievew = css`
+    position: relative;
     margin-top: 10px;
     flex-grow: 1;
     justify-content: flex-start;
@@ -53,6 +55,16 @@ export const addFeedImgPrievew = css`
     overflow: hidden;
     overflow: auto;
 `;
+
+export const addFeedImage = css`
+    width: 50%;
+    flex-grow: 1;
+    button {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+`
 
 export const addFeedQuill = css`
     height: 380px;
