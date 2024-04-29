@@ -33,7 +33,8 @@ function Report() {
       alert("신고가 접수 되었습니다.");
     },
     onError: error => {
-      console.log(error);
+      if(error.response.data === "데이터 저장 오류.")
+      alert("이미 신고된 게시물입니다")
     }
   })
 
@@ -48,7 +49,6 @@ function Report() {
   }
 
   
-
   // 신고 카테고리 
   const addchangeCategory = (categoryNumber, isChecked) => {
     if(isChecked) {
