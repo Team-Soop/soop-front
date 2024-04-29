@@ -7,6 +7,7 @@ import { storage } from "../../apis/firebase/firebaseConfig";
 import { feedListGet, feedRequest } from "../../apis/api/feed";
 import { QueryClient, useMutation, useQueryClient } from "react-query";
 import { FaRegUser } from "react-icons/fa6";
+import { MdOutlineCancelPresentation } from "react-icons/md";
 
 
 function AddFeed() {
@@ -149,8 +150,9 @@ function AddFeed() {
             {
               loadPhotos.map(
                 photo =>
-                  <div key={photo.id}>
+                  <div key={photo.id} css={s.addFeedImage}>
                     <img src={photo.dataUrl} alt="" />
+                    <button><MdOutlineCancelPresentation /></button>
                   </div>
               )
             }
@@ -173,8 +175,8 @@ function AddFeed() {
 
           <div css={s.addFeedFooter}>
             <button onClick={() => imgFileRef.current.click()}>사진 선택</button>
+            <button onClick={handleCancelFeed}>글 지우기</button>
             <button onClick={() => {handleImageUpload()}}>작성 완료</button>
-            <button onClick={handleCancelFeed}>취소</button>
           </div>
         </div>
       </div>
