@@ -9,19 +9,18 @@ import instance from "../../apis/utils/instance";
 import bonobono from "../../images/bonobono.jpg"
 
 import { useRecoilValue } from "recoil";
-import { sideMenuState } from "../../atoms/SideMenuAtom";
+import { sideMenuSelectNum, sideMenuState } from "../../atoms/SideMenuAtom";
 
 import { Link } from "react-router-dom";
 
 
-function RootSideMenuLeft(props) {
+function RootSideMenuLeft() {
   const [ isLogin, setLogin ] = useState(false);
   const [ principal, setPrincipal ] = useState();
   const queryClient = useQueryClient();
   const principalQueryState = queryClient.getQueryState("principalQuery");
-  const sideMenuNum = useRecoilValue(sideMenuState)
-  const [ isMyStudyView, setIsMyStudyView] = useState(false)
-  const [ isSaveBoardView, setIsSaveBoardView ] = useState(false)
+  const getSideMenuState = useRecoilValue(sideMenuState) // side 메뉴 전환 상태 (0 = 메인 / 1 = 마이페이지)
+  const getSideMenuSelectNum = useRecoilValue(sideMenuSelectNum) // 선택한 메뉴 Num (2번 - study 사용 중)
   
   useEffect(() => {
     setLogin(() => principalQueryState.status === "success");
@@ -62,7 +61,7 @@ function RootSideMenuLeft(props) {
       </div>
 
       {
-        sideMenuNum === 1 
+        getSideMenuState === 1 
         ?
         <div css={s.sideMenu}>
           <div css={s.sideMenuList}>
@@ -76,27 +75,21 @@ function RootSideMenuLeft(props) {
 
         :
         <div css={s.sideMenu}>
-          <div css={s.sideMenuList}>자유게시판</div>
-          <ul css={s.sideMenuList} onClick={() => setIsMyStudyView(!isMyStudyView)}>스터디
+          <div css={s.sideMenuList}><a href="http://localhost:3000/account/mypage/feed">자유게시판</a></div>
+          <div css={s.sideMenuList}>
+            <a href="http://localhost:3000/account/mypage/study">스터디</a>
+          </div>
             {
-              isMyStudyView &&
+              getSideMenuSelectNum === 2 &&
               <>
-                <li>진행 중 스터디</li>
-                <li>모집 중 스터디</li>
+                <div>진행 중 스터디</div>
+                <div>모집 중 스터디</div>
               </>
             }
-          </ul>
-          <div css={s.sideMenuList}>오늘 뭐 먹지?</div>
-          <ul css={s.sideMenuList} onClick={() => setIsSaveBoardView(!isSaveBoardView)}>즐겨찾기
-            {
-              isSaveBoardView &&
-              <>
-                <li>자유게시판</li>
-                <li>오늘 뭐 먹지?</li>
-              </>
-            }
-          </ul>
-          <div css={s.sideMenuList}>정보수정</div>
+          <div css={s.sideMenuList}><a href="http://localhost:3000/account/mypage/lunch">오늘 뭐 먹지?</a></div>
+          <div css={s.sideMenuList}><a href="http://localhost:3000/account/mypage/favorite">즐겨찾기</a></div>
+
+          <div css={s.sideMenuList}><a href="http://localhost:3000/account/edit">회원정보</a></div>
         </div>
       }
 
