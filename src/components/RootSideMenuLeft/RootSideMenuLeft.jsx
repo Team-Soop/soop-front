@@ -6,6 +6,7 @@ import { RiAccountPinBoxLine } from "react-icons/ri";
 import { HiOutlineBellAlert } from "react-icons/hi2";
 import { GoSignIn, GoSignOut } from "react-icons/go";
 import instance from "../../apis/utils/instance";
+import bonobono from "../../images/bonobono.jpg"
 
 import { useRecoilValue } from "recoil";
 import { sideMenuState } from "../../atoms/SideMenuAtom";
@@ -43,6 +44,11 @@ function RootSideMenuLeft(props) {
   
   return (
     <div css={s.layout}>
+      <div>
+        <a href="http://localhost:3000">
+          <img src={bonobono} alt="" />
+        </a>
+      </div>
       <div css={s.sideMenuProfile}>
         <Link to={'/account/mypage'}>
           <div css={s.sideMenuUserImg}>
@@ -91,14 +97,6 @@ function RootSideMenuLeft(props) {
           <div css={s.sideMenuList}>정보수정</div>
         </div>
       }
-
-      <div css={s.sideMenu}>
-        <div css={s.sideMenuList}><a href="http://localhost:3000/feed">자유게시판</a></div>
-        <div css={s.sideMenuList}><a href="http://localhost:3000/schedule">강의스케줄</a></div>
-        <div css={s.sideMenuList}><a href="http://localhost:3000/study/boardlist">스터디</a></div>
-        <div css={s.sideMenuList}><a href="http://localhost:3000/lunch">오늘 뭐 먹지?</a></div>
-        <div css={s.sideMenuList}><a href="http://localhost:3000">즐겨찾기 링크연결</a></div>
-      </div>
 
       <div css={s.sideMenuLeftFooter}>
         <button css={s.sideMenuLeftFooterOptions}><Link to={'/account/mypage'}><RiAccountPinBoxLine /></Link></button>
