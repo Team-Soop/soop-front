@@ -8,6 +8,7 @@ import { deleteStudyGroup, searchStudyBoard } from '../../apis/api/study';
 import SaveStduyGroup from "../../components/Study/SaveStudyGroup/SaveStduyGroup";
 import WaitingParticleModal from "../../components/Study/Modal/WaitngParticleModal/WaitingParticleModal";
 import MemberListModal from "../../components/Study/Modal/MemberListModal/MemberListModal";
+import ApplyStudyModal from "../../components/Study/Modal/ApplyStudyModal/ApplyStudyModal";
 
 export default function StudyGroupDetailPage() {
     const [ studyContent, setStudyContent ] = useState();
@@ -16,6 +17,7 @@ export default function StudyGroupDetailPage() {
     const [ isWrite, setIsWrite ] = useState(false)
     const [ isOpenWaitingModal, setIsOpenWaitingModal ] = useState(false);
     const [ isOpenMemberListModal, setIsOpenMemberListModal] = useState(false);
+    const [ isOpenApplyStudyModal, setIsOpenApplyStudyModal] = useState(false);
     const queryClient = useQueryClient();
     const searchStudyCategories = queryClient.getQueryData("searchStudyCategories");
     const param = useParams();
@@ -51,6 +53,10 @@ export default function StudyGroupDetailPage() {
 
     const openMemberListModal = () => {
         setIsOpenMemberListModal(!isOpenMemberListModal)
+    }
+
+    const openApplyStudyModal = () => {
+        setIsOpenApplyStudyModal(!isOpenApplyStudyModal)
     }
 
     return (
@@ -100,7 +106,7 @@ export default function StudyGroupDetailPage() {
                     <div css={s.memberLayout}>
                         <button onClick={openWaitingModal}>신청 현황</button>
                         <button onClick={openMemberListModal}>인원 목록</button>
-                        <button>가입 신청</button>
+                        <button onClick={openApplyStudyModal}>가입 신청</button>
                     </div>
                 </div>
                 { isWrite && <SaveStduyGroup
@@ -116,6 +122,7 @@ export default function StudyGroupDetailPage() {
                 /> }
                 <WaitingParticleModal isOpen={isOpenWaitingModal} isClose={openWaitingModal}/>
                 <MemberListModal isOpen={isOpenMemberListModal} isClose={openMemberListModal}/>
+                <ApplyStudyModal isOpen={isOpenApplyStudyModal} isClose={openApplyStudyModal} />
             </div>
             : null}
         </>

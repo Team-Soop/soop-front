@@ -7,6 +7,10 @@ export const layout = css`
     top: 0;
     width: 200px;
     height: 100%;
+
+    & > div > a > img {
+        height: 60px;
+    }
 `;
 
 export const sideMenuProfile = css`

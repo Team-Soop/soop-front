@@ -6,6 +6,8 @@ import { useQuery } from 'react-query';
 import { searchStudyCategory } from '../apis/api/study';
 import { rightSideBarState } from '../atoms/SideMenuAtom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
+
 
 
 function StudyRoute(props) {
@@ -14,7 +16,6 @@ function StudyRoute(props) {
 	{
 		refetchOnWindowFocus: true,
 		onSuccess: response => {
-			console.log(response.data)
 		}
 	})
 
