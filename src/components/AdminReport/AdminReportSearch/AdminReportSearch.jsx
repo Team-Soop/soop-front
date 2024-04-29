@@ -14,7 +14,8 @@ function AdminReportSearch(props) {
   const [selectedReport, setSelectedReport] = useState({
     category: '',
     content: '',
-    boardId: ''
+    boardId: '',
+    menuCategoryId:''
   });
   const selectedPageName = useReactSelect({value: 0, label: "전체"})
 
@@ -57,13 +58,14 @@ function AdminReportSearch(props) {
 )
 
   // 신고 내용 컴포넌트 opne 버튼
-  const openContent = (userId, reportCategories, reportContent, boardId) => {
+  const openContent = (userId, reportCategories, reportContent, boardId, menuCategoryId) => {
     setIsContentOpen(!isContentOpen)
     setSelectedReport({
       userId: userId,
       category: reportCategories,
       content: reportContent,
-      boardId: boardId
+      boardId: boardId,
+      menuCategoryId: menuCategoryId
     })
   }
 
@@ -99,7 +101,7 @@ function AdminReportSearch(props) {
                   <td>{report.menuCategoryId}</td>
                   <td>{report.boardId}</td>
                   <td>
-                    <button onClick={() => openContent(report.userId, report.reportCategories, report.reportContent, report.boardId)}>
+                    <button onClick={() => openContent(report.userId, report.reportCategories, report.reportContent, report.boardId, report.menuCategoryId)}>
                       신고내용 보기
                     </button>
                   </td>
@@ -120,6 +122,7 @@ function AdminReportSearch(props) {
               category={selectedReport.category}
               content={selectedReport.content}
               boardId={selectedReport.boardId}
+              menuCategoryId={selectedReport.menuCategoryId}
             />
           :
             <></>

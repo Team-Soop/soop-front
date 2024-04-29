@@ -4,11 +4,13 @@ import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import { userBanRequest } from '../../../apis/api/userManagement';
+import { boardDelete, deleteBoard } from '../../../apis/api/boardManagement';
 
-function ReportComent({ userId, category, content, boardId }) {
+function ReportComent({ userId, category, content, boardId,  menuCategoryId}) {
   const sanitizer = DOMPurify.sanitize;
   const navigate = useNavigate();
 
+  // 유저 정지 뮤텐트
   const banUser = useMutation({
     mutationKey: "banUser",
     mutationFn: userBanRequest,
@@ -17,11 +19,32 @@ function ReportComent({ userId, category, content, boardId }) {
     }
   })
 
-  const AddClickbanUser = () => {
+  // 게시글 삭제 뮤텐트
+  const deleteBoard = useMutation({
+    mutationKey: "deleteBoard",
+    mutationFn: boardDelete,
+    onSuccess: response => {
+      console.log(response);
+    }
+  })
+
+
+  // 유저 정지 클릭 이벤트
+  const addClickbanUser = () => {
     if(window.confirm("해당 유저를 정시 시키시겠습니까?")) {
       banUser.mutate(userId);
     }
     return;
+  }
+
+  // 보드 삭제 클릭 이벤트
+  const deleteClickBoard = () => {
+    if(window.confirm("해당 게시물을 삭제 하시겠습니까?")) {
+      deleteBoard.mutate({
+        menuCategoryName: menuCategoryId,
+        boardId: boardId
+      })
+    }
   }
 
 
@@ -63,21 +86,14 @@ function ReportComent({ userId, category, content, boardId }) {
           해당 게시물
         </button>
       </div>
-      <div>
-        {/* <button  onclick={() => `window.open(``)"}>
-          네이버
-        </button> */}
-
-
-      </div>
 
       <div>
-        <button onClick={() => AddClickbanUser()}>
+        <button onClick={() => addClickbanUser()}>
           유저 정지시키기
         </button>
       </div>
       <div>
-        <button>
+        <button onClick={() => deleteClickBoard()}>
           게시물 삭제하기
         </button>
       </div>
