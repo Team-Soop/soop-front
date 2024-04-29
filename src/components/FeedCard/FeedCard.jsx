@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { saveBoard, saveDeleteBoard, saveGetBoard } from "../../apis/api/saveBoards";
 import FeedCardComment from "./FeedCardComment/FeedCardComment";
 import { AiOutlineAlert } from "react-icons/ai";
+import Slider from "react-slick";
 
 function FeedCard({feed}) {
     const sanitizer = DOMPurify.sanitize;
@@ -89,6 +90,15 @@ function FeedCard({feed}) {
         }
     })
 
+    const slider = () => {
+        const settings = {
+            infinite: true,
+            speed: 500,
+            slidesToShow: 2,
+            slidesToScroll: 1,
+            centerPadding: '0px'
+        }
+    }
   
     return (
         <div css={s.feedCardRoot}>
@@ -101,9 +111,14 @@ function FeedCard({feed}) {
 
                 {/* 피드(이미지, 게시글) */}
                 <div css={s.feedcontents}>
-                    {feed.feedImgUrl.map((imgUrl, index) => (
-                        <img key={index} src={imgUrl} alt="" css={s.feedImg}/>
-                    ))}
+                    <div>
+                        <button></button>
+                        {feed.feedImgUrl.map((imgUrl, index) => (    
+                            <img key={index} src={imgUrl} alt="" css={s.feedImg}/>
+                        ))}   
+                        <button></button>
+                    </div>
+                    
                     <div css={s.feedText} dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
                 </div>
                 {/* 저장하기 */}

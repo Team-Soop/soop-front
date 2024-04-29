@@ -9,12 +9,19 @@ import { useSearchParams } from "react-router-dom";
 import FeedCard from "../../components/FeedCard/FeedCard";
 import Modal from 'react-modal';
 import { MdOutlineCancel } from "react-icons/md";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { rightSideBarState } from "../../atoms/SideMenuAtom";
 
 function FeedPage(props) {
   const queryClient = useQueryClient();
   const principalData = queryClient.getQueryData("principalQuery");
   const [ feedList, setFeedList ] = useState([]);
   const [ modal, setModal ] = useState(false);
+  const setRightSideMenu = useSetRecoilState(rightSideBarState);
+
+  useEffect(() => {
+    setRightSideMenu(1)
+  }, [])
 
   // 피드 리스트 get
   const getFeedListQuery = useQuery(
@@ -32,14 +39,6 @@ function FeedPage(props) {
     }
   );
 
-  // 모달
-  const openModal = () => {
-    setModal(true);
-  }
-  const closeModal = () => {
-    setModal(false);
-  }
-
   return (
     <div css={s.feedPageRootLayout}>
       <div css={s.feedPageLayout}>
@@ -56,25 +55,6 @@ function FeedPage(props) {
         : <div>로그인을 해주세요.</div>
       }
       </div>
-
-      {/* 우측 하단 버튼 */}
-      <div css={s.FeedPageOptions}>
-        <button>필터</button>
-        <button onClick={openModal}>글 쓰기</button>
-      </div>
-
-      {/* 글쓰기 창 */}
-      <div>
-        <Modal 
-          isOpen={modal} 
-          onRequestClose={closeModal} 
-          css={s.feedModal}
-        >
-          <AddFeed />
-          <button css={s.modalCancel} onClick={closeModal}><MdOutlineCancel /></button>
-        </Modal>
-      </div>
-
 
     </div>
   );

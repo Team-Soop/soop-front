@@ -17,8 +17,9 @@ import PageContainer from '../components/PageContainer/PageContainer';
 import StudyGroupDetailPage from '../pages/StudyGroupDetailPage/StudyGroupDetailPage';
 import StudyRoute from './StudyRoute';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { sideMenuState } from '../atoms/SideMenuAtom';
+import { rightSideBarState, sideMenuState } from '../atoms/SideMenuAtom';
 import AccountRoute from './AccountRoute';
+import RootSideMenuRight from '../components/RootSideMenuRight/RootSideMenuRight';
 
 function AuthRoute(props) {
 
@@ -37,9 +38,14 @@ function AuthRoute(props) {
   );
 
   const setSideMenuNum = useSetRecoilState(sideMenuState)
+  const setRightSideMenu = useSetRecoilState(rightSideBarState);
 
   useEffect(() => {
     setSideMenuNum(1)
+  }, [])
+
+  useEffect(() => {
+    setRightSideMenu(0)
   }, [])
 
   
@@ -75,7 +81,7 @@ function AuthRoute(props) {
           }
 
       </PageContainer>
-
+      <RootSideMenuRight />
     </>
   );
 }
