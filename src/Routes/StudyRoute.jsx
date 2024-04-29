@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import StudyGroupDetailPage from '../pages/StudyGroupDetailPage/StudyGroupDetailPage';
 import StudyGroupPage from '../pages/StudyGroupPage/StudyGroupPage';
 import { useQuery } from 'react-query';
 import { searchStudyCategory } from '../apis/api/study';
+import { useSetRecoilState } from 'recoil';
 
 
 function StudyRoute(props) {
@@ -12,7 +13,6 @@ function StudyRoute(props) {
 	{
 		refetchOnWindowFocus: true,
 		onSuccess: response => {
-			console.log(response.data)
 		}
 	})
 

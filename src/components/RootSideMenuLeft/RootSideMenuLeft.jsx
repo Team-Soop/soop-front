@@ -6,6 +6,7 @@ import { RiAccountPinBoxLine } from "react-icons/ri";
 import { HiOutlineBellAlert } from "react-icons/hi2";
 import { GoSignIn, GoSignOut } from "react-icons/go";
 import instance from "../../apis/utils/instance";
+import bonobono from "../../images/bonobono.jpg"
 
 import { useRecoilValue } from "recoil";
 import { sideMenuState } from "../../atoms/SideMenuAtom";
@@ -43,6 +44,11 @@ function RootSideMenuLeft(props) {
   
   return (
     <div css={s.layout}>
+      <div>
+        <a href="http://localhost:3000">
+          <img src={bonobono} alt="" />
+        </a>
+      </div>
       <div css={s.sideMenuProfile}>
         <Link to={'/account/mypage'}>
           <div css={s.sideMenuUserImg}>
