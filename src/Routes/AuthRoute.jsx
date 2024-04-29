@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import MainPage from '../pages/MainPage/MainPage';
 import Mypage from '../pages/Mypage/Mypage';
@@ -68,7 +68,7 @@ function AuthRoute(props) {
               {/* 임시회원, 일반회원은 접근 불가  */}
               <Route path='/account/*' element={<AccountRoute />}/>
               {/* 임시회원, 일반회원은 접근 불가  */}
-              <Route path='/schedule' element={<ClassSchedulePage />} />
+              <Route path='/schedule' element={<ClassSchedulePage />}/>
               {/* 임시회원, 일반회원은 접근 불가 */}
               <Route path='/study/*' element={<StudyRoute />} />
                {/* 임시회원 글작성 불가  */}

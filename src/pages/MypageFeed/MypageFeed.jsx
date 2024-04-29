@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Mypage() {
+export default function MypageFeed() {
   return (
     <div>
       
