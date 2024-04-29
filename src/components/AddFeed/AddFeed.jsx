@@ -9,7 +9,6 @@ import { QueryClient, useMutation, useQueryClient } from "react-query";
 import { FaRegUser } from "react-icons/fa6";
 import { MdOutlineCancelPresentation } from "react-icons/md";
 
-
 function AddFeed() {
   const queryClient = useQueryClient();
   const principalData = queryClient.getQueryData("principalQuery");
@@ -134,6 +133,7 @@ function AddFeed() {
   }
 
   return (
+    
     <div css={s.addFeedRootLayout}>
       <div css={s.addFeedLayout}>
 

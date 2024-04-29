@@ -4,7 +4,10 @@ import StudyGroupDetailPage from '../pages/StudyGroupDetailPage/StudyGroupDetail
 import StudyGroupPage from '../pages/StudyGroupPage/StudyGroupPage';
 import { useQuery } from 'react-query';
 import { searchStudyCategory } from '../apis/api/study';
+import { rightSideBarState } from '../atoms/SideMenuAtom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useSetRecoilState } from 'recoil';
+
 
 
 function StudyRoute(props) {
@@ -16,6 +19,13 @@ function StudyRoute(props) {
 		}
 	})
 
+    const setRightSideBarState = useSetRecoilState(rightSideBarState)
+    const getRightSideBarState = useRecoilValue(rightSideBarState)
+
+    useEffect(() => {
+        setRightSideBarState(2)
+        console.log(getRightSideBarState)
+    }, [getRightSideBarState])
 
     return (
         <Routes>

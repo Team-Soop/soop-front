@@ -80,35 +80,32 @@ export const oauth2Signin = css`
     display: flex;
     width: 300px;
     justify-content: space-between;
-    div {
-        width: 98px;
-        height: 25px;
-        background-color: #d5e6fc;
-        margin-bottom: 15px;
-        cursor: pointer;
-        &:hover{
-            background-color: #378cfc;
-        }
-        &:active{
-            background-color: #002961;
-        }
+    div{
+        box-sizing: border-box;
+        margin: 15px 5px 5px 0;
+        width: 33%;
+        height: 40px;
+        border-radius: 5px;
+
+    }
+    div:nth-of-type(1) {
+        background-color: #F7E111;
+    }
+    div:nth-of-type(2) {
+        background-color: #f0f0f0;
+    }
+    div:nth-of-type(3) {
+        background-color: #03CA5B;
     }
     a{
         display: block;
-        text-decoration: none;
-        font-size: 12px;
-        padding: 5px;
+        font-size: 20px;
+        padding: 10px;
     }
     a:link{
-        color: #333333;
+        color: black;
     }
     a:visited{
-        color: #333333;
-    }
-    a:hover{
-        color: #c2dbff;
-    }
-    a:active{
-        color: #dbe9fc;
+        color: black;
     }
 `;

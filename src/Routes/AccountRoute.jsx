@@ -14,8 +14,8 @@ export default function AccountRoute() {
 
   return (
     <Routes>
-        <Route path='/account/mypage' element={<Mypage />} />
-        <Route path='/account/edit/password' element={<PasswordEditPage />}/>
+        <Route path='/mypage' element={<Mypage />} />
+        <Route path='/edit/password' element={<PasswordEditPage />}/>
     </Routes>
   )
 }

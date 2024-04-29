@@ -46,7 +46,7 @@ export const feedcontents = css`
   `;
  
 export const feedImg = css`
-  width: 40%;
+  width: 50%;
   `;
 
 export const feedText = css`
