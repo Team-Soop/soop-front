@@ -5,6 +5,7 @@ import StudyGroupPage from '../pages/StudyGroupPage/StudyGroupPage';
 import { useQuery } from 'react-query';
 import { searchStudyCategory } from '../apis/api/study';
 
+
 function StudyRoute(props) {
 
     const searchStudyCategories = useQuery("searchStudyCategories", searchStudyCategory,

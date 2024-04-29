@@ -16,6 +16,9 @@ import RootSideMenuLeft from '../components/RootSideMenuLeft/RootSideMenuLeft';
 import PageContainer from '../components/PageContainer/PageContainer';
 import StudyGroupDetailPage from '../pages/StudyGroupDetailPage/StudyGroupDetailPage';
 import StudyRoute from './StudyRoute';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { sideMenuState } from '../atoms/SideMenuAtom';
+import AccountRoute from './AccountRoute';
 
 function AuthRoute(props) {
 
@@ -33,9 +36,11 @@ function AuthRoute(props) {
     }
   );
 
-  // useEffect(() => {
+  const setSideMenuNum = useSetRecoilState(sideMenuState)
 
-  // }, principalQuery)
+  useEffect(() => {
+    setSideMenuNum(1)
+  }, [])
 
   
 
@@ -54,9 +59,8 @@ function AuthRoute(props) {
               <Route path='/admin' element={<Admin />} />
               <Route path='/' element={<MainPage />} />
               {/* 토큰이 있어야지만 접근 가능 */}
-              <Route path='/account/mypage' element={<Mypage />} />
               {/* 임시회원, 일반회원은 접근 불가  */}
-              <Route path='/account/edit/password' element={<PasswordEditPage />}/>
+              <Route path='/account/*' element={<AccountRoute />}/>
               {/* 임시회원, 일반회원은 접근 불가  */}
               <Route path='/schedule' element={<ClassSchedulePage />} />
               {/* 임시회원, 일반회원은 접근 불가 */}
