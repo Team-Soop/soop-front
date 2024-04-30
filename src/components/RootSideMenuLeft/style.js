@@ -3,10 +3,19 @@ import { css } from "@emotion/react";
 export const layout = css`
     position: fixed;
     box-sizing: border-box;
-    left: 0;
-    top: 0;
-    width: 200px;
-    height: 100%;
+    border: 2px solid #ffffff73;
+    border-radius: 20px;
+    transform: translateY(-50%);
+    left: 40px;
+    top: 50%;
+    width: 300px;
+    height: 90%;
+
+    background-color: #fafafa88;
+
+    & * {
+        color: #1f4d36 !important;
+    }
 
     & > div > a > img {
         height: 60px;
@@ -17,16 +26,8 @@ export const sideMenuProfile = css`
     position: relative;
     display: flex;
     justify-content: left;
-    margin: 10px;
-    padding: 10px;
-    width: 160px;
-    height: 40px;
     cursor: pointer;
 
-    a{
-        width: 100%;
-        display: block;
-    }
     a:link{
         color: black;
     }
@@ -35,48 +36,47 @@ export const sideMenuProfile = css`
     }
 `;
 
+export const profileLink =  css`
+    display: flex;
+    align-items: center;
+    width: 100%;
+`
+
 export const sideMenuUserImg = css`
-    margin-right: 10px;
+    margin-right: 20px;
+    border: 1px solid #dbdbdb;
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    background-color: #333333;
 `;
 
 export const sideMenuUser = css`
-    position: absolute;
-    left: 60px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
+
 `;
 
 export const sideMenu = css`
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    margin-top: 50px;
     width: 100%;
-    border-right: 1px solid #cccccc;
 `;
 
 export const sideMenuList = css`
     /* display: flex;
     justify-content: center;
      */
-    width: 160px;
     font-size: 18px;
     font-weight: 600;
-    margin: 10px;
     cursor: pointer;
 
     a{
         display: block;
+        box-sizing: border-box;
         text-decoration: none;
-        padding: 25px 10px;
+        padding: 15px 30px;
         width: 100%;
+        transition: all 0.2s ease-in-out;
     }
     a:hover{
-        background-color: #f2f2f2;
+        background-color: #c5c5c5;
         border-radius: 5px;
     }
     a:link{
@@ -85,6 +85,9 @@ export const sideMenuList = css`
     a:visited{
         color: black;
     }
+
+    
+
 `;
 
 export const sideMenuLeftFooter = css`

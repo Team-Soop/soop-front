@@ -6,7 +6,7 @@ import { RiAccountPinBoxLine } from "react-icons/ri";
 import { HiOutlineBellAlert } from "react-icons/hi2";
 import { GoSignIn, GoSignOut } from "react-icons/go";
 import instance from "../../apis/utils/instance";
-import bonobono from "../../images/bonobono.jpg"
+import logo from "../../assets/images/soopLogo.png"
 
 import { useRecoilValue } from "recoil";
 import { sideMenuSelectNum, sideMenuState } from "../../atoms/SideMenuAtom";
@@ -45,11 +45,11 @@ function RootSideMenuLeft() {
     <div css={s.layout}>
       <div>
         <a href="http://localhost:3000">
-          <img src={bonobono} alt="" />
+          <img  src={logo} alt="" />KorIt-Soop
         </a>
       </div>
       <div css={s.sideMenuProfile}>
-        <Link to={'/account/mypage'}>
+        <Link css={s.profileLink} to={'/account/mypage'}>
           <div css={s.sideMenuUserImg}>
             <img src="" alt="" />
           </div>
