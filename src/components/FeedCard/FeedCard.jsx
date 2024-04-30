@@ -6,18 +6,21 @@ import { BsExclamationCircle } from "react-icons/bs";
 import { IoBookmark, IoBookmarkOutline  } from "react-icons/io5";
 import DOMPurify from "dompurify";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { feedDeleteLike, feedGetLike, feedLike } from "../../apis/api/feed";
+import { deleteMypageFeed, feedDeleteLike, feedGetLike, feedLike } from "../../apis/api/feed";
 import { useEffect, useState } from "react";
 import { saveBoard, saveDeleteBoard, saveGetBoard } from "../../apis/api/saveBoards";
 import FeedCardComment from "./FeedCardComment/FeedCardComment";
 import { AiOutlineAlert } from "react-icons/ai";
 import Slider from "react-slick";
+import { useRecoilValue } from "recoil";
+import { sideMenuState } from "../../atoms/SideMenuAtom";
 
 function FeedCard({feed}) {
     const sanitizer = DOMPurify.sanitize;
     const queryClient = useQueryClient();
     const principalData = queryClient.getQueryData("principalQuery");
     const [ isCommentOpen, setIsCommentOpen ] = useState(false);
+    const setSideMenuNum = useRecoilValue(sideMenuState);
 
     useEffect(() => {
         return () => {
@@ -89,88 +92,189 @@ function FeedCard({feed}) {
             console.log(error);
         }
     })
+    
+    // 마이페이지 피드 삭제
+    const deleteFeed = useMutation({
+        mutationKey: "deleteFeed",
+        mutationFn: deleteMypageFeed,
+        onSuccess: response => {
+            alert("삭제완료");
+        },
+        onError: error => {
+            console.log(error);
+        }
+    })
 
-    const slider = () => {
-        const settings = {
-            infinite: true,
-            speed: 500,
-            slidesToShow: 2,
-            slidesToScroll: 1,
-            centerPadding: '0px'
+    // 마이페이지 피드 삭제 버튼
+    const deleteMypageFeedButton = () => {
+        if(window.confirm("삭제하시겠습니까?") === true) {
+            deleteFeed.mutate(feed.feedId)
+            console.log(feed.feedId);
+        } else { 
+            return; 
         }
     }
+
+    const editMypageFeed = () => {
+        
+    }
+    
   
     return (
-        <div css={s.feedCardRoot}>
-            <li key={feed.feedId} css={s.feedlayout}>
-                {/* 유저정보 */}
-                <div css={s.feedHeader}>
-                    <div css={s.feedHeaderProfileImg}><img src={feed.profileImgUrl} alt="" /></div>
-                    <div css={s.feedHeaderUser}>{feed.username}</div>
-                </div>
+        <div>
+            {
+            //  기본 페이지 피드 
+            setSideMenuNum === 1
+            ?
+            <div css={s.feedCardRoot}>
+                <li key={feed.feedId} css={s.feedlayout}>
+                    {/* 유저정보 */}
+                    <div css={s.feedHeader}>
+                        <div css={s.feedHeaderProfileImg}><img src={feed.profileImgUrl} alt="" /></div>
+                        <div css={s.feedHeaderUser}>{feed.username}</div>
+                    </div>
 
-                {/* 피드(이미지, 게시글) */}
-                <div css={s.feedcontents}>
-                    <div>
-                        <button></button>
-                        {feed.feedImgUrl.map((imgUrl, index) => (    
-                            <img key={index} src={imgUrl} alt="" css={s.feedImg}/>
-                        ))}   
-                        <button></button>
+                    {/* 피드(이미지, 게시글) */}
+                    <div css={s.feedcontents}>
+                        <div>
+                            <button></button>
+                            {feed.feedImgUrl.map((imgUrl, index) => (    
+                                <img key={index} src={imgUrl} alt="" css={s.feedImg}/>
+                            ))}   
+                            <button></button>
+                        </div>
+                        
+                        <div css={s.feedText} dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
+                    </div>
+                    {/* 저장하기 */}
+                    <div css={s.feedfavorite}>
+                        {
+                            boardSaveQuery.isLoading
+                            ? <></>
+                            : boardSaveQuery.data.data.saveBoardStatus > 0
+                                ? 
+                                <button css={s.feedFavoriteButton} onClick={() => deleteLunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
+                                    <IoBookmark css={s.saveFavorite}/>
+                                </button>
+                                : 
+                                <button css={s.feedFavoriteButton} onClick={() => lunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
+                                    <IoBookmarkOutline/>
+                                </button>
+                        }
                     </div>
                     
-                    <div css={s.feedText} dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
-                </div>
-                {/* 저장하기 */}
-                <div css={s.feedfavorite}>
-                    {
-                        boardSaveQuery.isLoading
-                        ? <></>
-                        : boardSaveQuery.data.data.saveBoardStatus > 0
-                            ? 
-                            <button css={s.feedFavoriteButton} onClick={() => deleteLunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
-                                <IoBookmark css={s.saveFavorite}/>
-                            </button>
-                            : 
-                            <button css={s.feedFavoriteButton} onClick={() => lunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
-                                <IoBookmarkOutline/>
-                            </button>
-                    }
-                </div>
-                
-                <div css={s.feedFooter}>
-                {/* 좋아요 */}
-                
-                {
-                    likeQuery.isLoading 
-                    ? <></>
-                    : likeQuery.data.data.likeStatus > 0 
-                        ? 
-                            <button css={s.feedFooterButton} onClick={() => deleteLike.mutate(feed.feedId)}> 
-                                <AiFillLike /> <span>{likeQuery.data.data.totalCount}</span>
-                            </button>
-                        :
-                            <button css={s.feedFooterButton} onClick={() => likeFeed.mutate(feed.feedId)}> 
-                                <AiOutlineLike /> <span>{likeQuery.data.data.totalCount}</span>
-                            </button>
-                    }
+                    <div css={s.feedFooter}>
+                    {/* 좋아요 */}
                     
-                    {/* 댓글 아이콘 */}
-                    <button css={s.feedFooterButton} onClick={() => setIsCommentOpen(!isCommentOpen)}><FaRegCommentAlt /></button>
-                    {/* 신고하기 */}
-                    <button css={s.feedFooterButton}><BsExclamationCircle /></button>
-                    {/* <AiOutlineAlert /> 신고하기아이콘 */}
-                </div>
+                    {
+                        likeQuery.isLoading 
+                        ? <></>
+                        : likeQuery.data.data.likeStatus > 0 
+                            ? 
+                                <button css={s.feedFooterButton} onClick={() => deleteLike.mutate(feed.feedId)}> 
+                                    <AiFillLike /> <span>{likeQuery.data.data.totalCount}</span>
+                                </button>
+                            :
+                                <button css={s.feedFooterButton} onClick={() => likeFeed.mutate(feed.feedId)}> 
+                                    <AiOutlineLike /> <span>{likeQuery.data.data.totalCount}</span>
+                                </button>
+                        }
+                        
+                        {/* 댓글 아이콘 */}
+                        <button css={s.feedFooterButton} onClick={() => setIsCommentOpen(!isCommentOpen)}><FaRegCommentAlt /></button>
+                        {/* 신고하기 */}
+                        <button css={s.feedFooterButton}><BsExclamationCircle /></button>
+                        {/* <AiOutlineAlert /> 신고하기아이콘 */}
+                    </div>
 
-                {/* 댓글 아이콘 눌렀을 때 */}
-                {
-                    isCommentOpen ?
-                    <FeedCardComment feedId={feed.feedId}/>
-                    :
-                    <></>
-                }
-            </li>
-        </div>
+                    {/* 댓글 아이콘 눌렀을 때 */}
+                    {
+                        isCommentOpen 
+                        ?
+                        <FeedCardComment feedId={feed.feedId}/>
+                        :
+                        <></>
+                    }
+                </li>
+            </div>
+            : 
+            // 마이페이지 피드 (수정, 삭제 버튼 있음)
+            setSideMenuNum ===2
+            ?
+            <div css={s.feedCardRoot}>
+                <li key={feed.feedId} css={s.feedlayout}>
+                    {/* 유저정보 */}
+                    <div css={s.feedHeader}>
+                        <div css={s.feedHeaderProfileImg}><img src={feed.profileImgUrl} alt="" /></div>
+                        <div css={s.feedHeaderUser}>{feed.username}</div>
+                    </div>
+                    {/* 피드(이미지, 게시글) */}
+                    <div css={s.feedcontents}>
+                        <div>
+                            <button></button>
+                            {feed.feedImgUrl.map((imgUrl, index) => (    
+                                <img key={index} src={imgUrl} alt="" css={s.feedImg}/>
+                            ))}   
+                            <button></button>
+                        </div>
+                        
+                        <div css={s.feedText} dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
+                    </div>
+                    {/* 수정, 삭제 */}
+                    <button onClick={editMypageFeed}>수정</button>
+                    <button onClick={deleteMypageFeedButton}>삭제</button>
+                    {/* 저장하기 */}
+                    <div css={s.feedfavorite}>
+                        {
+                            boardSaveQuery.isLoading
+                            ? <></>
+                            : boardSaveQuery.data.data.saveBoardStatus > 0
+                                ? 
+                                <button css={s.feedFavoriteButton} onClick={() => deleteLunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
+                                    <IoBookmark css={s.saveFavorite}/>
+                                </button>
+                                : 
+                                <button css={s.feedFavoriteButton} onClick={() => lunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
+                                    <IoBookmarkOutline/>
+                                </button>
+                        }
+                    </div>
+                    
+                    <div css={s.feedFooter}>
+                    {/* 좋아요 */}
+                    {
+                        likeQuery.isLoading 
+                        ? <></>
+                        : likeQuery.data.data.likeStatus > 0 
+                            ? 
+                                <button css={s.feedFooterButton} onClick={() => deleteLike.mutate(feed.feedId)}> 
+                                    <AiFillLike /> <span>{likeQuery.data.data.totalCount}</span>
+                                </button>
+                            :
+                                <button css={s.feedFooterButton} onClick={() => likeFeed.mutate(feed.feedId)}> 
+                                    <AiOutlineLike /> <span>{likeQuery.data.data.totalCount}</span>
+                                </button>
+                        }
+                        
+                        {/* 댓글 아이콘 */}
+                        <button css={s.feedFooterButton} onClick={() => setIsCommentOpen(!isCommentOpen)}><FaRegCommentAlt /></button>
+                        {/* 신고하기 */}
+                        <button css={s.feedFooterButton}><BsExclamationCircle /></button>
+                    </div>
+                    {/* 댓글 아이콘 눌렀을 때 */}
+                    {
+                        isCommentOpen 
+                        ?
+                        <FeedCardComment feedId={feed.feedId}/>
+                        :
+                        <></>
+                    }
+                </li>
+            </div>
+            :
+            <></>
+            }
+            </div>
     );
 }
 

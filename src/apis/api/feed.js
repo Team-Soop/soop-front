@@ -35,3 +35,11 @@ export const updateFeedComment = async (data) => {
 export const deleteFeedComment = async (data) => {
     return await instance.delete(`/feed/comment/delete/${data}`);
 }
+
+export const getMypageFeedList = async (userId) => {
+    return await instance.get(`/account/mypage/feed/${userId}`)
+}
+
+export const deleteMypageFeed = async (feedId) => {
+    return await instance.delete(`/account/mypage/feed/${feedId}`);
+}
