@@ -8,3 +8,7 @@ export const reportRequst = async(data) => {
 export const searchReportRequest = async (params) => {
   return await instance.get("/report/search", {params});
 }
+
+export const searchCompletedReport = async (params) => {
+  return await instance.get("/report/search/completed", {params})
+}

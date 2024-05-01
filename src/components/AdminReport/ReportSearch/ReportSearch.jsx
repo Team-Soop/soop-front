@@ -8,18 +8,18 @@ import Select from "react-select";
 import { useReactSelect } from "../../../hooks/useReactSelect";
 
 
-function AdminReportSearch(props) {
+function ReportSearch(props) {
   const [reportList, setReportList] = useState([]);
   const [isContentOpen, setIsContentOpen] = useState(false);
   const [selectedReport, setSelectedReport] = useState({
     category: '',
     content: '',
     boardId: '',
-    menuCategoryId:''
+    menuCategoryId: ''
   });
-  const selectedPageName = useReactSelect({value: 0, label: "전체"})
+  const selectedPageName = useReactSelect({ value: 0, label: "전체" })
 
-  
+
   const selectOptions = [
     {
       value: 0,
@@ -41,21 +41,21 @@ function AdminReportSearch(props) {
 
 
   const searchReportQuery = useQuery(
-    ["searchReportQuery", selectedPageName.option.value], 
+    ["searchReportQuery", selectedPageName.option.value],
     async () => await searchReportRequest({
       menuCategoryId: selectedPageName.option.value
     }),
     {
       refetchOnWindowFocus: false,
       onSuccess: response => {
-        console.log(response);
+        // console.log(response);
         setReportList(() => response.data.map(response => {
           return response
         }))
       },
     }
-    
-)
+
+  )
 
   // 신고 내용 컴포넌트 opne 버튼
   const openContent = (userId, reportCategories, reportContent, boardId, menuCategoryId) => {
@@ -65,13 +65,15 @@ function AdminReportSearch(props) {
       category: reportCategories,
       content: reportContent,
       boardId: boardId,
-      menuCategoryId: menuCategoryId
+      menuCategoryId: menuCategoryId,
+      searchReportQuery: searchReportQuery
     })
   }
 
 
   return (
     <div>
+      <h1>Report</h1>
       <div>
         <Select
           options={selectOptions}
@@ -95,7 +97,7 @@ function AdminReportSearch(props) {
           </thead>
           <tbody>
             {
-              reportList.map(report => 
+              reportList.map(report =>
                 <tr key={report.reportId}>
                   <td>{report.reportId}</td>
                   <td>{report.menuCategoryId}</td>
@@ -116,15 +118,18 @@ function AdminReportSearch(props) {
 
       <div>
         {
-          isContentOpen ? 
+          isContentOpen ?
             <ReportComent
               userId={selectedReport.userId}
               category={selectedReport.category}
               content={selectedReport.content}
               boardId={selectedReport.boardId}
               menuCategoryId={selectedReport.menuCategoryId}
+              searchReportQuery={selectedReport.searchReportQuery}
+              setIsContentOpen={setIsContentOpen}
+              isContentOpen={isContentOpen}
             />
-          :
+            :
             <></>
         }
       </div>
@@ -133,4 +138,4 @@ function AdminReportSearch(props) {
   );
 }
 
-export default AdminReportSearch;
+export default ReportSearch;
