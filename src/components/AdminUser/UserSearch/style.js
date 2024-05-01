@@ -1,5 +1,39 @@
 import { css } from "@emotion/react";
 
+export const searchBar = css`
+    box-sizing: border-box;
+    display: flex;
+    margin: 5px 0px;
+    border: 1px solid #dbdbdb;
+`;
+
+export const searchInput = css`
+    box-sizing: border-box;
+    flex-grow: 1;
+    border: none;
+    border-left: 1px solid #dbdbdb;
+    outline: none;
+    padding: 10px;
+    background-color: #fdfdfd;
+    box-shadow: inset 0px 0px 5px #00000011;
+`;
+
+export const searchButton = css`
+    box-sizing: border-box;
+    border: none;
+    border-left: 1px solid #dbdbdb;
+    width: 60px;
+    background-color: white;
+    cursor: pointer;
+    &:hover {
+        background-color: #fafafa;
+    }
+    &:active {
+        background-color: #eeeeee;
+    }
+`;
+
+
 export const tableLayout = css`
     position: relative;
     border: 1px solid #dbdbdb;
