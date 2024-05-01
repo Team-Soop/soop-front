@@ -5,5 +5,4 @@ export const container = css`
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #fafafa;
 `;

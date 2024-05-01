@@ -8,12 +8,13 @@ export const feedlayout= css`
   position: relative;
   box-sizing: border-box;
   padding: 10px;
-  border: 1px solid #dbdbdb;
-  border-radius: 5px;
+  border: 2px solid #ffffff;
+  border-radius: 10px;
   margin: 30px 80px;
   min-height: 150px;
   max-height: 700px;
   list-style: none;
+  background-color: #ffffff96;
 `;
 
 export const feedHeader = css`

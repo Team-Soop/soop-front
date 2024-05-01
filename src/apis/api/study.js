@@ -9,7 +9,7 @@ export const saveStudyGroup = async (data) => {
 }
 
 export const updateStudyGroup = async (data) => {
-    return await instance.put(`study/update/${data.id}`, data.data)
+    return await instance.put(`/study/update/${data.id}`, data.data)
 }
 
 export const searchStudyList = async () => {
@@ -23,3 +23,27 @@ export const searchStudyBoard = async (id) => {
 export const deleteStudyGroup = async (id) => {
     return await instance.delete(`/study/delete/${id}`)
 } 
+
+export const searchWaitingMember = async (id) => {
+    return await instance.get(`/study/waiting/${id}`)
+}
+
+export const searchRecruitment = async (id) => {
+    return await instance.get(`/study/recruitment/${id}`)
+}
+
+export const applyPeriod = async (data) => {
+    return await instance.post(`/study/apply/period`, data)
+}
+
+export const admissionWatingMember = async (data) => {
+    return await instance.put(`/study/admission`, data)
+}
+
+export const refuseWatingMember = async (waitingId) => {
+    return await instance.put(`/study/refuse/${waitingId}`,)
+}
+
+export const resignMember = async (recruitmentId) => {
+    return await instance.delete(`/study/recruitment/${recruitmentId}`)
+}
