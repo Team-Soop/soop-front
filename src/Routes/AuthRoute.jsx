@@ -5,7 +5,6 @@ import Mypage from '../pages/Mypage/Mypage';
 import ClassSchedulePage from '../pages/ClassSchedulePage/ClassSchedulePage';
 import StudyGroupPage from '../pages/StudyGroupPage/StudyGroupPage';
 import FeedPage from '../pages/FeedPage/FeedPage';
-import Admin from '../pages/Admin/Admin';
 import AuthPage from '../pages/AuthPage/AuthPage';
 import { useQuery } from 'react-query';
 import { getPrincipalRequest } from '../apis/api/principal';
@@ -20,6 +19,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { rightSideBarState, sideMenuState } from '../atoms/SideMenuAtom';
 import AccountRoute from './AccountRoute';
 import RootSideMenuRight from '../components/RootSideMenuRight/RootSideMenuRight';
+import AdminRoute from './AdminRoute';
 
 function AuthRoute(props) {
 
@@ -62,7 +62,7 @@ function AuthRoute(props) {
             <Routes>
               <Route path="/auth/*" element={<AuthPage />} />
               {/* Admin 권한만 접근 가능 */}
-              <Route path='/admin' element={<Admin />} />
+              <Route path='/admin/*' element={<AdminRoute />} />
               <Route path='/' element={<MainPage />} />
               {/* 토큰이 있어야지만 접근 가능 */}
               {/* 임시회원, 일반회원은 접근 불가  */}
@@ -73,8 +73,6 @@ function AuthRoute(props) {
               <Route path='/study/*' element={<StudyRoute />} />
                {/* 임시회원 글작성 불가  */}
               <Route path='/lunch/*' element={<LunchPage />} />
-              {/* 임시회원 글작성 불가 
-              <Route path='/lunch/Detail/:id' element={<LunchDetail />} />   */}
               {/* 임시회원 글작성 불가 */}
               <Route path='/feed' element={<FeedPage />} />
             </Routes>

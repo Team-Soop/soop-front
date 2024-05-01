@@ -4,7 +4,7 @@ import * as s from "./style";
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom'
-import { deleteStudyGroup, searchStudyBoard } from '../../apis/api/study';
+import { deleteStudyGroup, searchRecruitment, searchStudyBoard, searchWaitingMember } from '../../apis/api/study';
 import SaveStduyGroup from "../../components/Study/SaveStudyGroup/SaveStduyGroup";
 import WaitingParticleModal from "../../components/Study/Modal/WaitngParticleModal/WaitingParticleModal";
 import MemberListModal from "../../components/Study/Modal/MemberListModal/MemberListModal";
@@ -13,12 +13,13 @@ import ApplyStudyModal from "../../components/Study/Modal/ApplyStudyModal/ApplyS
 export default function StudyGroupDetailPage() {
     const [ studyContent, setStudyContent ] = useState();
     const [ waitingMember, setWaitingMember ] = useState();
-    const [ periodMember, setPeriodMember] = useState();
+    const [ recruitmentMember, setRecruitmentMember] = useState();
     const [ isWrite, setIsWrite ] = useState(false)
     const [ isOpenWaitingModal, setIsOpenWaitingModal ] = useState(false);
     const [ isOpenMemberListModal, setIsOpenMemberListModal] = useState(false);
     const [ isOpenApplyStudyModal, setIsOpenApplyStudyModal] = useState(false);
     const queryClient = useQueryClient();
+    const principalData = queryClient.getQueryData("principalQuery");
     const searchStudyCategories = queryClient.getQueryData("searchStudyCategories");
     const param = useParams();
 
@@ -28,6 +29,22 @@ export default function StudyGroupDetailPage() {
             refetchOnWindowFocus: false,
             onSuccess: response => {
                 setStudyContent(response.data)
+            }
+        }
+    )
+
+    const searchWaitingMemberQuery = useQuery("searchWaitingMemberQuery", () => searchWaitingMember(param.id),
+        {
+         onSuccess: response => {
+            setWaitingMember(response.data)
+         }
+        }
+    )
+
+    const searchRecruitmentQuery = useQuery("searchRecruitmentQuery", () => searchRecruitment(param.id),
+        {
+            onSuccess: response => {
+                setRecruitmentMember(response.data)
             }
         }
     )
@@ -120,9 +137,9 @@ export default function StudyGroupDetailPage() {
                     memberCount={studyContent.memberCount}
                     setIsWrite={setIsWrite}
                 /> }
-                <WaitingParticleModal isOpen={isOpenWaitingModal} isClose={openWaitingModal}/>
-                <MemberListModal isOpen={isOpenMemberListModal} isClose={openMemberListModal}/>
-                <ApplyStudyModal isOpen={isOpenApplyStudyModal} isClose={openApplyStudyModal} />
+                <WaitingParticleModal isOpen={isOpenWaitingModal} isClose={openWaitingModal} waitingMember={waitingMember}/>
+                <MemberListModal isOpen={isOpenMemberListModal} isClose={openMemberListModal} recruitmentMember={recruitmentMember}/>
+                <ApplyStudyModal isOpen={isOpenApplyStudyModal} isClose={openApplyStudyModal} studyContent={studyContent} waitingMember={waitingMember}/>
             </div>
             : null}
         </>
