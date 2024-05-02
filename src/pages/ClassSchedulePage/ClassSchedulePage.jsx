@@ -63,7 +63,7 @@ function ClassSchedulePage() {
     }, [dailyScheduleData])
 
   return (
-    <>
+    <div css={s.layout}>
       <div css={s.calendar}>
         {
           !searchAllScheduleQuery.isLoading 
@@ -107,7 +107,7 @@ function ClassSchedulePage() {
         !searchAllScheduleQuery.isLoading && <AddClassSchedule viewScheduleDate={viewScheduleDate} originScheduleDate={originScheduleDate} selectTimeOption={selectTimeOption}/>
       }
         <DailyClassSchedule selectTimeOption={selectTimeOption} dailyScheduleData={dailyScheduleData}/>
-    </>
+    </div>
   );
 }
 

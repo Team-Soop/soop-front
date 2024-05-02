@@ -83,7 +83,6 @@ function LunchPage(props) {
     <div>
       <Routes>
         <Route path='/Detail' element={<LunchDetail />}/>
-        <Route path='/report/:menuId/:boardId' element={<Report/>}/>
       </Routes>
 
       <div>

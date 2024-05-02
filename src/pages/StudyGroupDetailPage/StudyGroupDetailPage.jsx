@@ -3,7 +3,7 @@ import * as s from "./style";
 
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { deleteStudyGroup, searchRecruitment, searchStudyBoard, searchWaitingMember } from '../../apis/api/study';
 import SaveStduyGroup from "../../components/Study/SaveStudyGroup/SaveStduyGroup";
 import WaitingParticleModal from "../../components/Study/Modal/WaitngParticleModal/WaitingParticleModal";
@@ -18,6 +18,7 @@ export default function StudyGroupDetailPage() {
     const [ isOpenWaitingModal, setIsOpenWaitingModal ] = useState(false);
     const [ isOpenMemberListModal, setIsOpenMemberListModal] = useState(false);
     const [ isOpenApplyStudyModal, setIsOpenApplyStudyModal] = useState(false);
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
     const principalData = queryClient.getQueryData("principalQuery");
     const searchStudyCategories = queryClient.getQueryData("searchStudyCategories");
@@ -76,6 +77,14 @@ export default function StudyGroupDetailPage() {
         setIsOpenApplyStudyModal(!isOpenApplyStudyModal)
     }
 
+    const isReportOpen = (feedId) => {
+        if(window.confirm("이 게시물을 신고 하시겠습니까?")){
+          navigate(`/report/2/${feedId}`)
+        // console.log(feedId)
+        }
+        return;
+      }
+
     return (
         <>
         {studyContent
@@ -85,7 +94,7 @@ export default function StudyGroupDetailPage() {
                 <div css={s.contentBox}>
                     <div css={s.header}>
                         <div>제목: {studyContent.studyTitle}</div>
-                        <div>신고 아이콘</div>
+                        <div onClick={() => isReportOpen(studyContent.studyId)}>신고 아이콘</div>
                     </div>
                     <div>작성자 - {studyContent.nickName}</div>
                     <div>
