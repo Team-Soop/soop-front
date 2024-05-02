@@ -5,6 +5,9 @@ export const userBanRequest = async (userId) => {
 }
 
 export const searchUserRequest = async (params) => {
-  console.log(params);
   return await instance.get("/user/search", {params});
 }
+
+// export const getUserCountRequest = async (params) => {
+//   return await instance.get("/user/search/count", {params});
+// }

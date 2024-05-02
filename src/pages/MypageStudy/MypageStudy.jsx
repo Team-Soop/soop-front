@@ -7,7 +7,7 @@ export default function MypageStudy(set) {
     const setSideMenuSelectNum = useSetRecoilState(sideMenuSelectNum)
 
     useEffect(() => {
-        setSideMenuSelectNum(2)
+        setSideMenuSelectNum(1)
     })
 
 
