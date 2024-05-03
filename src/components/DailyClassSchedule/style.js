@@ -17,7 +17,7 @@ export const thead = css`
         justify-content: center;
         align-items: center;
         border: 1px solid #dbdbdb;
-        width: 170px;
+        width: 100%;
         height: 30px;
         font-size: 16px;
     }
@@ -34,7 +34,7 @@ export const bodyLayout = css`
 
 export const tableData = css`
     border: 1px solid #dbdbdb;
-    width: 170px;
+    width: 100%;
     height: 60px;
     
     & > div {

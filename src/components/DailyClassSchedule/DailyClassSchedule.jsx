@@ -13,9 +13,9 @@ export default function DailyClassSchedule({ selectTimeOption, dailyScheduleData
         const row = [];
         for (let j = 0; j < numCols; j++) {
             if (j === 0) { // 첫번째 행 timeOption 지정 (HH시 MM분 ~ HH시 MM분)
-                row.push(<div>{selectTimeOption[i].label}</div>)
+                row.push({elements: <div>{selectTimeOption[i].label}</div>})
             } else { // body 데이터 기본값 "-" 설정
-                row.push(<div>-</div>)
+                row.push({elements: <div></div>})
             }
         }
         table.push(row);
