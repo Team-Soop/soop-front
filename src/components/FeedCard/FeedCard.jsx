@@ -14,9 +14,11 @@ import { AiOutlineAlert } from "react-icons/ai";
 import Slider from "react-slick";
 import { useRecoilValue } from "recoil";
 import { sideMenuState } from "../../atoms/SideMenuAtom";
+import { useNavigate } from "react-router-dom";
 
 function FeedCard({feed}) {
     const sanitizer = DOMPurify.sanitize;
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
     const principalData = queryClient.getQueryData("principalQuery");
     const [ isCommentOpen, setIsCommentOpen ] = useState(false);
@@ -118,6 +120,14 @@ function FeedCard({feed}) {
     const editMypageFeed = () => {
         
     }
+
+    const isReportOpen = (feedId) => {
+        if(window.confirm("이 게시물을 신고 하시겠습니까?")){
+          navigate(`/report/1/${feedId}`)
+        // console.log(feedId)
+        }
+        return;
+      }
     
   
     return (
@@ -183,7 +193,7 @@ function FeedCard({feed}) {
                         {/* 댓글 아이콘 */}
                         <button css={s.feedFooterButton} onClick={() => setIsCommentOpen(!isCommentOpen)}><FaRegCommentAlt /></button>
                         {/* 신고하기 */}
-                        <button css={s.feedFooterButton}><BsExclamationCircle /></button>
+                        <button css={s.feedFooterButton} onClick={() => {isReportOpen(feed.feedId)}}><BsExclamationCircle /></button>
                         {/* <AiOutlineAlert /> 신고하기아이콘 */}
                     </div>
 
@@ -259,7 +269,7 @@ function FeedCard({feed}) {
                         {/* 댓글 아이콘 */}
                         <button css={s.feedFooterButton} onClick={() => setIsCommentOpen(!isCommentOpen)}><FaRegCommentAlt /></button>
                         {/* 신고하기 */}
-                        <button css={s.feedFooterButton}><BsExclamationCircle /></button>
+                        <button css={s.feedFooterButton} onClick={() => isReportOpen(feed.feedId)}><BsExclamationCircle /></button>
                     </div>
                     {/* 댓글 아이콘 눌렀을 때 */}
                     {

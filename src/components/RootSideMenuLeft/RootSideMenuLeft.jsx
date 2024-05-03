@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { useQueryClient } from "react-query";
 import * as s from "./style";
+
+import { useQueryClient } from "react-query";
 import { useEffect, useState } from "react";
 import { RiAccountPinBoxLine } from "react-icons/ri";
 import { HiOutlineBellAlert } from "react-icons/hi2";
@@ -12,6 +13,7 @@ import { useRecoilValue } from "recoil";
 import { sideMenuSelectNum, sideMenuState } from "../../atoms/SideMenuAtom";
 
 import { Link } from "react-router-dom";
+import UserAlarm from "../UserAlarm/UserAlarm";
 
 
 function RootSideMenuLeft() {
@@ -20,6 +22,7 @@ function RootSideMenuLeft() {
   const queryClient = useQueryClient();
   const principalQueryState = queryClient.getQueryState("principalQuery");
   const getSideMenuState = useRecoilValue(sideMenuState) // side 메뉴 전환 상태 (0 = 디폴트 / 1 = 메인 / 2 = 마이페이지 / 3 = 어드민페이지)
+  const getSideMenuState = useRecoilValue(sideMenuState) // side 메뉴 전환 상태 (0 = default / 1 = 메인 / 2 = 마이 / 3 = 관리자)
   const getSideMenuSelectNum = useRecoilValue(sideMenuSelectNum) // 선택한 메뉴 Num (2번 - study 사용 중)
   
   useEffect(() => {

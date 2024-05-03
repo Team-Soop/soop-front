@@ -16,6 +16,10 @@ export const searchStudyList = async () => {
     return await instance.get("/study/boardlist")
 }
 
+export const mySearchStudyList = async (userId) => {
+    return await instance.get(`study/boardlist/${userId}`)
+}
+
 export const searchStudyBoard = async (id) => {
     return await instance.get(`/study/board/${id}`)
 }

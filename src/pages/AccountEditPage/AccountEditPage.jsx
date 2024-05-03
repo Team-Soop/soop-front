@@ -8,6 +8,8 @@ export default function AccountEditPage() {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const principalData = queryClient.getQueryData("principalQuery");
+
+    
   
     // 이메일 인증하기
     const sendAuthMailMutation = useMutation({
