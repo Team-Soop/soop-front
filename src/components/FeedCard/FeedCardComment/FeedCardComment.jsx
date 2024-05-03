@@ -121,25 +121,25 @@ function FeedCardComment({feedId}) {
           </div>
           :
           <div key={comment.feedCommentId}>
-            <div css={s.feedComments}>
-              <div css={s.feedCommentUser}>
+            <div >
+              <div >
                 {!!comment.feedCommentUserProfileImgUrl 
                 ? comment.feedCommentUserProfileImgUrl 
                 : <FaRegUser /> }
                 {comment.feedCommentNickName}
               </div>
-              <div css={s.feedComment}>
+              <div >
                 {comment.feedCommentContent}
               </div>
             </div>
 
-            <div>
+            <div css={s.editCommentLayout}>
               {
                 comment.feedCommentUserId === principalData.data.userId
                   ?
-                  <div css={s.commentEdit}>
-                    <button css={s.commentEditButton} onClick={() => openClickCommentInput(comment.feedCommentId)}>수정</button>
-                    <button css={s.commentEditButton}onClick={() => deletClickFeedComment(comment.feedCommentId)}>삭제</button>
+                  <div css={s.editCommentButton}>
+                    <button onClick={() => openClickCommentInput(comment.feedCommentId)}>수정</button>
+                    <button onClick={() => deletClickFeedComment(comment.feedCommentId)}>삭제</button>
                   </div>
                   :
                   <div></div>
@@ -150,16 +150,16 @@ function FeedCardComment({feedId}) {
         ))
       }
 
-      <div css={s.commentReg}>
-        댓글작성
+      <div css={s.addCommentLayout}>
+        <span>댓글작성</span>
         <input 
-          css={s.commentInput}
+          css={s.feedCommentInput}
           type="text" 
           value={commentSaveInputValue}
           placeholder='댓글 입력'
           onChange={e => setCommentSaveInputValue(e.target.value)}
         />
-        <button css={s.commentInputButton} onClick={addClickSaveComment}>등록</button>
+        <button css={s.addComment} onClick={addClickSaveComment}>등록</button>
       </div>
     </div>
   );
