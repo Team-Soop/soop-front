@@ -106,6 +106,7 @@ function RootSideMenuLeft() {
           :
           <button css={s.sideMenuLeftFooterOptions}><Link to={'/auth/signin'}><GoSignIn /></Link></button>
         }
+        <></>
       </div>
     </div>
   );
