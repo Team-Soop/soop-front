@@ -15,6 +15,8 @@ import Slider from "react-slick";
 import { useRecoilValue } from "recoil";
 import { sideMenuState } from "../../atoms/SideMenuAtom";
 import { useNavigate } from "react-router-dom";
+import 'react-slideshow-image/dist/styles.css'
+import { Slide } from "react-slideshow-image";
 
 function FeedCard({feed}) {
     const sanitizer = DOMPurify.sanitize;
@@ -146,13 +148,17 @@ function FeedCard({feed}) {
 
                     {/* 피드(이미지, 게시글) */}
                     <div css={s.feedcontents}>
-                        <div>
-                            <button></button>
-                            {feed.feedImgUrl.map((imgUrl, index) => (    
-                                <img key={index} src={imgUrl} alt="" css={s.feedImg}/>
-                            ))}   
-                            <button></button>
-                        </div>
+                        {
+                            feed.feedImgUrl.length > 0 && 
+                            <div className="slide-container">
+                                <Slide autoplay={false} infinite={false}>
+                                    {feed.feedImgUrl.map((imgUrl, index)=> (
+                                        <div key={index} css={s.feedImg(imgUrl)}></div>
+                                    ))} 
+                                </Slide>
+                            </div>
+                        }
+                        
                         
                         <div css={s.feedText} dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
                     </div>
