@@ -5,6 +5,7 @@ export const layout = css`
     flex-direction: column;
     margin: 10px;
     width: 100%;
+    height: 100vh;
 `
 
 export const calendar = css`

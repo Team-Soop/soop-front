@@ -52,7 +52,7 @@ function FeedPage(props) {
               )}
             </ul>
           )
-        : <div>로그인을 해주세요.</div>
+        : <div>빈 게시판입니다.</div>
       }
       </div>
 

@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+import * as s from "./style";
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
@@ -44,7 +46,7 @@ export default function AccountEditPage() {
     
   
     return (
-      <div>
+      <div css={s.accountEditPage}>
         <div>사용자이름: {principalData?.data.username}</div>
         <div>이름: {principalData?.data.name}</div>
         <div>닉네임: {principalData?.data.nickname}</div>
@@ -58,7 +60,7 @@ export default function AccountEditPage() {
               <div></div>
           }
         </div>
-        <div>
+        <div css={s.accountEditButtons}>
           <button>정보 수정</button>
           <button onClick={() => navigate("/account/edit/password")}>비밀번호 수정</button>
           <button onClick={handleLogoutClick}>로그아웃</button>

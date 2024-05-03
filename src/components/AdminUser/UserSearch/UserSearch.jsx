@@ -45,8 +45,6 @@ function UserSearch() {
     }
   )
 
-  console.log(userList);
-
 
   // const getUserCountQuery = useQuery(
   //   ["getUserCountQuery", searchUserQuery.data],
@@ -68,11 +66,12 @@ function UserSearch() {
 
   const searchTypeOptions = [
     { value: 0, label: "전체" },
-    { value: 1, label: "아이디" },
-    { value: 2, label: "닉네임" },
-    { value: 3, label: "이름" },
-    { value: 4, label: "이메일" },
-    { value: 5, label: "가입일" }
+    { value: 1, label: "userId" },
+    { value: 2, label: "아이디" },
+    { value: 3, label: "닉네임" },
+    { value: 4, label: "이름" },
+    { value: 5, label: "이메일" },
+    { value: 6, label: "가입일" }
   ]
 
   const Authority = [

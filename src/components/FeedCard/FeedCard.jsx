@@ -11,12 +11,12 @@ import { useEffect, useState } from "react";
 import { saveBoard, saveDeleteBoard, saveGetBoard } from "../../apis/api/saveBoards";
 import FeedCardComment from "./FeedCardComment/FeedCardComment";
 import { AiOutlineAlert } from "react-icons/ai";
-import Slider from "react-slick";
 import { useRecoilValue } from "recoil";
 import { sideMenuState } from "../../atoms/SideMenuAtom";
 import { useNavigate } from "react-router-dom";
-import 'react-slideshow-image/dist/styles.css'
-import { Slide } from "react-slideshow-image";
+import Slider from "react-slick";
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 function FeedCard({feed}) {
     const sanitizer = DOMPurify.sanitize;
@@ -143,22 +143,22 @@ function FeedCard({feed}) {
                     {/* 유저정보 */}
                     <div css={s.feedHeader}>
                         <div css={s.feedHeaderProfileImg}><img src={feed.profileImgUrl} alt="" /></div>
-                        <div css={s.feedHeaderUser}>{feed.username}</div>
+                        <div css={s.feedHeaderUser}>{feed.nickname}</div>
                     </div>
 
                     {/* 피드(이미지, 게시글) */}
                     <div css={s.feedcontents}>
-                        {
-                            feed.feedImgUrl.length > 0 && 
-                            <div className="slide-container">
-                                <Slide autoplay={false} infinite={false}>
-                                    {feed.feedImgUrl.map((imgUrl, index)=> (
-                                        <div key={index} css={s.feedImg(imgUrl)}></div>
-                                    ))} 
-                                </Slide>
-                            </div>
-                        }
-                        
+                        <div>
+                            <button></button>
+                            {/* <Slider {...settings}> */}
+                            {feed.feedImgUrl.map((imgUrl, index) => (   
+                                <div key={index}>
+                                    <img  src={imgUrl} alt="" css={s.feedImg}/>
+                                </div> 
+                            ))}   
+                            {/* </Slider> */}
+                            <button></button>
+                        </div>
                         
                         <div css={s.feedText} dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
                     </div>
@@ -236,11 +236,11 @@ function FeedCard({feed}) {
                         
                         <div css={s.feedText} dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
                     </div>
-                    {/* 수정, 삭제 */}
+                    
+                    {/* 수정, 삭제, 저장 */}
+                    <div css={s.feedfavorite}>
                     <button onClick={editMypageFeed}>수정</button>
                     <button onClick={deleteMypageFeedButton}>삭제</button>
-                    {/* 저장하기 */}
-                    <div css={s.feedfavorite}>
                         {
                             boardSaveQuery.isLoading
                             ? <></>

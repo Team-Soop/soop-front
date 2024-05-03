@@ -1,12 +1,15 @@
 import { css } from "@emotion/react";
 
 export const layout = css`
-    position: relative;
+    position: fixed;
     box-sizing: border-box;
     border: 2px solid #ffffff73;
     border-radius: 20px;
+    transform: translateY(-50%);
+    left: 40px;
+    top: 50%;
     width: 300px;
-    height: 100%;
+    height: 90%;
 
     background-color: #fafafa88;
 
@@ -41,7 +44,7 @@ export const profileLink =  css`
 
 export const sideMenuUserImg = css`
     margin-right: 20px;
-    border: 1px solid #ffffff73;
+    border: 1px solid #dbdbdb;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -52,10 +55,7 @@ export const sideMenuUser = css`
 `;
 
 export const sideMenu = css`
-    box-sizing: border-box;
     margin-top: 50px;
-    border-top: 2px solid #ffffff;
-    padding-top: 20px;
     width: 100%;
 `;
 
@@ -63,7 +63,7 @@ export const sideMenuList = css`
     /* display: flex;
     justify-content: center;
      */
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     cursor: pointer;
 
@@ -76,7 +76,7 @@ export const sideMenuList = css`
         transition: all 0.2s ease-in-out;
     }
     a:hover{
-        background-color: #ffffffd5;
+        background-color: #c5c5c5;
         border-radius: 5px;
     }
     a:link{
@@ -96,7 +96,6 @@ export const sideMenuLeftFooter = css`
     justify-content: space-between;
     text-align: center;
     bottom: 0;
-    border-top: 2px solid #ffffff73;
     width: 100%;
     height: 50px;
 `;
@@ -104,8 +103,8 @@ export const sideMenuLeftFooter = css`
 export const sideMenuLeftFooterOptions = css`
     font-size: 25px;
     width: 33%;
-    background-color: transparent;
     border: none;
+    background-color: transparent;
     color: #333333;
     cursor: pointer;
 
