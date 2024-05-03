@@ -46,9 +46,9 @@ function RootSideMenuLeft() {
   return (
     <div css={s.layout}>
       <div>
-        <a href="http://localhost:3000">
+        <Link to="/feed">
           <img  src={logo} alt="" />KorIt-Soop
-        </a>
+        </Link>
       </div>
       <div css={s.sideMenuProfile}>
         <Link css={s.profileLink} to={'/account/mypage'}>
@@ -67,19 +67,19 @@ function RootSideMenuLeft() {
         ?
         <div css={s.sideMenu}>
           <div css={s.sideMenuList}>
-            <div><a href="http://localhost:3000/feed">자유게시판</a></div>
-            <div><a href="http://localhost:3000/schedule">강의스케줄</a></div>
-            <div><a href="http://localhost:3000/study/boardlist">스터디</a></div>
-            <div><a href="http://localhost:3000/lunch">오늘 뭐 먹지?</a></div>
-            <div><a href="http://localhost:3000">즐겨찾기 링크연결</a></div>
+            <Link to="/feed">자유게시판</Link>
+            <Link to="/schedule">강의스케줄</Link>
+            <Link to="/study/boardlist">스터디</Link>
+            <Link to="/lunch">오늘 뭐 먹지?</Link>
+            <Link to="/">즐겨찾기 링크연결</Link>
           </div>
         </div>
 
         :
         <div css={s.sideMenu}>
-          <div css={s.sideMenuList}><a href="http://localhost:3000/account/mypage/feed">자유게시판</a></div>
+          <div css={s.sideMenuList}><Link to="/account/mypage/feed">자유게시판</Link></div>
           <div css={s.sideMenuList}>
-            <a href="http://localhost:3000/account/mypage/study">스터디</a>
+            <Link to="/account/mypage/study">스터디</Link>
           </div>
             {
               getSideMenuSelectNum === 2 &&
@@ -88,10 +88,10 @@ function RootSideMenuLeft() {
                 <div>모집 중 스터디</div>
               </>
             }
-          <div css={s.sideMenuList}><a href="http://localhost:3000/account/mypage/lunch">오늘 뭐 먹지?</a></div>
-          <div css={s.sideMenuList}><a href="http://localhost:3000/account/mypage/favorite">즐겨찾기</a></div>
+          <div css={s.sideMenuList}><Link to="/account/mypage/lunch">오늘 뭐 먹지?</Link></div>
+          <div css={s.sideMenuList}><Link to="/account/mypage/favorite">즐겨찾기</Link></div>
 
-          <div css={s.sideMenuList}><a href="http://localhost:3000/account/edit">회원정보</a></div>
+          <div css={s.sideMenuList}><Link to="/account/edit">회원정보</Link></div>
         </div>
       }
 
