@@ -15,7 +15,6 @@ export const addFeedRootLayout = css`
 
 export const addFeedLayout = css`
     position: fixed;
-    z-index: 999;
     display: flex;
     justify-content: center;
     align-items: center;

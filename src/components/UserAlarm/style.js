@@ -2,42 +2,29 @@ import { css } from "@emotion/react";
 
 export const layout = css`
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
+    position: absolute;
+    padding: 10px;
     border: 2px solid #ffffff73;
     border-radius: 20px;
+    top: 50px;
+    right: 50px;
     width: 320px;
     height: 50vh;
     z-index: 500;
 
+    overflow: auto;
+
     background-color: #fafafa88;
 `
 
-export const container = css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 5px;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    &::-webkit-scrollbar {
-        display: none;
-    }
-`
-
 export const alarmCard = css`
-    box-sizing: border-box;
     position: relative;
     width: 240px;
     /* height: 100%; */
     margin: 10px;
     border: 1px solid #ffffff;
     border-radius: 5px;
-    padding: 10px;
-    background-color: #fafafa88;
+    background-color: white;
 `
 
 export const cardDetail = css`
@@ -49,7 +36,6 @@ export const toUser = css`
     display: flex;
     align-items: center;
     margin: 5px 0px;
-    cursor: default;
 
     & > img {
         width: 20px;
@@ -58,23 +44,26 @@ export const toUser = css`
 
 export const closeButton = css`
     position: absolute;
-    top: 10px;
-    right: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    width: 20px;
-    height: 20px;
-    background-color: transparent;
-    cursor: pointer;
-    & > * {
-        font-size: 18px;
-        color: #1f4d36;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    
+    & > button {
+        display: none;
+        position: absolute;
+        width: 20px;
+        top: 5px;
+        right: 5px;
+    }
+
+    :hover {
+        & > button {
+            display: block;
+        }
     }
 `
 
 export const content = css`
     font-size: 14px;
-    cursor: default;
 `

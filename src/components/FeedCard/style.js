@@ -4,36 +4,36 @@ export const feedCardRoot = css`
   /* position: relative; */
 `;
 
-export const feedlayout= css`
+export const feedlayout = css`
   position: relative;
   box-sizing: border-box;
-  margin-bottom: 20px;
   padding: 10px;
   border: 2px solid #ffffff;
   border-radius: 10px;
+  margin: 30px 80px;
   min-height: 150px;
+  max-height: 700px;
   list-style: none;
   background-color: #ffffff96;
 `;
 
 export const feedHeader = css`
-  box-sizing: border-box;
-  margin-bottom: 10px;
-  border-bottom: 2px solid #ffffff;
-  padding: 5px;
+  height: 40px;
   width: 100%;
+  margin-bottom: 10px;
 `;
 
 export const feedHeaderProfileImg = css`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #000000;
+  background-color: aqua;
 `;
 
 export const feedHeaderUser = css`
-  box-sizing: border-box;
+  position: absolute;
   padding: 0 50px;
+  top: 20px;
   width: 250px;
 `;
 
@@ -43,8 +43,10 @@ export const feedcontents = css`
   border-bottom: 1px solid #cccccc;
   width: 100%;
   min-height: 50px;
+  max-height: 600px;
   `;
- 
+
+
 export const feedImg = (url) => css`
 box-sizing: border-box;
 display: flex;
@@ -57,6 +59,7 @@ background-repeat: repeat;
 background-position: center;
 background-image: url(${url});
 `;
+
 
 export const feedText = css`
   padding: 5px 0;
