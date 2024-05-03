@@ -10,17 +10,17 @@ import FeedCard from "../../components/FeedCard/FeedCard";
 import Modal from 'react-modal';
 import { MdOutlineCancel } from "react-icons/md";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { rightSideBarState } from "../../atoms/SideMenuAtom";
+import { rightSideBarState, sideMenuState } from "../../atoms/SideMenuAtom";
 
 function FeedPage(props) {
   const queryClient = useQueryClient();
   const principalData = queryClient.getQueryData("principalQuery");
   const [ feedList, setFeedList ] = useState([]);
   const [ modal, setModal ] = useState(false);
-  const setRightSideMenu = useSetRecoilState(rightSideBarState);
+  const setSideMenuState = useSetRecoilState(sideMenuState);
 
   useEffect(() => {
-    setRightSideMenu(1)
+    setSideMenuState(1)
   }, [])
 
   // 피드 리스트 get

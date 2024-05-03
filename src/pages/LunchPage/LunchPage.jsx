@@ -2,15 +2,16 @@
 import * as s from "./style";
 
 import LunchWrite from '../../components/LunchWrite/LunchWrite';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { searchAllLunch } from "../../apis/api/lunch";
 import LunchList from "../../components/LunchList/LunchList";
 import LunchDetail from "../../components/LunchDetail/LunchDetail";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { lunchDetailState } from "../../atoms/lunchDetailAtom";
 import Report from "../../components/Report/Report";
+import { sideMenuState } from "../../atoms/SideMenuAtom";
 
 function LunchPage(props) {
   const navigate = useNavigate();
@@ -19,6 +20,12 @@ function LunchPage(props) {
   const [ writeOpen, setWriteOpen ] = useState(false);
   const [ isDetailOpen, setDetailOpen ] = useState(false);
   const [ lunchId, setLunchId ] = useState(0);
+
+  const setSideMenuNum = useSetRecoilState(sideMenuState)
+  useEffect(() => {
+    setSideMenuNum(1)
+  }, [])
+
 
   // 랜더링 될때마다 DB에서 LIST 데이터를 get함
   const searchAllLunchQuery = useQuery("searchAllLunchQuery", searchAllLunch,

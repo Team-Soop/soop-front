@@ -25,7 +25,7 @@ function AdminRoute(props) {
     <>
       <Routes>
         <Route path='/report' element={<AdminReport />} />
-        <Route path='/user/management' element={<UserManagement/>}/>
+        <Route path='/user/management' element={<UserManagement />} />
       </Routes>
     </>
   );

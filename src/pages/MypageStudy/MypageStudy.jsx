@@ -34,7 +34,7 @@ export default function MypageStudy(set) {
     })
 
     useEffect(() => {
-        setSideMenuSelectNum(2)
+        setSideMenuSelectNum(1)
     })
 
     useEffect(() => {

@@ -58,10 +58,10 @@ function ReportComent({ userId, category, content, boardId, menuCategoryId, sear
   // 보드 삭제 클릭 이벤트
   const deleteClickBoard = () => {
     if (window.confirm("해당 게시물을 삭제 하시겠습니까?")) {
-      // deleteBoard.mutate({
-      //   menuCategoryName: menuCategoryId,
-      //   boardId: boardId
-      // })
+      deleteBoard.mutate({
+        menuCategoryName: menuCategoryId,
+        boardId: boardId
+      })
       sendUserAlarm.mutate({
           toUserId: userId,
           fromUserId: principalData.data.userId,
