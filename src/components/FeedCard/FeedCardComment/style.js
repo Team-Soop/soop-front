@@ -1,49 +1,34 @@
 import { css } from "@emotion/react";
 
-export const feedComments = css`
-  
-  width: 100%;
-  height: 40px;
-`;
-
-export const feedCommentUser = css`
-  width: 15%;
-  font-size: 13px;
-  background-color: cadetblue;  /* 구분 */
-`;
-
-export const feedComment = css`
-  width: 85%;
-`;
-
-export const commentEdit = css`
-
-`;
-
-export const commentEditButton = css`
-
-`;
-
-export const commentReg = css`
-  width: 100%;
-  height: 25px;
-`;
-
-export const commentInput = css`
-  box-sizing: border-box;
-  margin-left: 5px;
-  padding: 5px;
-  border: 1px solid #cccccc;
-  width: 75%;
-  height: 25px;
-`;
-
-export const commentInputButton = css`
-  margin-left: 5px;
-  
-  border: 1px solid #cccccc;
-  color: #999999;
-  width: 10%;
-  height: 25px;
+export const editCommentLayout = css`
+`
+export const editCommentButton = css`
   cursor: pointer;
+  button{
+    margin-left: 3px;
+    padding: 3px 5px;
+    width: 40px;
+    border: 1px solid #1f4d36;
+  }
+`
+
+export const addCommentLayout = css`
+  box-sizing: border-box;
+  width: 100%;
 `;
+
+export const feedCommentInput = css`
+  margin: 0 5px;
+  padding: 3px 5px;
+  width: 75%;
+  height: 20px;
+`;
+
+export const addComment = css`
+  padding: 3px 5px;
+  width: 60px;
+  height: 30px;
+  border: 1px solid #1f4d36;
+  cursor: pointer;
+
+`

@@ -42,7 +42,6 @@ function RootSideMenuLeft() {
     window.location.replace("/auth/signin");
   }
   
-  console.log(getSideMenuState);
   
   return (
     <div css={s.layout}>
@@ -106,6 +105,7 @@ function RootSideMenuLeft() {
           :
           <button css={s.sideMenuLeftFooterOptions}><Link to={'/auth/signin'}><GoSignIn /></Link></button>
         }
+        <></>
       </div>
     </div>
   );

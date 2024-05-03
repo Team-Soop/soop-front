@@ -46,17 +46,17 @@ export const feedcontents = css`
   `;
  
 export const feedImg = (url) => css`
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 500px;
-  background-size: cover;
-  background-repeat: repeat;
-  background-position: center;
-  background-image: url(${url});
-  `;
+box-sizing: border-box;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+height: 500px;
+background-size: cover;
+background-repeat: repeat;
+background-position: center;
+background-image: url(${url});
+`;
 
 export const feedText = css`
   padding: 5px 0;
@@ -73,6 +73,7 @@ export const feedFavoriteButton = css`
   border: none;
   background-color: transparent;
   font-size: 20px;
+  color: #1f4d36;
 `;
 
 export const saveFavorite = css`
@@ -92,4 +93,6 @@ export const feedFooterButton = css`
   width: 33%;
   background-color: transparent;
   border: none;
+  font-size: 16px;
+  color: #1f4d36;
 `;
