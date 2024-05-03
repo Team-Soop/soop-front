@@ -21,7 +21,6 @@ function RootSideMenuLeft() {
   const [ principal, setPrincipal ] = useState();
   const queryClient = useQueryClient();
   const principalQueryState = queryClient.getQueryState("principalQuery");
-  const getSideMenuState = useRecoilValue(sideMenuState) // side 메뉴 전환 상태 (0 = 디폴트 / 1 = 메인 / 2 = 마이페이지 / 3 = 어드민페이지)
   const getSideMenuState = useRecoilValue(sideMenuState) // side 메뉴 전환 상태 (0 = default / 1 = 메인 / 2 = 마이 / 3 = 관리자)
   const getSideMenuSelectNum = useRecoilValue(sideMenuSelectNum) // 선택한 메뉴 Num (2번 - study 사용 중)
   
