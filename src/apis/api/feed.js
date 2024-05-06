@@ -41,5 +41,5 @@ export const getMypageFeedList = async (userId) => {
 }
 
 export const deleteMypageFeed = async ({menuCategoryName, feedId}) => {
-    return await instance.delete(`/account/mypage/feed/delete/${menuCategoryName}/${feedId}`);
+    return await instance.delete(`/account/mypage/feed/${menuCategoryName}/${feedId}/delete`);
 }

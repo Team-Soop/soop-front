@@ -105,6 +105,7 @@ function FeedCard({feed}) {
         mutationFn: deleteMypageFeed,
         onSuccess: response => {
             alert("삭제완료");
+            window.location.replace("/account/mypage/feed")
         },
         onError: error => {
             console.log(error);
@@ -114,8 +115,7 @@ function FeedCard({feed}) {
     // 마이페이지 피드 삭제 버튼
     const deleteMypageFeedButton = () => {
         if(window.confirm("삭제하시겠습니까?") === true) {
-            deleteFeed.mutate(feed.feedId)
-            console.log(feed.feedId);
+            deleteFeed.mutate({menuCategoryName: "자유게시판", feedId: feed.feedId})
         } else { 
             return; 
         }
