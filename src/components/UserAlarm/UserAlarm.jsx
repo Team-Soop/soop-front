@@ -17,7 +17,6 @@ export default function UserAlarm() {
     const searchUserAlarmQuery = useQuery("searchUserAlarmQuery", () => searchUserAlarmList(principalData.data.userId), {
         onSuccess: response => {
             setUserAlarmList(response.data)
-            console.log(response.data)
         },
         onError: error => {
             console.log(error)
