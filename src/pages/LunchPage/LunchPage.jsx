@@ -18,8 +18,6 @@ function LunchPage(props) {
   const [ lunchListsData, setLunchListsData ] = useState([]);
   const [ lunchDetailData, setLunchDetailData] = useRecoilState(lunchDetailState);
   const [ writeOpen, setWriteOpen ] = useState(false);
-  const [ isDetailOpen, setDetailOpen ] = useState(false);
-  const [ lunchId, setLunchId ] = useState(0);
 
   const setSideMenuNum = useSetRecoilState(sideMenuState)
   useEffect(() => {
@@ -70,10 +68,8 @@ function LunchPage(props) {
 
   
 
-
   // 상세보기 컴포넌트 클릭 버튼
   const handleOnLunchDetail = (lunchId) => {
-    setDetailOpen(!isDetailOpen)
     navigate(`/lunch/Detail?lunchId=${lunchId}`)
   }
 
@@ -82,9 +78,6 @@ function LunchPage(props) {
     setWriteOpen(!writeOpen);
   }
 
-  // 신고하기 컴포넌트 클릭 버튼
-
-
 
   return (
     <div>
@@ -92,9 +85,9 @@ function LunchPage(props) {
         <Route path='/Detail' element={<LunchDetail />}/>
       </Routes>
 
-      <div>
+      {/* <div>
         <h1>검색</h1>
-      </div>
+      </div> */}
 
       <div>
         카테고리 필터 체크박스
@@ -104,10 +97,7 @@ function LunchPage(props) {
       <div >
         {
           lunchDetailData.map(listData => (
-            <div 
-              key={listData.lunchId}
-              
-            >
+            <div key={listData.lunchId}>
               <button onClick={() => handleOnLunchDetail(listData.lunchId)}>
                 상세보기
               </button>
@@ -134,9 +124,6 @@ function LunchPage(props) {
         }
       </div>
 
-      <div>
-        런치피드 순위 필터 컨테이너
-      </div>
       
     </div>
   );
