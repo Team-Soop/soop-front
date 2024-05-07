@@ -10,7 +10,7 @@ export const layout = css`
     border-radius: 20px;
     width: 320px;
     height: 50vh;
-    z-index: 500;
+    z-index: 0;
     background-color: #fafafa88;
 `
 
