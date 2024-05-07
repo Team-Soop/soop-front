@@ -19,6 +19,8 @@ function FeedPage(props) {
   const [ modal, setModal ] = useState(false);
   const setSideMenuState = useSetRecoilState(sideMenuState);
   const [ rightSideBar, sestRightSideBar ] = useRecoilState(rightSideBarState);
+  const setSideMenuState = useSetRecoilState(rightSideBarState);
+
 
   useEffect(() => {
     setSideMenuState(1)

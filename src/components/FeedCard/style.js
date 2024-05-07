@@ -17,34 +17,53 @@ export const feedlayout = css`
 `;
 
 export const feedHeader = css`
-  box-sizing: border-box;
-  margin-bottom: 10px;
-  border-bottom: 2px solid #ffffff;
+  margin-bottom: 5px;
   padding: 5px;
   width: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 `;
 
 export const feedHeaderProfileImg = css`
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #000000;
+  & > img {
+    width: 100%;
+  }
 `;
 
 export const feedHeaderUser = css`
   box-sizing: border-box;
-  padding: 0 50px;
   width: 250px;
+  font-size: 17px;
+  font-weight: 600;
 `;
 
 export const feedcontents = css`
   margin-bottom: 10px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid #cccccc;
+  padding: 10px 0;
+  border-top: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
   width: 100%;
   min-height: 50px;
   `;
 
+export const slideArrow = css`
+  
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  color: #dfdfdf80;
+`;
 
 export const feedImg = (url) => css`
   box-sizing: border-box;
@@ -61,7 +80,7 @@ export const feedImg = (url) => css`
 
 
 export const feedText = css`
-  padding: 5px 0;
+  padding-top: 8px;
   
 `;
 
@@ -69,6 +88,9 @@ export const feedfavorite = css`
   position: absolute;
   top: 10px;
   right: 10px;
+  button{
+    cursor: pointer;
+  }
 `;
 
 export const feedFavoriteButton = css`
@@ -86,8 +108,8 @@ export const feedFooter = css`
   width: 100%;
   height: 25px;
   button:nth-of-type(2) {
-    border-left: 1px solid #cccccc;
-    border-right: 1px solid #cccccc;
+    border-left: 2px solid #ffffff;
+    border-right: 2px solid #ffffff;
   }
 `;
 
@@ -97,4 +119,5 @@ export const feedFooterButton = css`
   border: none;
   font-size: 16px;
   color: #1f4d36;
+  cursor: pointer;
 `;

@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useState } from "react";
-import { searchUserAlarmList } from "../../apis/api/alarm";
+import { deleteAlarm, searchUserAlarmList } from "../../apis/api/alarm";
 import * as s from "./style";
 
-import { useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import DOMPurify from "dompurify";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
@@ -23,6 +23,19 @@ export default function UserAlarm() {
         }
     })
 
+    const deleteUserAlarmMutation = useMutation("deleteUserAlarmMutation", deleteAlarm, {
+        onSuccess: response => {
+            queryClient.invalidateQueries("searchUserAlarmQuery")
+        },
+        onError: error => {
+
+        }
+    })
+
+    const deleteUserAlarm = (alarmId) => {
+        deleteUserAlarmMutation.mutate(alarmId)
+    }
+
 
   return (
     <div css={s.layout}>
@@ -30,9 +43,9 @@ export default function UserAlarm() {
         <div css={s.container}>
             {
                 !!userAlarmList &&
-                userAlarmList.map((alarm) => {
+                userAlarmList.map((alarm, index) => {
                     return (
-                        <div css={s.alarmCard}>
+                        <div css={s.alarmCard} key={index}>
                             <div css={s.cardDetail}>
                                 <div css={s.toUser}>
                                     <img src={alarm.fromUserProfileImgUrl} alt="" />
@@ -41,7 +54,7 @@ export default function UserAlarm() {
                                 </div>
                                 <div css={s.content} dangerouslySetInnerHTML={{__html: sanitizer(alarm.alarmContent)}}></div>
                             </div>
-                                <button css={s.closeButton}><IoIosCloseCircleOutline /></button>
+                                <button css={s.closeButton} onClick={() => deleteUserAlarm(alarm.alarmId)}><IoIosCloseCircleOutline /></button>
                         </div>
                     )
                 })

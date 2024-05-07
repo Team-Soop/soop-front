@@ -95,9 +95,9 @@ function StudyGroupPage() {
 			<div>
 				<input type="text" value={searchTitle} onChange={(e) => setSearchTitle(e.target.value)}/>
 				{
-					searchCategory.map((category) => {
+					searchCategory.map((category, index) => {
 						return(
-							<div>
+							<div key={index}>
 								<input type="checkbox" checked={category.checkState} onChange={() => searchCategoryChange(category.studyCategoryId)}/>
 								<label>{category.studyCategoryName}</label>
 							</div>
