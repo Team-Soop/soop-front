@@ -9,6 +9,8 @@ import { useQuery } from "react-query";
 import { searchAllSchedule } from "../../apis/api/schedule";
 import AddClassSchedule from '../../components/AddClassSchedule/AddClassSchedule';
 import DailyClassSchedule from "../../components/DailyClassSchedule/DailyClassSchedule";
+import { rightSideBarState } from "../../atoms/SideMenuAtom";
+import { useRecoilState } from "recoil";
 import AddClassScheduleModal from "../../components/Schedule/Modal/AddClassScheduleModal/AddClassScheduleModal";
 
 function ClassSchedulePage() {
@@ -17,6 +19,12 @@ function ClassSchedulePage() {
   const [ selectDay, setSelectDay ] = useState("")
   const [ dailyScheduleData, setDailyScheduleData ] = useState([])
   const [ selectTimeOption ] = useState([]);
+  const [ rightSideBar, sestRightSideBar ] = useRecoilState(rightSideBarState);
+
+  useEffect(() => {
+    sestRightSideBar(2)
+  },[])
+
   const [ isOpenAddSchedule, setIsOpenAddSchedule ] = useState(false);
 
   // timeOption 설정 (i = Hour, j = Minute)

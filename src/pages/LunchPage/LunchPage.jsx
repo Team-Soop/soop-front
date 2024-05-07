@@ -11,16 +11,18 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { lunchDetailState } from "../../atoms/lunchDetailAtom";
 import Report from "../../components/Report/Report";
-import { sideMenuState } from "../../atoms/SideMenuAtom";
+import { rightSideBarState, sideMenuState } from "../../atoms/SideMenuAtom";
 
 function LunchPage(props) {
   const navigate = useNavigate();
   const [ lunchListsData, setLunchListsData ] = useState([]);
   const [ lunchDetailData, setLunchDetailData] = useRecoilState(lunchDetailState);
   const [ writeOpen, setWriteOpen ] = useState(false);
+  const setSideMenuNum = useSetRecoilState(sideMenuState);
+  const [ rightSideBar, sestRightSideBar ] = useRecoilState(rightSideBarState);
 
-  const setSideMenuNum = useSetRecoilState(sideMenuState)
   useEffect(() => {
+    sestRightSideBar(3)
     setSideMenuNum(1)
   }, [])
 
@@ -31,7 +33,6 @@ function LunchPage(props) {
     retry: 0,
     refetchOnWindowFocus: false,
     onSuccess: response => {
-      console.log(response);
       // List를 위한 data
       setLunchListsData(() => response.data.map(response => {
         return {
