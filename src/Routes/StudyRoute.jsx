@@ -13,7 +13,7 @@ function StudyRoute(props) {
 
     const searchStudyCategories = useQuery("searchStudyCategories", searchStudyCategory,
 	{
-		refetchOnWindowFocus: true,
+		refetchOnWindowFocus: false,
 		onSuccess: response => {
 		}
 	})

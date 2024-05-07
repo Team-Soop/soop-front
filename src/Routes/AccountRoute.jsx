@@ -4,7 +4,7 @@ import Mypage from '../pages/Mypage/Mypage'
 import PasswordEditPage from '../pages/PasswordEditPage/PasswordEditPage'
 import { sideMenuState } from '../atoms/SideMenuAtom'
 import { useSetRecoilState } from 'recoil'
-import AccountEditPage from '../pages/AccountEditPage/AccountEditPage'
+import EditAccountPage from '../pages/EditAccountPage/EditAccountPage'
 import MypageFavoritePage from '../pages/MypageFavoritePage/MypageFavoritePage'
 import MypageStudy from '../pages/MypageStudy/MypageStudy'
 import MypageFeed from '../pages/MypageFeed/MypageFeed'
@@ -24,7 +24,7 @@ export default function AccountRoute() {
         <Route path='/mypage/study' element={<MypageStudy />} />
         <Route path='/mypage/lunch' element={<MypageLunch />} />
         <Route path='/mypage/favorite' element={<MypageFavoritePage />} />
-        <Route path='/edit' element={<AccountEditPage />} />
+        <Route path='/edit' element={<EditAccountPage />} />
         <Route path='/edit/password' element={<PasswordEditPage />}/>
     </Routes>
   )
