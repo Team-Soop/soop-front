@@ -7,3 +7,7 @@ export const alarmReportComplete = async (data) => {
 export const searchUserAlarmList = async (userId) => {
   return await instance.get(`/alarm/search/${userId}`)
 }
+
+export const deleteAlarm = async (alarmId) => {
+  return await instance.delete(`alarm/delete/${alarmId}`)
+}

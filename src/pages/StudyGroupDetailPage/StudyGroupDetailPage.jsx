@@ -9,6 +9,7 @@ import SaveStduyGroup from "../../components/Study/SaveStudyGroup/SaveStduyGroup
 import WaitingParticleModal from "../../components/Study/Modal/WaitngParticleModal/WaitingParticleModal";
 import MemberListModal from "../../components/Study/Modal/MemberListModal/MemberListModal";
 import ApplyStudyModal from "../../components/Study/Modal/ApplyStudyModal/ApplyStudyModal";
+import DOMPurify from "dompurify";
 
 export default function StudyGroupDetailPage() {
     const [ studyContent, setStudyContent ] = useState();
@@ -18,6 +19,7 @@ export default function StudyGroupDetailPage() {
     const [ isOpenWaitingModal, setIsOpenWaitingModal ] = useState(false);
     const [ isOpenMemberListModal, setIsOpenMemberListModal] = useState(false);
     const [ isOpenApplyStudyModal, setIsOpenApplyStudyModal] = useState(false);
+    const sanitizer = DOMPurify.sanitize;
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const principalData = queryClient.getQueryData("principalQuery");
@@ -127,7 +129,7 @@ export default function StudyGroupDetailPage() {
                         <div>인원: {studyContent.memberCount}/{studyContent.studyMemberLimited}</div>
                     </div>
                     <div>
-                        {studyContent.studyContent}
+                    <div dangerouslySetInnerHTML={{__html: sanitizer(studyContent.studyContent)}}></div>
                     </div>
                     <div css={s.memberLayout}>
                         <button onClick={openWaitingModal}>신청 현황</button>

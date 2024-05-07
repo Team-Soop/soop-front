@@ -125,9 +125,6 @@ export default function AddClassSchedule({ viewScheduleDate, originScheduleDate,
             <FullCalendar 
                 selectable="true"
                 plugins={[ dayGridPlugin, interactionPlugin ]}
-                events={
-                    viewScheduleDate
-                }
                 eventClick={(info) => {
                     console.log(info)
                     for(let scheduleDate of originScheduleDate) {
@@ -152,6 +149,8 @@ export default function AddClassSchedule({ viewScheduleDate, originScheduleDate,
                 select={(date) => {
                     selectDayList(date)
                 }}
+                selectMirror={true}
+                
             />
         </div>
         <div>
