@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 
 export const modalLayout = css`
     box-sizing: border-box ;
-    position: relative;
+    position: absolute;
     padding: 30px;
     border: 1px solid black;
     transform: translate(-50%, -50%);
@@ -11,6 +11,7 @@ export const modalLayout = css`
     left: 50%;
     width: 500px;
     height: 300px;
+    z-index: 9999;
 `
 
 export const header = css`

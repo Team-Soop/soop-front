@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 
 export const layout = css`
     box-sizing: border-box;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,7 +11,7 @@ export const layout = css`
     border-radius: 20px;
     width: 320px;
     height: 50vh;
-    z-index: 0;
+    z-index: 1;
     background-color: #fafafa88;
 `
 
@@ -31,7 +32,7 @@ export const container = css`
 export const alarmCard = css`
     box-sizing: border-box;
     position: relative;
-    width: 240px;
+    width: 100%;
     /* height: 100%; */
     margin: 10px;
     border: 1px solid #ffffff;

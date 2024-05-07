@@ -8,7 +8,7 @@ export const container = css`
     justify-content: center;
     border: 2px solid #ffffff73;
     border-radius: 20px;
-    padding: 40px;
+    padding: 20px;
     width: 600px;
     height: 100%;
     background-color: #fafafa88;

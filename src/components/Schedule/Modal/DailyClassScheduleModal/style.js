@@ -1,10 +1,8 @@
 import { css } from "@emotion/react";
 
 export const table = css`
-    /* position: absolute; */
-    background-color: white;
-    z-index: 1;
-    width: 540px;
+    
+
 `
 
 export const thead = css`
@@ -19,7 +17,7 @@ export const thead = css`
         justify-content: center;
         align-items: center;
         border: 1px solid #dbdbdb;
-        width: 100%;
+        width: 170px;
         height: 30px;
         font-size: 16px;
     }
@@ -36,7 +34,7 @@ export const bodyLayout = css`
 
 export const tableData = css`
     border: 1px solid #dbdbdb;
-    width: 100%;
+    width: 170px;
     height: 60px;
     
     & > div {
