@@ -10,15 +10,13 @@ import { deleteMypageFeed, feedDeleteLike, feedGetLike, feedLike } from "../../a
 import { useEffect, useState } from "react";
 import { saveBoard, saveDeleteBoard, saveGetBoard } from "../../apis/api/saveBoards";
 import FeedCardComment from "./FeedCardComment/FeedCardComment";
-import { AiOutlineAlert } from "react-icons/ai";
 import { useRecoilValue } from "recoil";
 import { sideMenuState } from "../../atoms/SideMenuAtom";
 import { useNavigate } from "react-router-dom";
-import Slider from "react-slick";
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import 'react-slideshow-image/dist/styles.css'
 import { Slide } from "react-slideshow-image";
+import userImg from "../../assets/images/userProfileNone.png";
+import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
 
 function FeedCard({feed}) {
     const sanitizer = DOMPurify.sanitize;
@@ -131,9 +129,18 @@ function FeedCard({feed}) {
         // console.log(feedId)
         }
         return;
-      }
+    }
+
+    // 슬라이드쇼 
+    const settings = {
+        className: "slide-container",
+        dots: true,
+        autoplay: false,
+        infinite: feed.feedImgUrl.length > 1 ? true : false,
+        transitionDuration: 300,
+        easing: "ease-in"
+    }
     
-  
     return (
         <div>
             {
@@ -144,20 +151,39 @@ function FeedCard({feed}) {
                 <li key={feed.feedId} css={s.feedlayout}>
                     {/* 유저정보 */}
                     <div css={s.feedHeader}>
-                        <div css={s.feedHeaderProfileImg}><img src={feed.profileImgUrl} alt="" /></div>
+                        <div css={s.feedHeaderProfileImg}>
+                            <img src={
+                                !!feed.profileImgUrl
+                                ?
+                                feed.profileImgUrl
+                                :
+                                userImg
+                            } alt="" />
+                        </div>
                         <div css={s.feedHeaderUser}>{feed.nickname}</div>
                     </div>
 
                     {/* 피드(이미지, 게시글) */}
                     <div css={s.feedcontents}>
-                        {
-                            feed.feedImgUrl.length > 0 && 
+                        {   
+                        // 이미지 2개 이상 일 때만 슬라이드
+                            feed.feedImgUrl.length > 1 
+                            ?
                             <div className="slide-container">
-                                <Slide autoplay={false} infinite={false}>
+                                <Slide {...settings} 
+                                    prevArrow={<div css={s.slideArrow}><IoIosArrowDropleftCircle /></div>}
+                                    nextArrow={<div css={s.slideArrow}><IoIosArrowDroprightCircle /></div>}
+                                >
                                     {feed.feedImgUrl.map((imgUrl, index)=> (
                                         <div key={index} css={s.feedImg(imgUrl)}></div>
                                     ))} 
                                 </Slide>
+                            </div>
+                            :
+                            <div className="slide-container">
+                                {feed.feedImgUrl.map((imgUrl, index)=> (
+                                    <div key={index} css={s.feedImg(imgUrl)}></div>
+                                ))} 
                             </div>
                         }
                         
@@ -222,18 +248,29 @@ function FeedCard({feed}) {
                 <li key={feed.feedId} css={s.feedlayout}>
                     {/* 유저정보 */}
                     <div css={s.feedHeader}>
-                        <div css={s.feedHeaderProfileImg}><img src={feed.profileImgUrl} alt="" /></div>
-                        <div css={s.feedHeaderUser}>{feed.username}</div>
+                        <div css={s.feedHeaderProfileImg}><img src={
+                            !!feed.profileImgUrl
+                            ?
+                            feed.profileImgUrl
+                            :
+                            userImg
+                        } alt="" /></div>
+                        <div css={s.feedHeaderUser}>{feed.nickname}</div>
                     </div>
+
                     {/* 피드(이미지, 게시글) */}
                     <div css={s.feedcontents}>
-                        <div>
-                            <button></button>
-                            {feed.feedImgUrl.map((imgUrl, index) => (    
-                                <img key={index} src={imgUrl} alt="" css={s.feedImg}/>
-                            ))}   
-                            <button></button>
-                        </div>
+                        {
+                            feed.feedImgUrl.length > 0 
+                            && 
+                            <div className="slide-container">
+                                <Slide {...settings}>
+                                    {feed.feedImgUrl.map((imgUrl, index)=> (
+                                        <div key={index} css={s.feedImg(imgUrl)}></div>
+                                    ))} 
+                                </Slide>
+                            </div>
+                        }
                         
                         <div css={s.feedText} dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
                     </div>
