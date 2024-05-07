@@ -37,7 +37,7 @@ export const searchButton = css`
 export const tableLayout = css`
     position: relative;
     border: 1px solid #dbdbdb;
-    width: 800px;
+    width: 100%;
     height: 300px;
     background-color: white;
     overflow: auto;
@@ -82,7 +82,7 @@ export const table = css`
     & tr > th:nth-of-type(1),
     & tr > td:nth-of-type(1) {
         text-align: center;
-        min-width: 30px;
+        min-width: 20px;
     }
 
     & tr > th:nth-of-type(2),
@@ -97,23 +97,23 @@ export const table = css`
     & tr > th:nth-of-type(3),
     & tr > td:nth-of-type(3) {
         text-align: center;
-        min-width: 15px;
+        min-width: 110px;
     }
 
     & tr > th:nth-of-type(4),
     & tr > td:nth-of-type(4) {
         text-align: center;
-        min-width: 150px;
+        min-width: 100px;
     }
 
     & tr > th:nth-of-type(5),
     & tr > td:nth-of-type(5) {
-        min-width: 80px;
+        min-width: 60px;
     }
 
     & tr > th:nth-of-type(6),
     & tr > td:nth-of-type(6) {
-        min-width: 150px;
+        min-width: 80px;
     }
 
     & tr > th:nth-of-type(7),

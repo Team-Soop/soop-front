@@ -3,14 +3,15 @@ import * as s from "./style";
 import React, { useEffect, useState } from 'react';
 import Select from "react-select";
 import { useReactSelect } from "../../../hooks/useReactSelect";
-import { useQuery } from "react-query";
-import { getUserCountRequest, searchUserRequest } from "../../../apis/api/userManagement";
+import { useMutation, useQuery } from "react-query";
+import { deleteUserRequest, getUserCountRequest, searchUserRequest } from "../../../apis/api/userManagement";
 import { useUserRegisterInput } from "../../../hooks/useUserRegisterInput";
 import { useRecoilState } from "recoil";
 import { selectedUserState } from "../../../atoms/adminSelectedUserAtom";
 import { useSearchParams } from "react-router-dom";
+import UserSearchPageNumbers from "../UserSearchPageNumbers/UserSearchPageNumbers";
 
-function UserSearch() {
+function UserSearch({Authority, isDelete, setDelete}) {
   const [ userList, setUserList ] = useState([]);
   const [ checkAll, setCheckAll ] = useState({
     checked: false,
@@ -19,8 +20,37 @@ function UserSearch() {
   const [ selectedUser, setSelectedUser ] = useRecoilState(selectedUserState)
   const [ lastCheckUserId, setLastCheckUserId ] = useState(0);
   const [ searchParams, setSearchParams ] = useSearchParams();
-  const searchCount = 10;
+  const searchCount = 5;
 
+  const searchTypeOptions = [
+    { value: 0, label: "전체" },
+    { value: 1, label: "아이디" },
+    { value: 2, label: "닉네임" },
+    { value: 3, label: "이름" },
+    { value: 4, label: "이메일" },
+    { value: 5, label: "가입일" }
+  ]
+
+  const selectStyle2 = {
+    control: baseStyles => ({
+      ...baseStyles,
+      borderRadius: "0px",
+      border: "none",
+      borderRight: "1px solid #dbdbdb",
+      outline: "none",
+      boxShadow: "none"
+    })
+  }
+
+  const selectStyle = {
+    control: baseStyles => ({
+      ...baseStyles,
+      borderRadius: "0px",
+      border: "none",
+      outline: "none",
+      boxShadow: "none"
+    })
+  }
 
   const searchUserQuery = useQuery(
     ["searchUserQuery", searchParams.get("page")],
@@ -46,62 +76,40 @@ function UserSearch() {
   )
 
 
-  // const getUserCountQuery = useQuery(
-  //   ["getUserCountQuery", searchUserQuery.data],
-  //   async () => await getUserCountRequest({
-  //     count: searchCount,
-  //     roleId: selectedUserAuthority.option.value,
-  //     searchTypeId: selectedSearchType.option.value,
-  //     searchText: searchText.value
-  //   }),
-  //   {
-  //     refetchOnWindowFocus: false,
-  //     onSuccess: response => {
-  //       console.log(response);
-  //     }
-  //   }
-  // )
+  const getUserCountQuery = useQuery(
+    ["getUserCountQuery", searchUserQuery.data],
+    async () => await getUserCountRequest({
+      count: searchCount,
+      roleId: selectedUserAuthority.option.value,
+      searchTypeId: selectedSearchType.option.value,
+      searchText: searchText.value
+    }),
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: response => {
 
-  console.log(searchParams.get("page"));
+      }
+    }
+  )
 
-  const searchTypeOptions = [
-    { value: 0, label: "전체" },
-    { value: 1, label: "userId" },
-    { value: 2, label: "아이디" },
-    { value: 3, label: "닉네임" },
-    { value: 4, label: "이름" },
-    { value: 5, label: "이메일" },
-    { value: 6, label: "가입일" }
-  ]
+  const deleteUserMutation = useMutation({
+    mutationKey: "deleteUserMutation",
+    mutationFn: deleteUserRequest,
+    onSuccess: response => {
+      console.log(response);
+    }
+  });
+  
+  useEffect(() => {
+    if(isDelete) {
+      const deleteUsers = userList.filter(user => user.checked).map(user => user.userId)
+      deleteUserMutation.mutate(deleteUsers);
+      console.log(deleteUsers);
+    }
+    setDelete(() => false);
+  }, [isDelete])
 
-  const Authority = [
-    { value: 1, label: "임시사용자" },
-    { value: 2, label: "사용자" },
-    { value: 3, label: "수강생" },
-    { value: 4, label: "관리자" },
-    { value: 5, label: "이용정지자" },
-  ]
-
-  const selectStyle2 = {
-    control: baseStyles => ({
-      ...baseStyles,
-      borderRadius: "0px",
-      border: "none",
-      borderRight: "1px solid #dbdbdb",
-      outline: "none",
-      boxShadow: "none"
-    })
-  }
-
-  const selectStyle = {
-    control: baseStyles => ({
-      ...baseStyles,
-      borderRadius: "0px",
-      border: "none",
-      outline: "none",
-      boxShadow: "none"
-    })
-  }
+  
 
   useEffect(() => {
     const findCount = userList.filter(user => user.checked === false).length;
@@ -140,7 +148,6 @@ function UserSearch() {
     let lastSelectedUser = { ...selectedUser };
     let checkStatus = false;
     lastSelectedUser = userList.filter(user => user.userId === lastCheckUserId && user.checked === true)[0];
-    console.log(lastSelectedUser);
     if (!!lastSelectedUser) {
       checkStatus = true;
     }
@@ -195,7 +202,6 @@ function UserSearch() {
     searchUserQuery.refetch();
   }
 
-
   const selectedUserAuthority = useReactSelect({ value: 0, label: "전체" });
   const selectedSearchType = useReactSelect({ value: 0, label: "전체" });
   const searchText = useUserRegisterInput(searchSubmit);
@@ -239,9 +245,9 @@ function UserSearch() {
               <th>아이디</th>
               <th>닉네임</th>
               <th>이름</th>
-              <th>이메일</th>
+              {/* <th>이메일</th> */}
               <th>권한</th>
-              <th>가입일</th>
+              {/* <th>가입일</th> */}
             </tr>
           </thead>
 
@@ -260,9 +266,9 @@ function UserSearch() {
                     <td>{user.userName}</td>
                     <td>{user.nickName}</td>
                     <td>{user.name}</td>
-                    <td>{user.email}</td>
+                    {/* <td>{user.email}</td> */}
                     <td>{user.roleNameKor}</td>
-                    <td>{user.createDate}</td>
+                    {/* <td>{user.createDate}</td> */}
                   </tr>
               )
             }
@@ -270,9 +276,10 @@ function UserSearch() {
 
         </table>
       </div>
-      {/* {
-        !get
-      }           */}
+      {
+        !getUserCountQuery.isLoading &&
+        <UserSearchPageNumbers userCount={getUserCountQuery.data?.data}/>
+      }          
 
 
     </div>

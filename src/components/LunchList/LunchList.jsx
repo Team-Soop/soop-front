@@ -22,7 +22,6 @@ function LunchList({lunchId, profileImgUrl, nickName, placeName, categroies, tit
   }, [])
 
 
-
   // 저장된 board 들고오기
   const BoardSaveQuery = useQuery([`BoardSaveQuery${lunchId}`],
     () => saveGetBoard(lunchId, 2),

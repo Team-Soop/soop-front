@@ -26,6 +26,7 @@ function AuthRoute(props) {
       refetchOnWindowFocus: false,
       onSuccess: response => {
         console.log("토큰 있음");
+        console.log(response);
       },
       onError: error => {
         console.log("토큰 없음");

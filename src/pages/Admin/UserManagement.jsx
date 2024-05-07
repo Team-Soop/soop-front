@@ -8,12 +8,15 @@ import { useUserRegisterInput } from "../../hooks/useUserRegisterInput";
 import { selectedUserState } from "../../atoms/adminSelectedUserAtom";
 import { useRecoilState } from "recoil";
 import RightTopButton from "../../components/RightTopButton/RightTopButton";
+import { useMutation } from "react-query";
+import { updateUserRoleRequest } from "../../apis/api/userManagement";
 
 
 
 function UserManagement () {
-
   const [ actionStatus, setActionStatus ] = useState(0);  
+  const [ oldAuthority, setOldAuthority ] = useState();
+  const [ isDelete, setDelete ] = useState(false);
   // 0 = 선택, 1 = 수정, 2 = 삭제
 
   const Authority = [
@@ -33,6 +36,14 @@ function UserManagement () {
         boxShadow: "none"
     })
   }
+
+  const updateRoleMutation = useMutation({
+    mutationKey: "updateRoleMutation",
+    mutationFn: updateUserRoleRequest,
+    onSuccess: response => {
+      console.log(response);
+    }
+  })
 
   const userId = useUserRegisterInput();
   const userName = useUserRegisterInput();
@@ -56,22 +67,26 @@ function UserManagement () {
 
     let selectAuthority  = Authority.filter((authority) => authority.label === selectUser.roleNameKor)[0]
     roleNameKor.setValue(() => selectAuthority)
+    setOldAuthority(() => selectAuthority)
 
   }, [selectUser])
 
   const submit = () => {
     if(actionStatus === 1) {
-        // registerBookMutation.mutate({
-        //     isbn: isbn.value,
-        //     bookTypeId: bookTypeId.value.value,
-        //     categoryId: categoryId.value.value,
-        //     bookName: bookName.value,
-        //     authorName: authorName.value,
-        //     publisherName: publisherName.value,
-        //     coverImgUrl: imgUrl.value
-        // });
+        if(roleNameKor.value.value !== oldAuthority.value) {
+          updateRoleMutation.mutate({
+              newRoleId: roleNameKor.value.value,
+              oldRoleId: oldAuthority.value,
+              userId: userId.value
+          });
+          alert("유저의 권한이 변경 되었습니다.")
+          window.location.replace("/admin/user/management?page=1");
+        } else {
+          alert("변경사항이 없습니다.");
+        }
+
     } else if(actionStatus === 2) {
-        // setDelete(() => true);
+        setDelete(() => true);
     }
 
     cancel();
@@ -107,7 +122,7 @@ const cancel = () => {
             </>
             :
             <>
-              <RightTopButton>확인</RightTopButton>
+              <RightTopButton onClick={submit}>확인</RightTopButton>
               <RightTopButton onClick={cancel}>취소</RightTopButton>
             </>
 
@@ -149,7 +164,7 @@ const cancel = () => {
 
             <tr>
               <th >권한</th>    
-              <td>
+              <td colSpan={3}>
                 <Select 
                   styles={selectStyle} 
                   options={Authority}
@@ -182,7 +197,7 @@ const cancel = () => {
 
             <tr>
               <th css={s.registerTh}>이메일</th>    
-              <td>
+              <td colSpan={3}>
                 <UserRegisterInput
                   value={email.value}
                 
@@ -205,10 +220,11 @@ const cancel = () => {
       </div>
 
 
-
-
-
-      <UserSearch/>
+        <UserSearch 
+          Authority={Authority}
+          isDelete={isDelete}
+          setDelete={setDelete}
+        />
     </div>
   );
 };
