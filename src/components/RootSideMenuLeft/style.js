@@ -18,43 +18,92 @@ export const layout = css`
     }
 `;
 
-export const sideMenuProfile = css`
-    position: relative;
+export const logoLayout = css`
     display: flex;
-    justify-content: left;
-    cursor: pointer;
+    align-items: center;
+    padding: 0px 10px;
+    padding-top: 10px;
 
-    a:link{
-        color: black;
+
+`
+
+export const logoImg = css`
+    box-sizing: border-box;
+    width: 70px;
+    height: 60px;
+    overflow: hidden;
+    margin: 0 auto;
+    img {
+        width: 100%;
+        height: 100%;
     }
+`
+
+export const logoText = css`
+    font-size: 25px;
+    font-weight: 700;
+`
+
+export const sideMenuProfile = css`
+    display: flex;
+    padding: 0px 30px;
+    overflow: hidden;
+    box-sizing: border-box;
+    margin-top: 5px;
+    border-top: 2px solid #ffffff;
+    padding-top: 10px;
+    width: 100%;
+
     a:visited{
         color: black;
     }
 `;
 
-export const profileLink =  css`
-    display: flex;
-    align-items: center;
-    width: 100%;
-`
-
 export const sideMenuUserImg = css`
-    margin-right: 20px;
-    border: 1px solid #ffffff73;
+    cursor: pointer;
+    margin-right: 15px;
+    box-sizing: border-box;
+    border: 1px solid #00000073;
     border-radius: 50%;
     width: 40px;
     height: 40px;
 `;
 
-export const sideMenuUser = css`
+export const profileLink = css`
+    display: flex;
+    align-items: center;
+    a {
+        text-decoration: none;
+    }
+`
 
-`;
+export const logInButton = css`
+    box-sizing: border-box;
+    margin-bottom: 5px;
+    font-weight: 500;
+    font-size: 17px;
+    border: none;
+    border-radius: 5px;
+    background-color: transparent;
+    padding: 5px;
+    cursor: pointer;
+
+
+    &:hover {
+        font-weight: 700;
+        color: #1f4d36;
+    }
+    &:active {
+        color: #000000 !important;
+    }
+`
+
 
 export const sideMenu = css`
     box-sizing: border-box;
-    margin-top: 50px;
+    margin-top: 10px;
     border-top: 2px solid #ffffff;
-    padding-top: 20px;
+    padding-top: 10px;
     width: 100%;
 `;
 

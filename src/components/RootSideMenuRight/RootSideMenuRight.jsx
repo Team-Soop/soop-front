@@ -1,16 +1,48 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as s from "./style";
 import Modal from 'react-modal';
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { rightSideBarState } from "../../atoms/SideMenuAtom";
 import AddFeed from "../AddFeed/AddFeed";
 import { MdOutlineCancel } from "react-icons/md";
+import { HiOutlinePencilSquare } from "react-icons/hi2";
+import { RiMenu5Fill } from "react-icons/ri";
+
+
+
 
 function RootSideMenuRight(props) {
   const [ modal, setModal ] = useState(false);
-  const rightSideMenu = useRecoilValue(rightSideBarState);
+
+  const [ isFeedWrite, setIsFeedWrite ] = useState(false);
+  const [ isStudyWrite, setIsStudyWrite ] = useState(false);
+  const [ isLunchWrite, setIsLunchWrite ] = useState(false);
+  const [ rightSideBar, setRightSideBar] = useRecoilState(rightSideBarState);
   
+
+  useEffect(() => {
+    console.log(rightSideBar)
+    switch(rightSideBar) {
+      case 1:
+        setIsFeedWrite(() => true)
+        setIsStudyWrite(() => false)
+        setIsLunchWrite(() => false)
+        break;
+      case 2:
+        setIsStudyWrite(() => true)
+        setIsFeedWrite(() => false)
+        setIsLunchWrite(() => false)
+      case 3:
+        setIsLunchWrite(() => true)
+        setIsFeedWrite(() => false)
+        setIsStudyWrite(() => false)
+      default:
+        console.log(rightSideBar);
+
+    }
+
+  },[rightSideBar])
 
   // 모달
   const openModal = () => {
@@ -24,11 +56,14 @@ function RootSideMenuRight(props) {
     alert("뿌뿌")
   }
 
+
+
   return (
     
       <div>
+        {/* 피드페이지 글쓰기 */}
         {
-          rightSideMenu === 1
+          isFeedWrite
           ?
           <div>
             <Modal 
@@ -41,22 +76,48 @@ function RootSideMenuRight(props) {
             </Modal>
             {/* 우측 하단 버튼 */}
             <div css={s.rigthButton}>
-              <button>필터</button>
-              <button onClick={openModal}>글 쓰기</button>
+              {/* 필터 */}
+              <button>
+                <RiMenu5Fill/>
+              </button>
+              {/* 글쓰기 */}
+              <button onClick={openModal}>
+                <HiOutlinePencilSquare/>
+              </button>
             </div>
-        {/* 글쓰기 창 */}
           </div>
-          : rightSideMenu === 2 
-            ?
-          <>
+          :
+          <></>
+        }
+
+        {/* 스터디페이지 글쓰기 */}
+        {
+          isStudyWrite
+          ?
+          <div>
             <div css={s.rigthButton}>
               <button>필터</button>
               <button onClick={test}>글 쓰기</button>
             </div>
-          </>
-            : null
-          
+          </div>
+          :
+          <></>
         }
+
+        {/* 런치 페이지 글쓰기 */}
+        {
+          isLunchWrite
+          ?
+          <div>
+            <div css={s.rigthButton}>
+              <button>필터</button>
+              <button onClick={test}>글 쓰기</button>
+            </div>
+          </div>
+          :
+          <></>
+        }
+
 
         
       </div>

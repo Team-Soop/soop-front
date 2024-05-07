@@ -16,6 +16,6 @@ export const background = css`
 export const logo = css`
     position: fixed;
     bottom: 100px;
-    right: 150px;
+    right: 250px;
     z-index: -9;
 `

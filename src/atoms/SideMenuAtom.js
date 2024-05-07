@@ -12,5 +12,5 @@ export const sideMenuSelectNum = atom({
 
 export const rightSideBarState = atom({
     key: "rightSideBarState",
-    default: 0
+    default: 1
 })
