@@ -7,25 +7,25 @@ import interactionPlugin from '@fullcalendar/interaction'
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from "react-query";
 import { searchAllSchedule } from "../../apis/api/schedule";
-import AddClassSchedule from '../../components/AddClassSchedule/AddClassSchedule';
 import DailyClassSchedule from "../../components/DailyClassSchedule/DailyClassSchedule";
 import { rightSideBarState } from "../../atoms/SideMenuAtom";
 import { useRecoilState } from "recoil";
-import AddClassScheduleModal from "../../components/Schedule/Modal/AddClassScheduleModal/AddClassScheduleModal";
+import AddClassSchedule from "../../components/AddClassSchedule/AddClassSchedule";
 
 function ClassSchedulePage() {
   const [ originScheduleDate, setOriginScheduleData ] = useState([]);
   const [ viewScheduleDate, setViewScheduleData ] = useState([]);
-  const [ selectDay, setSelectDay ] = useState("")
-  const [ dailyScheduleData, setDailyScheduleData ] = useState([])
+  const [ selectDay, setSelectDay ] = useState("");
+  const [ dailyScheduleData, setDailyScheduleData ] = useState([]);
   const [ selectTimeOption ] = useState([]);
-  const [ rightSideBar, sestRightSideBar ] = useRecoilState(rightSideBarState);
-
-  useEffect(() => {
-    sestRightSideBar(2)
-  },[])
-
   const [ isOpenAddSchedule, setIsOpenAddSchedule ] = useState(false);
+  const [ isOpenDailySchedule, setIsOpenDailySchedule ] = useState(false);
+  // const [ rightSideBar, setRightSideBar ] = useRecoilState(rightSideBarState);
+
+  // useEffect(() => {
+  //   setRightSideBar(0)
+  // }, [])
+
 
   // timeOption 설정 (i = Hour, j = Minute)
   useMemo(() => {
@@ -76,91 +76,84 @@ function ClassSchedulePage() {
       setIsOpenAddSchedule(!isOpenAddSchedule)
     }
 
+    const openDailsySchduleModal = () => {
+      setIsOpenDailySchedule(!isOpenDailySchedule)
+    }
+
+    console.log(isOpenDailySchedule)
+
   return (
     <>
-    <div css={s.modal}>
-      
-    </div>
-    <div css={s.layout}>
-      <div css={s.header}>
-        <h1>스케줄 페이지</h1>
-        <button css={s.button} onClick={openAddSchduleModal}>일정 추가</button>
+      <div css={s.layout}>
+        <div css={s.header}>
+          <h1>스케줄 페이지</h1>
+          <button css={s.button} onClick={openAddSchduleModal}>일정 추가</button>
+        </div>
+        <div css={s.calendar}>
+          {
+            !searchAllScheduleQuery.isLoading 
+            ? <FullCalendar
+            height={620}
+            locale={"ko"}
+            initialView="dayGridMonth"
+            selectable="true"
+            navLinks="true"
+            dayMaxEventRows={true}
+            plugins={[ dayGridPlugin, interactionPlugin ]}
+            events={
+              viewScheduleDate
+            }
+            
+            displayEventTime={false}
+            eventClick={(date) => {
+              console.log(date.event._def.ui.backgroundColor)
+              setSelectDay(date.event.startStr.substring(0, 10))
+              openDailsySchduleModal()
+            }}
+            select={(date) => {
+              setSelectDay(date.startStr)
+              openDailsySchduleModal()
+            }}
+            navLinkDayClick={(date) => {
+              setSelectDay(date.toISOString(date).substring(0, 10))
+              openDailsySchduleModal()
+            }}
+            
+            
+          />
+          : <FullCalendar 
+                locale={"ko"}
+                initialView="dayGridMonth"
+                selectable="true"
+                plugins={[ dayGridPlugin, interactionPlugin ]}
+          />
+          } 
+        </div>
+        <div css={s.colorLayout}>
+          <div css={s.colorBox}>
+            <label css={s.classLabel}>A</label>
+            <div className="classA" css={s.classColor}></div>
+          </div>
+          <div css={s.colorBox}>
+            <label css={s.classLabel}>B</label>
+            <div className="classB" css={s.classColor}></div>
+          </div>
+          <div css={s.colorBox}>
+            <label css={s.classLabel}>C</label>
+            <div className="classC" css={s.classColor}></div>
+          </div>
+          <div css={s.colorBox}>
+            <label css={s.classLabel}>D</label>
+            <div className="classD" css={s.classColor}></div>
+          </div>
+          <div css={s.colorBox}>
+            <label css={s.classLabel}>E</label>
+            <div className="classE" css={s.classColor}></div>
+          </div>
+        </div>
+        <AddClassSchedule isOpen={isOpenAddSchedule} isClose={openAddSchduleModal} viewScheduleDate={viewScheduleDate} originScheduleDate={originScheduleDate} selectTimeOption={selectTimeOption}/>
+        <DailyClassSchedule isOpen={isOpenDailySchedule} isClose={openDailsySchduleModal} selectTimeOption={selectTimeOption} dailyScheduleData={dailyScheduleData}/>
       </div>
-      <div css={s.calendar}>
-        {
-          !searchAllScheduleQuery.isLoading 
-          ? <FullCalendar
-          height={620}
-          locale={"ko"}
-          initialView="dayGridMonth"
-          selectable="true"
-          navLinks="true"
-          dayMaxEventRows={true}
-          plugins={[ dayGridPlugin, interactionPlugin ]}
-          events={
-            viewScheduleDate
-          //  [{
-          //     id: 999,
-          //     title: "test",
-          //     start: "2024-04-26T07:30:00+09:00",
-          //     end: "2024-04-26T09:30:00+09:00",
-          //     color: "#fd7575",
-          //     display: "block",
-          //     date: "2024-04-26"
-          //   }
-          }
-          
-          displayEventTime={false}
-          eventClick={(date) => {
-            console.log(date.event._def.ui.backgroundColor)
-            setSelectDay(date.event.startStr.substring(0, 10))
-          }}
-          select={(date) => {
-            setSelectDay(date.startStr)
-          }}
-          navLinkDayClick={(date) => {
-            setSelectDay(date.toISOString(date).substring(0, 10))
-          }}
-          
-          
-        />
-        : <FullCalendar 
-              locale={"ko"}
-              initialView="dayGridMonth"
-              selectable="true"
-              plugins={[ dayGridPlugin, interactionPlugin ]}
-        />
-        } 
-      </div>
-      <div css={s.colorLayout}>
-        <div css={s.colorBox}>
-          <label css={s.classLabel}>A</label>
-          <div className="classA" css={s.classColor}></div>
-        </div>
-        <div css={s.colorBox}>
-          <label css={s.classLabel}>B</label>
-          <div className="classB" css={s.classColor}></div>
-        </div>
-        <div css={s.colorBox}>
-          <label css={s.classLabel}>C</label>
-          <div className="classC" css={s.classColor}></div>
-        </div>
-        <div css={s.colorBox}>
-          <label css={s.classLabel}>D</label>
-          <div className="classD" css={s.classColor}></div>
-        </div>
-        <div css={s.colorBox}>
-          <label css={s.classLabel}>E</label>
-          <div className="classE" css={s.classColor}></div>
-        </div>
-      </div>
-      
-      {/* {
-        !searchAllScheduleQuery.isLoading && <AddClassSchedule viewScheduleDate={viewScheduleDate} originScheduleDate={originScheduleDate} selectTimeOption={selectTimeOption}/>
-      } */}
-        <AddClassScheduleModal isOpen={isOpenAddSchedule} isClose={openAddSchduleModal} viewScheduleDate={viewScheduleDate} originScheduleDate={originScheduleDate} selectTimeOption={selectTimeOption}/>
-        <DailyClassSchedule selectTimeOption={selectTimeOption} dailyScheduleData={dailyScheduleData}/>
-    </div>
     </>
   );
 }

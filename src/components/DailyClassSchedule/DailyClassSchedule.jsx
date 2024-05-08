@@ -1,7 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import * as s from "./style";
 
-export default function DailyClassSchedule({ selectTimeOption, dailyScheduleData }) {
+import Modal from "react-modal"
+
+export default function DailyClassSchedule({ isOpen, isClose, selectTimeOption, dailyScheduleData }) {
     // 테이블의 열과 행 수를 정의합니다.
     const numCols = 6;
     const numRows = selectTimeOption.length;
@@ -56,28 +58,37 @@ export default function DailyClassSchedule({ selectTimeOption, dailyScheduleData
     }
 
     return (
-        <table css={s.table}>
-            <thead css={s.thead}>
-                <tr>
-                    <th>시간</th>
-                    <th>A 강의실</th>
-                    <th>B 강의실</th>
-                    <th>C 강의실</th>
-                    <th>D 강의실</th>
-                    <th>E 강의실</th>
-                </tr>
-            </thead>
-            <tbody>
-                {table.map((row, rowIndex) => (
-                    <tr key={rowIndex} css={s.bodyLayout}>
-                        {row.map((cell, colIndex) => (
-                            <td key={`${rowIndex}-${colIndex}`} css={s.tableData}>
-                                {cell.elements}
-                            </td>
+        <>
+        <Modal isOpen={isOpen}>
+            <div css={s.layout}>
+                <div css={s.header}>
+                    <button onClick={isClose}>닫기</button>
+                </div>
+                <table css={s.table}>
+                    <thead css={s.thead}>
+                        <tr>
+                            <th>시간</th>
+                            <th>A 강의실</th>
+                            <th>B 강의실</th>
+                            <th>C 강의실</th>
+                            <th>D 강의실</th>
+                            <th>E 강의실</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {table.map((row, rowIndex) => (
+                            <tr key={rowIndex} css={s.bodyLayout}>
+                                {row.map((cell, colIndex) => (
+                                    <td key={`${rowIndex}-${colIndex}`} css={s.tableData}>
+                                        {cell.elements}
+                                    </td>
+                                ))}
+                            </tr>
                         ))}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+        </Modal>
+        </>
     );
 }

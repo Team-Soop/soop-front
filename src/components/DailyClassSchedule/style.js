@@ -1,9 +1,28 @@
 import { css } from "@emotion/react";
 
+export const layout = css`
+    box-sizing: border-box ;
+    position: fixed;
+    padding: 30px;
+    border: 1px solid #c5c5c5;
+    border-radius: 10px;
+    background-color: #ffffff;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    width: 40vw;
+    height: 85vh;
+
+    overflow-y: auto;
+`
+
+export const header = css`
+    box-sizing: border-box;
+`
+
 export const table = css`
-    /* position: absolute; */
+    position: relative;
     background-color: white;
-    z-index: 1;
     width: 540px;
 `
 
@@ -15,6 +34,7 @@ export const thead = css`
     }
 
     & > tr > th {
+        box-sizing: border-box;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -35,6 +55,7 @@ export const bodyLayout = css`
 `
 
 export const tableData = css`
+    box-sizing: border-box;
     border: 1px solid #dbdbdb;
     width: 100%;
     height: 60px;

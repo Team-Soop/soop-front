@@ -17,7 +17,6 @@ function FeedPage(props) {
   const principalData = queryClient.getQueryData("principalQuery");
   const [ feedList, setFeedList ] = useState([]);
   const [ modal, setModal ] = useState(false);
-  const setSideMenuState = useSetRecoilState(sideMenuState);
   const [ rightSideBar, sestRightSideBar ] = useRecoilState(rightSideBarState);
   const setSideMenuState = useSetRecoilState(rightSideBarState);
 
@@ -25,7 +24,7 @@ function FeedPage(props) {
   useEffect(() => {
     setSideMenuState(1)
     sestRightSideBar(1)
-  }, [])
+  })
 
   // 피드 리스트 get
   const getFeedListQuery = useQuery(

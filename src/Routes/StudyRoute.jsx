@@ -22,7 +22,7 @@ function StudyRoute(props) {
 
     useEffect(() => {
         setRightSideBarState(2)
-    }, [])
+    })
 
     return (
         <Routes>

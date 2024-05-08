@@ -19,27 +19,29 @@ function RootSideMenuRight(props) {
   const [ isStudyWrite, setIsStudyWrite ] = useState(false);
   const [ isLunchWrite, setIsLunchWrite ] = useState(false);
   const [ rightSideBar, setRightSideBar] = useRecoilState(rightSideBarState);
-  
 
   useEffect(() => {
     console.log(rightSideBar)
     switch(rightSideBar) {
       case 1:
-        setIsFeedWrite(() => true)
-        setIsStudyWrite(() => false)
-        setIsLunchWrite(() => false)
+        setIsFeedWrite(true)
+        setIsStudyWrite(false)
+        setIsLunchWrite(false)
         break;
       case 2:
-        setIsStudyWrite(() => true)
-        setIsFeedWrite(() => false)
-        setIsLunchWrite(() => false)
+        setIsFeedWrite(false)
+        setIsStudyWrite(true)
+        setIsLunchWrite(false)
+        break;
       case 3:
-        setIsLunchWrite(() => true)
-        setIsFeedWrite(() => false)
-        setIsStudyWrite(() => false)
+        setIsFeedWrite(false)
+        setIsStudyWrite(false)
+        setIsLunchWrite(true)
+        break;
       default:
-        console.log(rightSideBar);
-
+        setIsFeedWrite(false)
+        setIsStudyWrite(false)
+        setIsLunchWrite(false)
     }
 
   },[rightSideBar])
@@ -117,9 +119,6 @@ function RootSideMenuRight(props) {
           :
           <></>
         }
-
-
-        
       </div>
     
   );

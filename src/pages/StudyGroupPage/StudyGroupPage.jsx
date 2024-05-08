@@ -45,8 +45,6 @@ function StudyGroupPage() {
 
 		}
 	})
-
-	console.log(option)
 	
 	useEffect(() => {
 		if(!!searchStudyCategories) {
