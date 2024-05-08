@@ -16,14 +16,17 @@ export const layout = css`
     & > div > a > img {
         height: 60px;
     }
+    & > a {
+        text-decoration: none;
+    }
 `;
 
 export const logoLayout = css`
     display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 0px 10px;
     padding-top: 10px;
-
 
 `
 
@@ -32,7 +35,6 @@ export const logoImg = css`
     width: 70px;
     height: 60px;
     overflow: hidden;
-    margin: 0 auto;
     img {
         width: 100%;
         height: 100%;
@@ -40,7 +42,11 @@ export const logoImg = css`
 `
 
 export const logoText = css`
-    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 40px 0 10px;
+    font-size: 22px;
     font-weight: 700;
 `
 
@@ -98,6 +104,10 @@ export const logInButton = css`
     }
 `
 
+export const profileLinkUsername = css`
+    font-size: 20px;
+    font-weight: 600;
+`
 
 export const sideMenu = css`
     box-sizing: border-box;

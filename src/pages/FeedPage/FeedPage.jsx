@@ -17,15 +17,13 @@ function FeedPage(props) {
   const principalData = queryClient.getQueryData("principalQuery");
   const [ feedList, setFeedList ] = useState([]);
   const [ modal, setModal ] = useState(false);
-  const setSideMenuState = useSetRecoilState(sideMenuState);
-  const [ rightSideBar, sestRightSideBar ] = useRecoilState(rightSideBarState);
+  const [ rightSideBar, setRightSideBar ] = useRecoilState(rightSideBarState);
   const setSideMenuState = useSetRecoilState(rightSideBarState);
 
 
   useEffect(() => {
-    setSideMenuState(1)
-    sestRightSideBar(1)
-  }, [])
+    setRightSideBar(1)
+  })
 
   // 피드 리스트 get
   const getFeedListQuery = useQuery(
@@ -42,6 +40,8 @@ function FeedPage(props) {
       }
     }
   );
+
+  console.log(setRightSideBar);
 
   return (
     <div css={s.feedPageRootLayout}>
