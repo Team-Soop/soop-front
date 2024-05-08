@@ -11,7 +11,7 @@ export const modalLayout = css`
     left: 50%;
     width: 500px;
     height: 300px;
-    z-index: 9999;
+
 `
 
 export const header = css`

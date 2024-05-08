@@ -11,7 +11,6 @@ export const layout = css`
     border-radius: 20px;
     width: 320px;
     height: 50vh;
-    z-index: 1;
     background-color: #fafafa88;
 `
 

@@ -40,11 +40,12 @@ function AuthRoute(props) {
 
   useEffect(() => {
     setSideMenuNum(1)
-  }, [])
+  })
 
   useEffect(() => {
     setRightSideMenu(0)
-  }, [])
+    console.log("뿌뿌")
+  })
 
   
 
