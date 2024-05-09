@@ -162,7 +162,6 @@ function FeedCard({feed}) {
         easing: "ease-in"
     }
     
-    console.log(commentCount);
 
     return (
         <div>
