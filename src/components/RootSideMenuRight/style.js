@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 
 export const rigthButton = css`
     position: fixed;
-    right: 150px;
+    right: 300px;
     bottom: 50px;
     display: flex;
     justify-content: center;
@@ -12,7 +12,7 @@ export const rigthButton = css`
       border: 2px solid #ffffff73;
       border-radius: 50%;
       /* background-color: var(--secondary-button-background-floating); */
-      background-color: white;
+      background-color: #fafafa88;
       width: 65px;
       height: 65px;
       cursor: pointer;
@@ -22,7 +22,7 @@ export const rigthButton = css`
     
 
     button:nth-child(1) {
-      margin-right: 7px;
+      margin-right: 15px;
       font-size: 25px;
     }
 
@@ -39,18 +39,6 @@ export const rigthButton = css`
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); */
     }
 
-
-    /* button {
-        box-sizing: border-box;
-        border-radius: 50%;
-        border: none;
-        margin: 10px;
-        padding: 10px;
-        width: 50px;
-        height: 50px;
-        background-color: #f3c1c1;
-        cursor: pointer;
-    } */
 `
 
 export const feedModal = css`
