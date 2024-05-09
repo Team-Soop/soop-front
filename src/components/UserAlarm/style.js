@@ -7,11 +7,11 @@ export const layout = css`
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    border: 2px solid #ffffff73;
-    border-radius: 20px;
+    border: 2px solid #8A9C99;
+    border-radius: 5px;
     width: 320px;
     height: 50vh;
-    background-color: #fafafa88;
+    background-color: #F6F5EF;
 `
 
 
@@ -34,7 +34,7 @@ export const alarmCard = css`
     width: 100%;
     /* height: 100%; */
     margin: 10px;
-    border: 1px solid #ffffff;
+    border: 1px solid #CAD8D8;
     border-radius: 5px;
     padding: 10px;
     background-color: #fafafa88;

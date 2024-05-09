@@ -17,7 +17,6 @@ import RootSideMenuRight from '../components/RootSideMenuRight/RootSideMenuRight
 import AdminRoute from './AdminRoute';
 import Report from '../components/Report/Report';
 import UserAlarm from '../components/UserAlarm/UserAlarm';
-import FeedRoute from './FeedRoute';
 
 function AuthRoute(props) {
 
@@ -75,7 +74,7 @@ function AuthRoute(props) {
                {/* 임시회원 글작성 불가  */}
               <Route path='/lunch/*' element={<LunchPage />} />
               {/* 임시회원 글작성 불가 */}
-              <Route path='/feed/*' element={<FeedRoute />} />
+              <Route path='/feed' element={<FeedPage />} />
             </Routes>
           }
 

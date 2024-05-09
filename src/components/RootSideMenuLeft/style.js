@@ -3,11 +3,11 @@ import { css } from "@emotion/react";
 export const layout = css`
     position: relative;
     box-sizing: border-box;
-    border: 2px solid #ffffff73;
-    border-radius: 20px;
+    border: 2px solid #8A9C99;
+    border-radius: 5px;
     width: 300px;
     height: 100%;
-    background-color: #fafafa88;
+    background-color: #F6F5EF;
 
     & * {
         color: #1f4d36 !important;
@@ -16,17 +16,14 @@ export const layout = css`
     & > div > a > img {
         height: 60px;
     }
-    & > a {
-        text-decoration: none;
-    }
 `;
 
 export const logoLayout = css`
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 0px 10px;
     padding-top: 10px;
+
 
 `
 
@@ -35,6 +32,7 @@ export const logoImg = css`
     width: 70px;
     height: 60px;
     overflow: hidden;
+    margin: 0 auto;
     img {
         width: 100%;
         height: 100%;
@@ -42,11 +40,7 @@ export const logoImg = css`
 `
 
 export const logoText = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 40px 0 10px;
-    font-size: 22px;
+    font-size: 25px;
     font-weight: 700;
 `
 
@@ -56,7 +50,7 @@ export const sideMenuProfile = css`
     overflow: hidden;
     box-sizing: border-box;
     margin-top: 5px;
-    border-top: 2px solid #ffffff;
+    border-top: 2px solid #CAD8D8;
     padding-top: 10px;
     width: 100%;
 
@@ -69,7 +63,7 @@ export const sideMenuUserImg = css`
     cursor: pointer;
     margin-right: 15px;
     box-sizing: border-box;
-    border: 1px solid #00000073;
+    border: 1px solid #CAD8D8;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -104,15 +98,11 @@ export const logInButton = css`
     }
 `
 
-export const profileLinkUsername = css`
-    font-size: 20px;
-    font-weight: 600;
-`
 
 export const sideMenu = css`
     box-sizing: border-box;
     margin-top: 10px;
-    border-top: 2px solid #ffffff;
+    border-top: 2px solid #CAD8D8;
     padding-top: 10px;
     width: 100%;
 `;
@@ -154,7 +144,7 @@ export const sideMenuLeftFooter = css`
     justify-content: space-between;
     text-align: center;
     bottom: 0;
-    border-top: 2px solid #ffffff73;
+    border-top: 2px solid #CAD8D8;
     width: 100%;
     height: 50px;
 `;

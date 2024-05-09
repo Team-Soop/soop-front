@@ -3,11 +3,13 @@ import { css } from "@emotion/react";
 export const layout = css`
     display: flex;
     flex-direction: column;
-    margin: 3px;
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
-    background-color: #ffffff96;
-    border-radius: 10px;
+    background-color: #F6F5EF;
+    border: 2px solid #8A9C99;
+    border-radius: 5px;
+    padding: 10px 20px ;
     overflow-y: auto;
 
     & > h1 {
