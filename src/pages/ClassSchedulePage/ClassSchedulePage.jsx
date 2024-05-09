@@ -18,6 +18,7 @@ function ClassSchedulePage() {
   const [ selectDay, setSelectDay ] = useState("");
   const [ dailyScheduleData, setDailyScheduleData ] = useState([]);
   const [ selectTimeOption ] = useState([]);
+  const [ selectEndTimeOption ] = useState([]);
   const [ isOpenAddSchedule, setIsOpenAddSchedule ] = useState(false);
   const [ isOpenDailySchedule, setIsOpenDailySchedule ] = useState(false);
   // const [ rightSideBar, setRightSideBar ] = useRecoilState(rightSideBarState);
@@ -29,14 +30,28 @@ function ClassSchedulePage() {
 
   // timeOption 설정 (i = Hour, j = Minute)
   useMemo(() => {
-      for(let i = 9; i <= 22; i++) {
-          for (let j = 0; j <= 1; j++) {
+    
+    let startHour = 9
+    let endHour = 22
+    for(let i = startHour; i < endHour; i++) {
+      for (let j = 0; j <= 1; j++) {
               let timeSet = {};
               timeSet.value = ('0' + i).slice(-2) + ":" + ('0' + (j * 30)).slice(-2);
               timeSet.label = ('0' + i).slice(-2) + "시 " +  ('0' + (j * 30)).slice(-2) + "분";
+              console.log(timeSet)
               selectTimeOption.push(timeSet);
+
+              if (i === startHour && j === 0) {
+                continue;
+              }
+              
+              selectEndTimeOption.push(timeSet);
           };
-      };
+        };
+        let lastTimeSet = {};
+        lastTimeSet.value = endHour + ":" + ('00');
+        lastTimeSet.label = endHour + "시 " +  ('00') + "분";
+        selectEndTimeOption.push(lastTimeSet);
   }, [])
 
   // DB에 저장된 ScheduleDate 전체 조회
@@ -80,14 +95,12 @@ function ClassSchedulePage() {
       setIsOpenDailySchedule(!isOpenDailySchedule)
     }
 
-    console.log(isOpenDailySchedule)
-
   return (
     <>
       <div css={s.layout}>
         <div css={s.header}>
           <h1>스케줄 페이지</h1>
-          <button css={s.button} onClick={openAddSchduleModal}>일정 추가</button>
+          <button css={s.button} onClick={openAddSchduleModal}>일정 관리</button>
         </div>
         <div css={s.calendar}>
           {
@@ -106,7 +119,6 @@ function ClassSchedulePage() {
             
             displayEventTime={false}
             eventClick={(date) => {
-              console.log(date.event._def.ui.backgroundColor)
               setSelectDay(date.event.startStr.substring(0, 10))
               openDailsySchduleModal()
             }}
@@ -115,7 +127,9 @@ function ClassSchedulePage() {
               openDailsySchduleModal()
             }}
             navLinkDayClick={(date) => {
-              setSelectDay(date.toISOString(date).substring(0, 10))
+              let todayDateISO = date.getFullYear() + "-" + ('0' + (date.getMonth() + 1)).slice(-2) + "-" + ('0' + date.getDate()).slice(-2)
+              
+              setSelectDay(todayDateISO)
               openDailsySchduleModal()
             }}
             
@@ -151,8 +165,8 @@ function ClassSchedulePage() {
             <div className="classE" css={s.classColor}></div>
           </div>
         </div>
-        <AddClassSchedule isOpen={isOpenAddSchedule} isClose={openAddSchduleModal} viewScheduleDate={viewScheduleDate} originScheduleDate={originScheduleDate} selectTimeOption={selectTimeOption}/>
-        <DailyClassSchedule isOpen={isOpenDailySchedule} isClose={openDailsySchduleModal} selectTimeOption={selectTimeOption} dailyScheduleData={dailyScheduleData}/>
+        <AddClassSchedule isOpen={isOpenAddSchedule} isClose={openAddSchduleModal} viewScheduleDate={viewScheduleDate} originScheduleDate={originScheduleDate} selectTimeOption={selectTimeOption} selectTimeEndOption={selectEndTimeOption}/>
+        <DailyClassSchedule isOpen={isOpenDailySchedule} isClose={openDailsySchduleModal} selectDay={selectDay} selectTimeOption={selectTimeOption} dailyScheduleData={dailyScheduleData}/>
       </div>
     </>
   );

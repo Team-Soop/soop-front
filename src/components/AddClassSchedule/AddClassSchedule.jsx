@@ -11,9 +11,9 @@ import { useMutation } from "react-query";
 import { addSchedule, deleteSchedule, updateSchedule } from "../../apis/api/schedule";
 import Modal from "react-modal"
 
-export default function AddClassSchedule({ isOpen, isClose, viewScheduleDate, originScheduleDate, selectTimeOption }) {
+export default function AddClassSchedule({ isOpen, isClose, viewScheduleDate, originScheduleDate, selectTimeOption, selectTimeEndOption }) {
     const [ clickDayList, setClickDayList ] = useState([]);
-    const [ classScheduleId, setClassScheduleId ] = useState(0);
+    const [ classScheduleId, setClassScheduleId ] = useState();
     const [ classScheduleTitle, classScheduleTitleChange, unusedTitle, setClassScheduleTitle ] = useInput("");
     const [ classScheduleTeacher, classScheduleTeacherChange, unusedTeacher, setClassScheduleTeacher ] = useInput("");
     const [ classLocationId, classLocationIdChange, unusedLocationId, setClassLocationId ] = useInput("");
@@ -139,11 +139,10 @@ export default function AddClassSchedule({ isOpen, isClose, viewScheduleDate, or
             setUpdateDay("")
         }
     }
-    console.log(clickDayList)
 
   return (
     <>
-        <Modal isOpen={isOpen} css={s.backgrond}>
+        <Modal isOpen={isOpen} css={s.background}>
         <div css={s.modal}>
             <div css={s.layout}>
                 <div css={s.contentLayout}>
@@ -172,9 +171,9 @@ export default function AddClassSchedule({ isOpen, isClose, viewScheduleDate, or
                     <div css={s.inputBox}>
                         <label>강의명</label>
                         <input type="text" onChange={classScheduleTitleChange} value={classScheduleTitle} />
-                        <label>강의실</label>
-                        <input type="text" onChange={classScheduleTeacherChange} value={classScheduleTeacher}/>
                         <label>강사</label>
+                        <input type="text" onChange={classScheduleTeacherChange} value={classScheduleTeacher}/>
+                        <label>강의실</label>
                         <input type="text" onChange={classLocationIdChange} value={classLocationId}/>
 
                     </div>
@@ -185,7 +184,7 @@ export default function AddClassSchedule({ isOpen, isClose, viewScheduleDate, or
                         </div>
                         <div>
                             <label>종료</label>
-                            <Select options={selectTimeOption} onChange={handleOnChangeEndTime} value={endDateOption}/>
+                            <Select options={selectTimeEndOption} onChange={handleOnChangeEndTime} value={endDateOption}/>
                         </div>
                     </div>
                     <div css={s.calender}>
