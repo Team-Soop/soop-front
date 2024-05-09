@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { useEffect, useState } from "react";
 import * as s from "./style";
+import { useEffect, useState } from "react";
 import Modal from 'react-modal';
 import { useRecoilState } from "recoil";
 import { rightSideBarState } from "../../atoms/SideMenuAtom";
@@ -8,6 +8,7 @@ import AddFeed from "../AddFeed/AddFeed";
 import { MdOutlineCancel } from "react-icons/md";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 import { RiMenu5Fill } from "react-icons/ri";
+import LunchWrite from "../LunchWrite/LunchWrite";
 
 
 
@@ -111,9 +112,23 @@ function RootSideMenuRight(props) {
           isLunchWrite
           ?
           <div>
+            <Modal 
+              isOpen={modal} 
+              onRequestClose={closeModal} 
+              css={s.feedModal}
+            >
+              <LunchWrite/>
+              <button css={s.modalCancel} onClick={closeModal}><MdOutlineCancel /></button>
+            </Modal>
             <div css={s.rigthButton}>
-              <button>필터</button>
-              <button onClick={test}>글 쓰기</button>
+              {/* 필터 */}
+              <button>
+                <RiMenu5Fill/>
+              </button>
+              {/* 글쓰기 */}
+              <button onClick={openModal}>
+                <HiOutlinePencilSquare/>
+              </button>
             </div>
           </div>
           :
