@@ -1,11 +1,12 @@
-import { QueryClient, useMutation, useQueryClient } from "react-query";
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+/** @jsxImportSource @emotion/react */
+import * as s from "./style";
+import { useMutation, useQueryClient } from "react-query";
+import { useMemo, useRef, useState } from 'react';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../../apis/firebase/firebaseConfig';
 import ReactQuill from "react-quill";
 import { lunchRequest } from "../../apis/api/lunch";
-import { quillContent, useQuillContent } from "../../hooks/quillContent";
-import { useLunchCategory } from "../../hooks/lunchCategory";
+import { useQuillContent } from "../../hooks/quillContent";
 import LunchMap from "./LunchMap/LunchMap";
 import { lunchMapPlaceUrlState, lunchMapTitlState, lunchMapXState, lunchMapYState } from "../../atoms/luchMapAtom";
 import { useRecoilState } from "recoil";
@@ -226,48 +227,109 @@ function LunchWrite() {
 
 
   return (
-    <div>
+    <div css={s.writeLunchLayout}>
+      {/* 가게이름 */}
+      <input
+        placeholder='가게이름(지도를 검색해주세요)'
+        css={s.restaurantNameInput}
+        value={placeName}
+        disabled
+      />
+      <div>
+        카테고리 선택
+        <br></br>
+        
+        <div css={s.checkLayout}>
+          <input
+            css={s.checkIntput}
+            type="checkbox"
+            onChange={(e) => handleCategoryChange(1, e.target.checked)} 
+          />
+          <label css={s.checkIcon}>🍗</label>
+          <span>치킨</span>
+        </div>
+
+        <input
+          type="checkbox"
+          onChange={(e) => handleCategoryChange(2, e.target.checked)} 
+        />
+        한식
+
+        <input
+          type="checkbox"
+          onChange={(e) => handleCategoryChange(3, e.target.checked)} 
+        />
+        카페 디저트
+
+        <input
+          type="checkbox"
+          onChange={(e) => handleCategoryChange(4, e.target.checked)} 
+        />
+        중식
+
+        <input
+          type="checkbox"
+          onChange={(e) => handleCategoryChange(5, e.target.checked)} 
+        />
+        분식
+
+        <input
+          type="checkbox"
+          onChange={(e) => handleCategoryChange(6, e.target.checked)} 
+        />
+        샐러드 샌드위치
+
+        <input
+          type="checkbox"
+          onChange={(e) => handleCategoryChange(7, e.target.checked)} 
+        />
+        회, 초밥
+
+        <input
+          type="checkbox"
+          onChange={(e) => handleCategoryChange(8, e.target.checked)} 
+        />
+        버거
+
+        <input
+          type="checkbox"
+          onChange={(e) => handleCategoryChange(9, e.target.checked)} 
+        />
+        일식 돈까스
+
+        <input
+          type="checkbox"
+          onChange={(e) => handleCategoryChange(10, e.target.checked)} 
+        />
+        피자 양식
+
+        <input
+          type="checkbox"
+          onChange={(e) => handleCategoryChange(11, e.target.checked)} 
+        />
+        고기 구이
+
+        <input
+          type="checkbox"
+          onChange={(e) => handleCategoryChange(12, e.target.checked)} 
+        />
+        찜 탕
+         
+
+
+      </div>
+      <br />
+
+      <LunchMap />
+
+
+
       <h2>글 제목</h2>
       <input
         type="text"
         value={lunchTitle}
         onChange={onChangeTitle}
       />
-      <br />
-      <input
-        placeholder='가게이름(지도를 검색해주세요)'
-        value={placeName}
-        disabled
-      />
-
-      <LunchMap />
-
-      <div>
-        카테고리 선택
-        <br></br>
-        중식
-        <input
-          type="checkbox"
-          onChange={(e) => handleCategoryChange(1, e.target.checked)} />
-        일식
-        <input
-          type="checkbox"
-          onChange={(e) => handleCategoryChange(2, e.target.checked)} />
-        한식
-        <input
-          type="checkbox"
-          onChange={(e) => handleCategoryChange(3, e.target.checked)} />
-        매운거
-        <input
-          type="checkbox"
-          onChange={(e) => handleCategoryChange(4, e.target.checked)} />
-        느끼
-        <input
-          type="checkbox"
-          onChange={(e) => handleCategoryChange(5, e.target.checked)} />
-      </div>
-
-
       <div>
         미리보기
         {

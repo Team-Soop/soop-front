@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import * as s from "./style";
 
-import LunchWrite from '../../components/LunchWrite/LunchWrite';
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { searchAllLunch } from "../../apis/api/lunch";
@@ -10,14 +9,12 @@ import LunchDetail from "../../components/LunchDetail/LunchDetail";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { lunchDetailState } from "../../atoms/lunchDetailAtom";
-import Report from "../../components/Report/Report";
 import { rightSideBarState, sideMenuState } from "../../atoms/SideMenuAtom";
 
 function LunchPage(props) {
   const navigate = useNavigate();
   const [ lunchListsData, setLunchListsData ] = useState([]);
   const [ lunchDetailData, setLunchDetailData] = useRecoilState(lunchDetailState);
-  const [ writeOpen, setWriteOpen ] = useState(false);
   const setSideMenuNum = useSetRecoilState(sideMenuState);
   const [ rightSideBar, sestRightSideBar ] = useRecoilState(rightSideBarState);
 
@@ -67,16 +64,10 @@ function LunchPage(props) {
     }
   })
 
-  
 
   // 상세보기 컴포넌트 클릭 버튼
   const handleOnLunchDetail = (lunchId) => {
     navigate(`/lunch/Detail?lunchId=${lunchId}`)
-  }
-
-  // 글쓰기 컴포넌트 클릭 버튼
-  const handleOnLunchWrite = () => {
-    setWriteOpen(!writeOpen);
   }
 
 
@@ -117,13 +108,6 @@ function LunchPage(props) {
         }
       </div>
 
-      <div css={s.componentsLayout}>
-        <h1>글쓰기 컴포넌트</h1>
-        <button onClick={handleOnLunchWrite}>글쓰기</button>
-        {
-          writeOpen ? <LunchWrite/> : <></>
-        }
-      </div>
 
       
     </div>
