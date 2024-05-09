@@ -42,6 +42,7 @@ function FeedPage(props) {
     }
   );
 
+
   return (
     <div css={s.feedPageRootLayout}>
       <div css={s.feedPageLayout}>
@@ -56,7 +57,7 @@ function FeedPage(props) {
             </ul>
           )
         : <div>빈 게시판입니다.</div>
-      }
+        }
       </div>
 
     </div>

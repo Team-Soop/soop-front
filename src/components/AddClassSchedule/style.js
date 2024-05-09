@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 
-export const backgrond = css`
+export const background = css`
     width: 100%;
     height: 100%;
     background-color: #00000088;
@@ -59,11 +59,11 @@ export const buttonBox = css`
     display: flex;
 
     & > button {
-        margin-left: 4px;
-        border: 1px solid #cacaca;
-        border-radius: 5px;
         width: 65px;
         height: 30px;
+        border: 1px solid #f3f3f3;
+        border-radius: 5px;
+
         background-color: white;
         font-size: 12px;
         cursor: pointer;

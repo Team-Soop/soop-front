@@ -1,18 +1,18 @@
 import { css } from "@emotion/react";
 
-export const Layout = css`
-  border: 1px solid black;
-  width: 400px;
-  height: 400px;
-  border-radius: 5px;
+export const lunchListRoot = css`
 
-  & > * {
-    margin: 3px;
-  }
 `
 
-export const imgLayOut = css`
-  border: 1px solid black;
-  width: 120px;
-  height: 120px;
+export const lunchLayout = css`
+  position: relative;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  padding: 30px 40px;
+  border: 2px solid #8A9C99;
+  border-radius: 5px;
+  width: 100%;
+  min-height: 150px;
+  list-style: none;
+  background-color: #F6F5EF;
 `

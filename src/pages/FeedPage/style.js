@@ -3,7 +3,11 @@ import { css } from "@emotion/react";
 export const feedPageRootLayout = css`
   box-sizing: border-box;
   position: relative;
+
   width: 100%;
+
+  /* padding: 10px 0; */
+
   height: 100%;
 `;
 

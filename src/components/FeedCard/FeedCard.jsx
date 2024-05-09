@@ -162,6 +162,7 @@ function FeedCard({feed}) {
         easing: "ease-in"
     }
 
+
     return (
         <div>
             {
