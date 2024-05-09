@@ -30,7 +30,6 @@ export default function MypageFeed() {
   );
 
   return (
-    <div>
       <div css={s.mypageFeedRootLayout}>
         {mypageFeedList.length > 0 
         ? 
@@ -44,6 +43,5 @@ export default function MypageFeed() {
         : <div>작성한 게시글이 없습니다.</div>
       }
       </div>
-    </div>
   )
 }

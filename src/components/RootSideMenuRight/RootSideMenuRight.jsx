@@ -56,6 +56,7 @@ function RootSideMenuRight(props) {
   };
 
   return (
+
     <div>
       {/* 피드페이지 글쓰기 */}
       {isFeedWrite ? (
