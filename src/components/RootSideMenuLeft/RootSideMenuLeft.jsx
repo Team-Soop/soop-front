@@ -8,7 +8,6 @@ import { HiOutlineBellAlert } from "react-icons/hi2";
 import { GoSignIn, GoSignOut } from "react-icons/go";
 import instance from "../../apis/utils/instance";
 import logo from "../../assets/images/soopLogo.png"
-import userImgNone from "../../assets/images/userProfileNone.png"
 
 import { useRecoilValue } from "recoil";
 import { sideMenuSelectNum, sideMenuState } from "../../atoms/SideMenuAtom";
@@ -47,40 +46,39 @@ function RootSideMenuLeft() {
   
   return (
     <div css={s.layout}>
-      <Link to="/feed">
-        <div css={s.logoLayout}>
-            <div css={s.logoImg}>
-              <img src={logo} alt="" />
-            </div>
-            <div css={s.logoText}>
-              KOREAIT SOOP
-            </div>
+      <div css={s.logoLayout}>
+        <Link to="/feed">
+          <div css={s.logoImg}>
+            <img src={logo} alt="" />
+          </div>
+        </Link>
+        <div css={s.logoText}>
+          KOREAIT SOOP
         </div>
-      </Link>
-
-      <Link to={'/account/mypage/feed'}>
-        <div css={s.sideMenuProfile}>
-            <div css={s.sideMenuUserImg}>
-              <ima src={  
-                !principal?.data
-                ?
-                  userImgNone
-                :
-                  principal.data.profileImgUrl
-              } alt=""/>
-            </div>
-              
-            <div css={s.profileLink}>
-              {
-                !principal?.data
-                ?
-                  <button css={s.logInButton} onClick={() => navigate("/auth/signin")}>로그인</button>
-                :
-                  <div css={s.profileLink}>{principal.data.nickname}</div>
-              }
-            </div>
+      </div>
+      <div css={s.sideMenuProfile}>
+        <div css={s.sideMenuUserImg}>
+          <ima src={  
+            !principal?.data 
+            ?
+              "https://media.istockphoto.com/id/1459664492/ko/%EB%B2%A1%ED%84%B0/%EA%B8%B0%EB%B3%B8-%EC%95%84%EB%B0%94%ED%83%80-%ED%94%84%EB%A1%9C%ED%95%84-%EC%82%AC%EC%9A%A9%EC%9E%90-%ED%94%84%EB%A1%9C%ED%95%84-%EC%95%84%EC%9D%B4%EC%BD%98%EC%9E%85%EB%8B%88%EB%8B%A4-%ED%94%84%EB%A1%9C%ED%95%84-%EC%82%AC%EC%A7%84-%EC%84%B8%EB%A1%9C-%EA%B8%B0%ED%98%B8%EC%9E%85%EB%8B%88%EB%8B%A4-%EC%82%AC%EC%9A%A9%EC%9E%90-%EA%B5%AC%EC%84%B1%EC%9B%90-%ED%94%8C%EB%9E%AB-%EC%8A%A4%ED%83%80%EC%9D%BC%EC%9D%98-%EC%82%AC%EB%9E%8C-%EC%95%84%EC%9D%B4%EC%BD%98%EC%9E%85%EB%8B%88%EB%8B%A4-%EC%95%84%EB%B0%94%ED%83%80-%EC%82%AC%EC%A7%84-%EC%8B%A4%EB%A3%A8%EC%97%A3-%EB%B2%A1%ED%84%B0-%EB%94%94%EC%9E%90%EC%9D%B8%EA%B3%BC-%EA%B7%B8%EB%A6%BC%EC%9D%B4-%EC%9E%88%EB%8A%94-%EC%9B%90%ED%98%95.jpg?s=170667a&w=0&k=20&c=lIJIuHGbMWoHznJrPo3T0gI3laO0bd_C-84TqmQaNoM="
+            :
+              principal.data.profileImgUrl
+          } alt=""/>
         </div>
-      </Link>
+          
+        <div css={s.profileLink}>
+          {
+            !principal?.data
+            ?
+            <button css={s.logInButton} onClick={() => navigate("/auth/signin")}>로그인</button>
+            :
+            <Link to={'/account/mypage'}>
+              {principal.data.nickname}
+            </Link>
+          }
+        </div>
+      </div>
 
       {
         getSideMenuState === 1 

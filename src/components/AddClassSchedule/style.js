@@ -12,7 +12,7 @@ export const modal = css`
     padding: 30px;
     border: 1px solid #c5c5c5;
     border-radius: 10px;
-    background-color: #ffffff;
+    background-color: #F6F5EF;
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
@@ -64,7 +64,7 @@ export const buttonBox = css`
         border-radius: 5px;
         width: 65px;
         height: 30px;
-        background-color: white;
+        background-color: #F6F5EF;
         font-size: 12px;
         cursor: pointer;
 
