@@ -20,11 +20,6 @@ export const layout = css`
     }
 `
 
-export const modal = css`
-    position: absolute;
-    z-index: 555;
-`
-
 export const header = css`
     display: flex;
     justify-content: space-between;
@@ -40,23 +35,25 @@ export const header = css`
 export const button = css`
     width: 65px;
     height: 30px;
-    border: 1px solid #dbdbdb;
+    border: 1px solid #f3f3f3;
     border-radius: 5px;
     background-color: white;
     font-size: 12px;
     cursor: pointer;
 
     :hover {
-        background-color: #ebebebff;
+        background-color: #e7e7e7;
+        /* color: white; */
     }
     :active {
-        background-color: #d6d6d6;
+        background-color: #d7d7d7;
     }
 `
 
 export const calendar = css`
     margin: 10px;
     border-top: 3px solid white;
+    z-index: 0;
     
     --fc-border-color: white;
 
@@ -87,10 +84,6 @@ export const calendar = css`
     
     .fc-day-sat a {
         color: blue;
-    }
-
-    .fc-scroller {
-        overflow: visible !important;
     }
 
     .fc-popover-title {

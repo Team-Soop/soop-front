@@ -23,6 +23,7 @@ function FeedPage(props) {
 
   useEffect(() => {
     setRightSideBar(1)
+    setSideMenuState(1)
   })
 
   // 피드 리스트 get

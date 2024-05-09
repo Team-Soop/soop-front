@@ -10,6 +10,7 @@ export const modalLayout = css`
     left: 50%;
     width: 500px;
     height: 800px;
+    background-color: white;
 
     & > :nth-of-type(1) {
         margin-bottom: 10px;
