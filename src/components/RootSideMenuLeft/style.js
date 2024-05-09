@@ -59,6 +59,10 @@ export const sideMenuProfile = css`
     }
 `;
 
+export const sideMenuImg = css`
+    width: 100%;
+`
+
 export const sideMenuUserImg = css`
     cursor: pointer;
     margin-right: 15px;

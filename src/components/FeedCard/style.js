@@ -47,23 +47,40 @@ export const feedHeaderUser = css`
   font-weight: 600;
 `;
 
+export const feedfavorite = css`
+  display: flex;
+  justify-content: right;
+  button{
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+    color: #1f4d36;
+    cursor: pointer;
+  }
+`;
+
+export const saveFavorite = css`
+  color: #71C9CE;
+`;
+
 export const feedcontents = css`
-  margin-bottom: 10px;
   padding: 10px 0;
-  border-top: 2px solid #CAD8D8;
-  border-bottom: 2px solid #CAD8D8;
+  border-top: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
   width: 100%;
   min-height: 50px;
   `;
 
 export const slideArrow = css`
-  
   padding: 0 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 25px;
-  color: #4F5152;
+  color: #dfdfdf80;
+  &:hover{
+    color: #ffffff80;
+  }
 `;
 
 export const feedImg = (url) => css`
@@ -71,9 +88,8 @@ export const feedImg = (url) => css`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 5px;
   width: 100%;
-  height: 550px;
+  height: 500px;
   background-size: cover;
   background-repeat: repeat;
   background-position: center;
@@ -83,30 +99,16 @@ export const feedImg = (url) => css`
 
 export const feedText = css`
   padding-top: 8px;
-  color: #4F5152;
+  
 `;
 
-export const feedfavorite = css`
-  position: absolute;
-  top: 48px;
-  right: 45px;
-  button{
-    cursor: pointer;
-  }
-`;
 
-export const feedFavoriteButton = css`
-  border: none;
-  background-color: transparent;
-  font-size: 20px;
-  color: #1f4d36;
-`;
-
-export const saveFavorite = css`
-  color: #71C9CE;
-`;
 
 export const feedFooter = css`
+display: flex;
+align-items: center;
+justify-content: center;
+  margin: 5px 0;
   width: 100%;
   height: 25px;
   button:nth-of-type(2) {
@@ -120,6 +122,12 @@ export const feedFooterButton = css`
   background-color: transparent;
   border: none;
   font-size: 16px;
-  color: #1f4d36;
+  color:  #585858;
   cursor: pointer;
+  &:hover{
+    color: #01a151;
+  }
+  &:active{
+    color: #00c763;
+  }
 `;
