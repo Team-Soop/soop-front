@@ -8,7 +8,7 @@ export const feedlayout = css`
   position: relative;
   box-sizing: border-box;
   margin-bottom: 20px;
-  padding: 10px;
+  padding: 10px 10px 0 10px;
   border: 2px solid #ffffff;
   border-radius: 10px;
   min-height: 150px;
@@ -46,8 +46,23 @@ export const feedHeaderUser = css`
   font-weight: 600;
 `;
 
+export const feedfavorite = css`
+  display: flex;
+  justify-content: right;
+  button{
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+    color: #1f4d36;
+    cursor: pointer;
+  }
+`;
+
+export const saveFavorite = css`
+  color: #71C9CE;
+`;
+
 export const feedcontents = css`
-  margin-bottom: 10px;
   padding: 10px 0;
   border-top: 2px solid #ffffff;
   border-bottom: 2px solid #ffffff;
@@ -56,13 +71,15 @@ export const feedcontents = css`
   `;
 
 export const slideArrow = css`
-  
   padding: 0 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 25px;
   color: #dfdfdf80;
+  &:hover{
+    color: #ffffff80;
+  }
 `;
 
 export const feedImg = (url) => css`
@@ -84,27 +101,13 @@ export const feedText = css`
   
 `;
 
-export const feedfavorite = css`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  button{
-    cursor: pointer;
-  }
-`;
 
-export const feedFavoriteButton = css`
-  border: none;
-  background-color: transparent;
-  font-size: 20px;
-  color: #1f4d36;
-`;
-
-export const saveFavorite = css`
-  color: #71C9CE;
-`;
 
 export const feedFooter = css`
+display: flex;
+align-items: center;
+justify-content: center;
+  margin: 5px 0;
   width: 100%;
   height: 25px;
   button:nth-of-type(2) {
@@ -118,6 +121,12 @@ export const feedFooterButton = css`
   background-color: transparent;
   border: none;
   font-size: 16px;
-  color: #1f4d36;
+  color:  #585858;
   cursor: pointer;
+  &:hover{
+    color: #01a151;
+  }
+  &:active{
+    color: #00c763;
+  }
 `;
