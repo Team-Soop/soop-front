@@ -6,7 +6,7 @@ import { BsExclamationCircle } from "react-icons/bs";
 import { IoBookmark, IoBookmarkOutline  } from "react-icons/io5";
 import DOMPurify from "dompurify";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { deleteMypageFeed, feedDeleteLike, feedGetLike, feedLike } from "../../apis/api/feed";
+import { deleteMypageFeed, feedDeleteLike, feedGetLike, feedLike, searchFeedComment } from "../../apis/api/feed";
 import { useEffect, useState } from "react";
 import { saveBoard, saveDeleteBoard, saveGetBoard } from "../../apis/api/saveBoards";
 import FeedCardComment from "./FeedCardComment/FeedCardComment";
@@ -27,6 +27,7 @@ function FeedCard({feed}) {
     const principalData = queryClient.getQueryData("principalQuery");
     const [ isCommentOpen, setIsCommentOpen ] = useState(false);
     const setSideMenuNum = useRecoilValue(sideMenuState);
+    const [ commentCount, setCommetCount ] = useState();
 
     useEffect(() => {
         return () => {
@@ -53,6 +54,24 @@ function FeedCard({feed}) {
         }
     )
     
+    const searchFeedCommentQuery = useQuery(
+        ["searchFeedCommentQuery", feed.feedId],
+        () => searchFeedComment(feed.feedId),
+        {
+          retry:0,
+          refetchOnWindowFocus: false,
+          onSuccess: response => {
+            console.log("댓글 카운트");
+            setCommetCount(response.data[0]);
+          },
+          onError: error => {
+            console.log(error);
+          }
+        }
+    
+      )
+
+
     // 좋아요
     const likeFeed = useMutation({
         mutationKey: "likesFeed",
@@ -143,6 +162,8 @@ function FeedCard({feed}) {
         easing: "ease-in"
     }
     
+    console.log(commentCount);
+
     return (
         <div>
             {
@@ -227,7 +248,9 @@ function FeedCard({feed}) {
                         }
                         
                         {/* 댓글 아이콘 */}
-                        <button css={s.feedFooterButton} onClick={() => setIsCommentOpen(!isCommentOpen)}><FaRegCommentAlt /></button>
+                        <button css={s.feedFooterButton} onClick={() => setIsCommentOpen(!isCommentOpen)}>
+                            <FaRegCommentAlt /> <span>{!commentCount?.totalCount ? 0 : commentCount?.totalCount}</span>
+                        </button>
                         {/* 신고하기 */}
                         <button css={s.feedFooterButton} onClick={() => {isReportOpen(feed.feedId)}}><BsExclamationCircle /></button>
                         {/* <AiOutlineAlert /> 신고하기아이콘 */}
