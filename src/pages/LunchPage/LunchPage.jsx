@@ -21,7 +21,7 @@ function LunchPage(props) {
   useEffect(() => {
     sestRightSideBar(3)
     setSideMenuNum(1)
-  }, [])
+  })
 
 
   // 랜더링 될때마다 DB에서 LIST 데이터를 get함
@@ -72,40 +72,34 @@ function LunchPage(props) {
 
 
   return (
-    <div>
+    <div css={s.lunchPageRootLayout}>
       <Routes>
         <Route path='/Detail' element={<LunchDetail />}/>
       </Routes>
 
-      {/* <div>
-        <h1>검색</h1>
-      </div> */}
-
-      <div>
-        카테고리 필터 체크박스
-      </div>
-
       {/* lunch List 피드 컴포넌트 */}
-      <div >
-        {
-          lunchDetailData.map(listData => (
-            <div key={listData.lunchId}>
-              <button onClick={() => handleOnLunchDetail(listData.lunchId)}>
-                상세보기
-              </button>
-              <LunchList
-                lunchId={listData.lunchId}
-                profileImgUrl={listData.profileImgUrl}
-                nickName={listData.nickName}
-                placeName={listData.PlaceName}
-                categroies={listData.categroies}
-                title={listData.title}
-                imgUrls={listData.imgUrls}
-                content={listData.content}
-              />
-            </div>
-          ))
-        }
+      <div css={s.lunchPageLayout}>
+        <ul>
+          {
+            lunchDetailData.map(listData => (
+              <div key={listData.lunchId}>
+                {/* <button onClick={() => handleOnLunchDetail(listData.lunchId)}>
+                  상세보기
+                </button> */}
+                <LunchList
+                  lunchId={listData.lunchId}
+                  profileImgUrl={listData.profileImgUrl}
+                  nickName={listData.nickName}
+                  placeName={listData.PlaceName}
+                  categroies={listData.categroies}
+                  title={listData.title}
+                  imgUrls={listData.imgUrls}
+                  content={listData.content}
+                />
+              </div>
+            ))
+          }
+        </ul>
       </div>
 
 
