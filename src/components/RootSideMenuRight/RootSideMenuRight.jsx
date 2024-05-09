@@ -75,7 +75,12 @@ function RootSideMenuRight(props) {
               css={s.feedModal}
             >
               <AddFeed />
-              <button css={s.modalCancel} onClick={closeModal}><MdOutlineCancel /></button>
+                <button 
+                  css={s.modalCancel} 
+                  onClick={closeModal}
+                >
+                  <MdOutlineCancel />
+                </button>
             </Modal>
             {/* 우측 하단 버튼 */}
             <div css={s.rigthButton}>

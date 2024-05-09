@@ -1,14 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import * as s from "./style";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../apis/firebase/firebaseConfig";
-import { feedListGet, feedRequest } from "../../apis/api/feed";
-import { QueryClient, useMutation, useQueryClient } from "react-query";
-import { FaRegUser } from "react-icons/fa6";
-import { MdOutlineCancelPresentation } from "react-icons/md";
+import { feedRequest } from "../../apis/api/feed";
+import { useMutation, useQueryClient } from "react-query";
 import userImgNone from "../../assets/images/userProfileNone.png"
+import 'react-slideshow-image/dist/styles.css'
+import { Slide } from "react-slideshow-image";
+import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
 
 function AddFeed() {
   const queryClient = useQueryClient();
@@ -133,50 +134,72 @@ function AddFeed() {
     })
   }
 
-  console.log(principalData.data);
+  // 슬라이드쇼 
+  const settings = {
+    className: "slide-container",
+    dots: true,
+    autoplay: false,
+    infinite: false,
+    transitionDuration: 300,
+    easing: "ease-in"
+  }
 
   return (
-    
-    <div css={s.addFeedRootLayout}>
-      <div css={s.addFeedLayout}>
+    <div css={s.addFeedLayout}>
 
-        <div >
-          유저 이미지 ,닉네임
+      <div css={s.addFeedHeader}>
+        <div css={s.addFeedProfileImg}>
+          <img 
+            css={s.addFeedImg}
+            src={
+              !!principalData.data.profileImgUrl
+              ?
+              principalData.data.profileImgUrl
+              :
+              userImgNone
+            } alt="" />
+        </div>
+        <div css={s.addFeedNickname}>{principalData.data.nickname}</div>
+      </div>
+
+      <div css={s.addFeedContents}>
+        <div css={s.addFeedImgPrievew}>
+          {
+            <div className="slide-container">
+              <Slide {...settings} 
+                prevArrow={<div css={s.slideArrow}><IoIosArrowDropleftCircle /></div>}
+                nextArrow={<div css={s.slideArrow}><IoIosArrowDroprightCircle /></div>}
+                >
+                {loadPhotos.map(photo =>
+                    <div key={photo.id} >
+                      <img src={photo.dataUrl} css={s.feedImg} alt="" />
+                    </div>
+                )}
+              </Slide>
+            </div>
+          }
+        </div>
+        <input 
+            type="file" 
+            style={{display: "none"}} 
+            onChange={handleFileChange} 
+            ref={imgFileRef} 
+            multiple={true} 
+          />
+        <div>
+          <ReactQuill 
+            css={s.addFeedQuill}
+            modules={modules} 
+            value={newFeedContent} 
+            onChange={setNewFeedContent}
+          />
+          
         </div>
 
-        <div css={s.addFeedContents}>
-          <div css={s.addFeedImgPrievew}>
-            {
-              loadPhotos.map(
-                photo =>
-                  <div key={photo.id} css={s.addFeedImage}>
-                    <img src={photo.dataUrl} alt="" />
-                    <button><MdOutlineCancelPresentation /></button>
-                  </div>
-              )
-            }
-          </div>
-          <div>
-            <ReactQuill 
-              modules={modules} 
-              value={newFeedContent} 
-              onChange={setNewFeedContent}
-              css={s.addFeedQuill}
-            />
-            <input 
-              type="file" 
-              style={{display: "none"}} 
-              onChange={handleFileChange} 
-              ref={imgFileRef} 
-              multiple={true} 
-            />
-          </div>
-
-          <div css={s.addFeedFooter}>
-            <button onClick={() => imgFileRef.current.click()}>사진 선택</button>
-            <button onClick={handleCancelFeed}>글 지우기</button>
-            <button onClick={() => {handleImageUpload()}}>작성 완료</button>
-          </div>
+        <div css={s.addFeedFooter}>
+          <button onClick={() => imgFileRef.current.click()}>사진 선택</button>
+          {/* <button onClick={handleCancelFeed}>글 지우기</button> */}
+          <button onClick={() => {handleImageUpload()}}>작성 완료</button>
         </div>
       </div>
     </div>

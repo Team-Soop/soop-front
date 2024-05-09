@@ -161,8 +161,6 @@ function FeedCard({feed}) {
         transitionDuration: 300,
         easing: "ease-in"
     }
-    
-    console.log(commentCount);
 
     return (
         <div>
@@ -272,71 +270,70 @@ function FeedCard({feed}) {
             ?
             <div css={s.feedCardRoot}>
                 <li key={feed.feedId} css={s.feedlayout}>
-                    <div>
-                        {/* 유저정보 */}
-                        <div css={s.feedHeader}>
-                            <div css={s.feedHeaderProfileImg}>
-                                <img src={
-                                    !!feed.profileImgUrl
-                                    ?
-                                    feed.profileImgUrl
-                                    :
-                                    userImg
-                                } alt="" />
-                            </div>
-                            <div css={s.feedHeaderUser}>{feed.nickname}</div>
+                    {/* 유저정보 */}
+                    <div css={s.feedHeader}>
+                        <div css={s.feedHeaderProfileImg}>
+                            <img src={
+                                !!feed.profileImgUrl
+                                ?
+                                feed.profileImgUrl
+                                :
+                                userImg
+                            } alt="" />
                         </div>
-                        {/* 수정, 삭제, 저장 */}
-                        <div css={s.feedfavorite}>
-                            <button onClick={editMypageFeed}><AiOutlineEdit /></button>
-                            <button onClick={deleteMypageFeedButton}><AiOutlineDelete /></button>
-                            {
-                                boardSaveQuery.isLoading
-                                ? <></>
-                                : boardSaveQuery.data.data.saveBoardStatus > 0
-                                    ? 
-                                    <button onClick={() => deleteLunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
-                                        <IoBookmark css={s.saveFavorite}/>
-                                    </button>
-                                    : 
-                                    <button onClick={() => lunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
-                                        <IoBookmarkOutline/>
-                                    </button>
-                            }
-                        </div>
+                        <div css={s.feedHeaderUser}>{feed.nickname}</div>
                     </div>
 
                     {/* 피드(이미지, 게시글) */}
                     <div css={s.feedcontents}>
-                        
-                    {   
-                    // 이미지 2개 이상 일 때만 슬라이드
-                        feed.feedImgUrl.length > 1 
-                        ?
-                        <div className="slide-container">
-                            <Slide {...settings} 
-                                prevArrow={<div css={s.slideArrow}><IoIosArrowDropleftCircle /></div>}
-                                nextArrow={<div css={s.slideArrow}><IoIosArrowDroprightCircle /></div>}
-                            >
+
+                        {   
+                        // 이미지 2개 이상 일 때만 슬라이드
+                            feed.feedImgUrl.length > 1 
+                            ?
+                            <div className="slide-container">
+                                <Slide {...settings} 
+                                    prevArrow={<div css={s.slideArrow}><IoIosArrowDropleftCircle /></div>}
+                                    nextArrow={<div css={s.slideArrow}><IoIosArrowDroprightCircle /></div>}
+                                >
+                                    {feed.feedImgUrl.map((imgUrl, index)=> (
+                                        <div key={index} css={s.feedImg(imgUrl)}></div>
+                                    ))} 
+                                </Slide>
+                            </div>
+                            :
+                            <div className="slide-container">
                                 {feed.feedImgUrl.map((imgUrl, index)=> (
                                     <div key={index} css={s.feedImg(imgUrl)}></div>
                                 ))} 
-                            </Slide>
-                        </div>
-                        :
-                        <div className="slide-container">
-                            {feed.feedImgUrl.map((imgUrl, index)=> (
-                                <div key={index} css={s.feedImg(imgUrl)}></div>
-                            ))} 
-                        </div>
-                    }
+                            </div>
+                        }
                         
                         <div css={s.feedText} dangerouslySetInnerHTML={{__html: sanitizer(feed.feedContent)}}></div>
                     </div>
-
+                     {/* 수정, 삭제, 저장 */}
+                     <div css={s.feedfavorite}>
+                        {/* <button onClick={editMypageFeed}><AiOutlineEdit /></button> */}
+                        <button onClick={deleteMypageFeedButton}><AiOutlineDelete /></button>
+                        {
+                            boardSaveQuery.isLoading
+                            ? <></>
+                            : boardSaveQuery.data.data.saveBoardStatus > 0
+                                ? 
+                                <button onClick={() => deleteLunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
+                                    <IoBookmark css={s.saveFavorite}/>
+                                </button>
+                                : 
+                                <button onClick={() => lunchBoardSave.mutate({boardId : feed.feedId, menuId: 1})}>
+                                    <IoBookmarkOutline/>
+                                </button>
+                        }
+                    </div>
+                    
                     <div css={s.feedFooter}>
+                    
                     {
-                        // 좋아요   
+                        // 좋아요
                         likeQuery.isLoading 
                         ? <></>
                         : likeQuery.data.data.likeStatus > 0 
@@ -351,10 +348,14 @@ function FeedCard({feed}) {
                         }
                         
                         {/* 댓글 아이콘 */}
-                        <button css={s.feedFooterButton} onClick={() => setIsCommentOpen(!isCommentOpen)}><FaRegCommentAlt /></button>
+                        <button css={s.feedFooterButton} onClick={() => setIsCommentOpen(!isCommentOpen)}>
+                            <FaRegCommentAlt /> <span>{!commentCount?.totalCount ? 0 : commentCount?.totalCount}</span>
+                        </button>
                         {/* 신고하기 */}
-                        <button css={s.feedFooterButton} onClick={() => isReportOpen(feed.feedId)}><BsExclamationCircle /></button>
+                        <button css={s.feedFooterButton} onClick={() => {isReportOpen(feed.feedId)}}><BsExclamationCircle /></button>
+                        {/* <AiOutlineAlert /> 신고하기아이콘 */}
                     </div>
+
                     {/* 댓글 아이콘 눌렀을 때 */}
                     {
                         isCommentOpen 

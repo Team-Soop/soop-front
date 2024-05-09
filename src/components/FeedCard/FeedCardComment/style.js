@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 
 export const commentRootLayout = css`
-  border-top: 2px solid #ffffff;
+  border-top: 2px solid #CAD8D8;
   padding-top: 5px;
 `
 export const commentContentLayout = css`

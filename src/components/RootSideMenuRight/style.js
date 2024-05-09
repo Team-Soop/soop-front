@@ -50,17 +50,14 @@ export const feedModal = css`
 
 export const modalCancel = css`
   position: absolute;
+  top: 20px;
+  right: 20px;
   border: none;
-  top: 30px;
-  right: 30px;
-  font-size: 50px;
-  color: #CBF1F5;
+  font-size: 40px;
+  color: #d8dfdd;
   background-color: transparent;
   cursor: pointer;
-  &:hover {
-    color: #B3E7EC;
-  }
-  &:active {
-    color: #23d1e0;
+  &:hover{
+    color: #b4bdbb;
   }
 `;

@@ -42,8 +42,6 @@ function FeedPage(props) {
     }
   );
 
-  console.log(setRightSideBar);
-
   return (
     <div css={s.feedPageRootLayout}>
       <div css={s.feedPageLayout}>

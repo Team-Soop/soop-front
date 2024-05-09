@@ -48,27 +48,33 @@ export const feedHeaderUser = css`
 `;
 
 export const feedfavorite = css`
-  display: flex;
-  justify-content: right;
+  position: absolute;
+  top: 48px;
+  right: 45px;
   button{
+    padding-left: 7px;
     border: none;
+    color: #4F5152;
     background-color: transparent;
     font-size: 20px;
-    color: #1f4d36;
     cursor: pointer;
+  }
+  button:hover{
+    color: #8A9C99;
   }
 `;
 
 export const saveFavorite = css`
-  color: #71C9CE;
+  color: #8A9C99;
 `;
 
 export const feedcontents = css`
-  padding: 10px 0;
-  border-top: 2px solid #ffffff;
-  border-bottom: 2px solid #ffffff;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-top: 2px solid #CAD8D8;
+  border-bottom: 2px solid #CAD8D8;
   width: 100%;
-  min-height: 50px;
+  min-height: 70px;
   `;
 
 export const slideArrow = css`
@@ -77,7 +83,7 @@ export const slideArrow = css`
   align-items: center;
   justify-content: center;
   font-size: 25px;
-  color: #dfdfdf80;
+  color: #4F5152;
   &:hover{
     color: #ffffff80;
   }
@@ -88,8 +94,10 @@ export const feedImg = (url) => css`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 10px;
+  border-radius: 5px;
   width: 100%;
-  height: 500px;
+  height: 550px;
   background-size: cover;
   background-repeat: repeat;
   background-position: center;
@@ -98,8 +106,8 @@ export const feedImg = (url) => css`
 
 
 export const feedText = css`
-  padding-top: 8px;
-  
+  margin-top: 10px;
+  color: #4F5152;  
 `;
 
 
@@ -111,10 +119,7 @@ justify-content: center;
   margin: 5px 0;
   width: 100%;
   height: 25px;
-  button:nth-of-type(2) {
-    border-left: 2px solid #ffffff;
-    border-right: 2px solid #ffffff;
-  }
+ 
 `;
 
 export const feedFooterButton = css`
@@ -122,12 +127,6 @@ export const feedFooterButton = css`
   background-color: transparent;
   border: none;
   font-size: 16px;
-  color:  #585858;
+  color: #1f4d36;
   cursor: pointer;
-  &:hover{
-    color: #01a151;
-  }
-  &:active{
-    color: #00c763;
-  }
 `;
