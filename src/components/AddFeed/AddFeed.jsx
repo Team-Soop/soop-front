@@ -8,6 +8,7 @@ import { feedListGet, feedRequest } from "../../apis/api/feed";
 import { QueryClient, useMutation, useQueryClient } from "react-query";
 import { FaRegUser } from "react-icons/fa6";
 import { MdOutlineCancelPresentation } from "react-icons/md";
+import userImgNone from "../../assets/images/userProfileNone.png"
 
 function AddFeed() {
   const queryClient = useQueryClient();
@@ -44,7 +45,7 @@ function AddFeed() {
           [{ size: ['small', false, 'large', 'huge'] }],
           [{ align: [] }],
           ['bold', 'italic', 'underline', 'strike'],
-          [{ list: 'ordered' }, { list: 'bullet' }],
+          // [{ list: 'ordered' }, { list: 'bullet' }],
           [{color: [], },{ background: [] },],
         ],
       }
@@ -132,17 +133,15 @@ function AddFeed() {
     })
   }
 
+  console.log(principalData.data);
+
   return (
     
     <div css={s.addFeedRootLayout}>
       <div css={s.addFeedLayout}>
 
-        <div css={s.addFeedHeader}>
-          <div css={s.addFeedProfileImg}>
-            <img src="" alt="" />
-            <FaRegUser />   {/* 프로필 이미지 없을 때 아이콘*/}
-          </div>
-          <div>{principalData?.data.nickname}</div>
+        <div >
+          유저 이미지 ,닉네임
         </div>
 
         <div css={s.addFeedContents}>

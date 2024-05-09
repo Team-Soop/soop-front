@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import * as s from "./style";
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { deleteFeedComment, feedCommentRequest, searchFeedComment, updateFeedComment } from '../../../apis/api/feed';
+import { AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineDelete } from "react-icons/ai";
 
 import userImg from "../../../assets/images/userProfileNone.png"
 
@@ -13,6 +15,11 @@ function FeedCardComment({feedId}) {
   const [commentList, setCommentList] = useState([]);
   const [putCommentId, setPutCommentId] = useState(0);
   const [putChangeComment, setPutChangeComment] = useState("");
+  const inputFocusRef = useRef(""); 
+
+  // useEffect(() => {
+  //   inputFocusRef.current.focus()
+  // }, [putChangeComment])
 
   //댓글 get
   const searchFeedCommentQuery = useQuery(
@@ -104,24 +111,47 @@ function FeedCardComment({feedId}) {
   }
 
   return (
-    <div>
+    <div css={s.commentRootLayout}>
       {
         commentList.map(comment => (
           comment.feedCommentId === putCommentId 
           ?
           // 수정클릭 했을때 input창
           <div key={comment.feedCommentId}>
-            <input 
-              type="text" 
-              defaultValue={comment.commentContent}
-              onChange={e => setPutChangeComment(e.target.value)}
-            />
-            <button onClick={() => putClickFeedComment(comment.feedCommentId, comment.feedCommentUserId)}>게시</button>
-            <button onClick={() => setPutCommentId(0)}>취소</button>
+            {/* 원래 댓글 보여주기 */}
+            <div css={s.commentContentLayout}>
+              <img 
+                css={s.commentProfileImg}
+                src={
+                  !!comment.feedCommentUserProfileImgUrl 
+                  ? comment.feedCommentUserProfileImgUrl 
+                  : userImg
+                } alt="" 
+              />
+              <div css={s.contents}>
+                <h4>{comment.feedCommentNickName}</h4>
+                <span css={s.commentContent}>{comment.feedCommentContent}</span>
+              </div>
+            </div>
+            {/* 수정 댓글 input 창 */}
+            <div css={s.editCommentLayout}>
+              <span>댓글수정</span>
+              <input 
+                css={s.feedCommentInput}
+                // ref={inputFocusRef}
+                type="text" 
+                defaultValue={comment.commentContent}
+                onChange={(e) => setPutChangeComment(e.target.value)}
+                />
+              <div css={s.editingCommentButton}>
+                <button onClick={() => putClickFeedComment(comment.feedCommentId, comment.feedCommentUserId)}>수정</button>
+                <button onClick={() => setPutCommentId(0)}>취소</button>
+              </div>
+            </div>
           </div>
           :
-          <div key={comment.feedCommentId}>
-              <div css={s.commentContent}>
+          <div key={comment.feedCommentId} >
+              <div css={s.commentContentLayout}>
                 <img 
                   css={s.commentProfileImg}
                   src={
@@ -130,20 +160,22 @@ function FeedCardComment({feedId}) {
                     : userImg
                   } alt="" 
                 />
-                {comment.feedCommentNickName}
-
-                {comment.feedCommentContent}
+                <div css={s.contents}>
+                  <h4>{comment.feedCommentNickName}</h4>
+                  <span css={s.commentContent}>{comment.feedCommentContent}</span>
+                
 
                 {
                   comment.feedCommentUserId === principalData.data.userId
                     ?
                     <div css={s.editCommentButton}>
-                      <button onClick={() => openClickCommentInput(comment.feedCommentId)}>수정</button>
-                      <button onClick={() => deletClickFeedComment(comment.feedCommentId)}>삭제</button>
+                      <button onClick={() => openClickCommentInput(comment.feedCommentId)}><AiOutlineEdit /></button>
+                      <button onClick={() => deletClickFeedComment(comment.feedCommentId)}><AiOutlineDelete /></button>
                     </div>
                     :
                     <div></div>
-                }
+                  }
+                  </div>
               </div>
           </div>
 
