@@ -2,7 +2,11 @@ import { css } from "@emotion/react";
 
 export const root = css`
     width: 500px;
-    height: 900px;
+    height: 100%;
+    border-radius: 5px;
+    box-sizing: border-box;
+    border: 2px solid #8A9C99;
+    background-color: #F6F5EF;
 `
 export const signinLayout = css`
     position: absolute;
