@@ -28,7 +28,7 @@ function FeedPage(props) {
 
   // 피드 리스트 get
   const getFeedListQuery = useQuery(
-    "getFeedDataList", feedListGet ,
+    "getFeedDataList", feedListGet,
     {
       retry: 0,
       onSuccess: response => {
