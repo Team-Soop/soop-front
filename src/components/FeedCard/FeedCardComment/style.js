@@ -19,6 +19,8 @@ export const commentProfileImg = css`
 `;
 
 export const contents = css`
+  position: relative;
+  width: 100%;
     & > h4{
     margin-right: 8px;
     display: inline-block;
@@ -123,4 +125,19 @@ export const addCommentButton = css`
     background-color: #d7d7d7;
 
   }
+`
+
+export const commentMenu = css`
+  position: absolute;
+  top: 0;
+  right: 0;
+  button {
+    margin-left: 5px;
+    padding: 2px;
+    border: none;
+    background-color: transparent;
+    font-size: 15px;
+    cursor: pointer;
+  }
+
 `

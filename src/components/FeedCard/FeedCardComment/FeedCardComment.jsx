@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { deleteFeedComment, feedCommentRequest, searchFeedComment, updateFeedComment } from '../../../apis/api/feed';
 import { AiOutlineEdit } from "react-icons/ai";
 import { AiOutlineDelete } from "react-icons/ai";
+import { TbDotsVertical } from "react-icons/tb";
 
 import userImg from "../../../assets/images/userProfileNone.png"
 
@@ -160,22 +161,29 @@ function FeedCardComment({feedId}) {
                     : userImg
                   } alt="" 
                 />
+                
                 <div css={s.contents}>
                   <h4>{comment.feedCommentNickName}</h4>
                   <span css={s.commentContent}>{comment.feedCommentContent}</span>
-                
-
-                {
-                  comment.feedCommentUserId === principalData.data.userId
+                  
+                  {
+                    comment.feedCommentUserId === principalData.data.userId
                     ?
-                    <div css={s.editCommentButton}>
-                      <button onClick={() => openClickCommentInput(comment.feedCommentId)}><AiOutlineEdit /></button>
-                      <button onClick={() => deletClickFeedComment(comment.feedCommentId)}><AiOutlineDelete /></button>
+                    <div>
+                      <div css={s.editCommentButton}>
+                        <button onClick={() => openClickCommentInput(comment.feedCommentId)}><AiOutlineEdit /></button>
+                        <button onClick={() => deletClickFeedComment(comment.feedCommentId)}><AiOutlineDelete /></button>
+                      </div>
                     </div>
                     :
                     <div></div>
                   }
+
+                  <div css={s.commentMenu}>
+                    <button ><TbDotsVertical /></button>
                   </div>
+
+                </div>
               </div>
           </div>
 
