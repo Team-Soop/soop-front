@@ -72,7 +72,7 @@ function AuthRoute(props) {
           </Routes>
         )}
       </PageContainer>
-      {!!principalQuery.data && <UserAlarm />}
+      {!!principalQuery.data ? <UserAlarm /> : <div style={{"width":"320px"}}></div>}
       <RootSideMenuRight />
     </>
   );
