@@ -1,16 +1,17 @@
 import { css } from "@emotion/react";
 
 export const layout = css`
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    box-sizing: border-box;
+    border: 2px solid #8A9C99;
+    padding: 10px 20px ;
+    border-radius: 5px;
     width: 100%;
     height: 100%;
     background-color: #F6F5EF;
-    border: 2px solid #8A9C99;
-    border-radius: 5px;
-    padding: 10px 20px ;
     overflow-y: auto;
+    z-index: 0;
 
     & > h1 {
         padding: 15px 0px 0px 15px;
@@ -45,7 +46,6 @@ export const button = css`
 
     :hover {
         background-color: #e7e7e7;
-        /* color: white; */
     }
     :active {
         background-color: #d7d7d7;
@@ -53,6 +53,7 @@ export const button = css`
 `
 
 export const calendar = css`
+    position: relative;
     margin: 10px;
     border-top: 3px solid white;
     z-index: 0;
@@ -89,7 +90,21 @@ export const calendar = css`
     }
 
     .fc-popover-title {
-        font-size: 14px;
+        font-size: 13px;
+    }
+
+    .fc-popover-header {
+        width: 100%;
+    }
+
+    .fc-popover-body {
+        width: 220px;
+    }
+
+    .fc-more-popover {
+        position: sticky;
+        width: 220px;
+        background-color: white;
     }
 `
 

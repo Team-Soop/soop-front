@@ -6,9 +6,9 @@ import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useMutation, useQueryClient } from "react-query";
 import { saveStudyGroup, updateStudyGroup } from "../../../apis/api/study";
+import Modal from "react-modal"
 
-
-export default function SaveStduyGroup({ setState, studyId, title, content, memberLimited, periodEnd, skills, memberCount, setIsWrite }) {
+export default function SaveStduyGroup({ isOpen, isClose, setState, studyId, title, content, memberLimited, periodEnd, skills, memberCount }) {
     const queryClient = useQueryClient();
     const principalData = queryClient.getQueryData("principalQuery");
     const [ memberCountList, setMemberCountList ] = useState([])
@@ -124,14 +124,8 @@ export default function SaveStduyGroup({ setState, studyId, title, content, memb
 
     }
 
-    const test = () => {
-        setIsWrite(false)
-    }
-
-
-
   return (
-    <>
+    <Modal isOpen={isOpen}>
         <h2>스터디 모집 게시글 작성</h2>
         <div>
             <input type="text" placeholder="제목" onChange={(e) => setStudyTitle(e.target.value)} value={studyTitle || ""}/>
@@ -175,10 +169,10 @@ export default function SaveStduyGroup({ setState, studyId, title, content, memb
                     />
             </div>
             <div>
-                <button onClick={test}>취소</button>
+                <button onClick={isClose}>취소</button>
                 <button onClick={saveClickButton}>작성</button>
             </div>
         </div>
-    </>
+    </Modal>
   )
 }

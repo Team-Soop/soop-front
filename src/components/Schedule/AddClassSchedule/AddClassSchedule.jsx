@@ -5,10 +5,10 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { useEffect, useRef, useState } from "react";
-import { useInput } from "../../hooks/useInput";
+import { useInput } from "../../../hooks/useInput";
 import Select from "react-select";
 import { useMutation } from "react-query";
-import { addSchedule, deleteSchedule, updateSchedule } from "../../apis/api/schedule";
+import { addSchedule, deleteSchedule, updateSchedule } from "../../../apis/api/schedule";
 import Modal from "react-modal"
 
 export default function AddClassSchedule({ isOpen, isClose, viewScheduleDate, originScheduleDate, selectTimeOption, selectTimeEndOption }) {
