@@ -14,14 +14,16 @@ export const commentContentLayout = css`
 
 export const commentProfileImg = css`
   margin-right: 10px;
+  border-radius: 50%;
   width: 40px;
   height: 40px;
 `;
 
 export const contents = css`
   position: relative;
+  padding-right: 7px;
   width: 100%;
-    & > h4{
+  & > h4{
     margin-right: 8px;
     display: inline-block;
   }
@@ -33,6 +35,7 @@ export const commentContent = css`
 `;
 
 export const editCommentLayout = css`
+  position: relative;
   box-sizing: border-box;
   display: flex;
   justify-content: left;
@@ -50,7 +53,7 @@ export const editingCommentButton = css`
   display: flex;
   width: 65px;
   height: 30px;
-  button{
+  & > button{
     padding: 4px;
     border: 1px solid #f3f3f3;
     background-color: #ffffff;
@@ -68,26 +71,56 @@ export const editingCommentButton = css`
 `
 
 export const editCommentButton = css`
+  position: absolute;
+  top: 0;
+  right: 7px;
   margin-left: 5px;
-  display: inline;
-
-  button {
-    margin-left: 3px;
-    width: 18px;
-    height: 15px;
-    border: none;
-    font-size: 17px;
+  width: 70px;
+  height: 70px;
+  background-color: #F6F5EF;
+  z-index: 1;
+  & > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    width: 100%;
+    height: 50%;
+    border: 2px solid #CAD8D8;
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 600;
     color: #585858;
     background-color: transparent;
     cursor: pointer;
   }
+  & > button:hover{
+    background-color: #f3f3f3;
+  }
+  & > button:nth-of-type(1){
+    border-bottom: none;
+  }
+`
 
-  button:hover{
-    color: #01a151;
+export const commentMenu = css`
+  position: absolute;
+  width: 15px;
+  top: 0;
+  right: 0;
+  & > button {
+    margin-left: 5px;
+    padding: 2px;
+    border: none;
+    width: 15px;
+    background-color: transparent;
+    font-size: 15px;
+    cursor: pointer;
   }
-  button:active{
-    color: #00c763;
-  }
+
+`
+
+export const commentMenuDots = css`
+  color: #4F5152;
 `
 
 export const addCommentLayout = css`
@@ -113,7 +146,7 @@ export const feedCommentInput = css`
 
 export const addCommentButton = css`
   padding: 0 5px;
-  width: 60px;
+  width: 65px;
   height: 30px;
   border: 1px solid #f3f3f3;
   background-color: #ffffff;
@@ -125,19 +158,4 @@ export const addCommentButton = css`
     background-color: #d7d7d7;
 
   }
-`
-
-export const commentMenu = css`
-  position: absolute;
-  top: 0;
-  right: 0;
-  button {
-    margin-left: 5px;
-    padding: 2px;
-    border: none;
-    background-color: transparent;
-    font-size: 15px;
-    cursor: pointer;
-  }
-
 `

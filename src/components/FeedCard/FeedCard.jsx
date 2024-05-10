@@ -54,6 +54,7 @@ function FeedCard({feed}) {
         }
     )
     
+    // 댓글 카운트
     const searchFeedCommentQuery = useQuery(
         ["searchFeedCommentQuery", feed.feedId],
         () => searchFeedComment(feed.feedId),
@@ -61,7 +62,6 @@ function FeedCard({feed}) {
           retry:0,
           refetchOnWindowFocus: false,
           onSuccess: response => {
-            console.log("댓글 카운트");
             setCommetCount(response.data[0]);
           },
           onError: error => {

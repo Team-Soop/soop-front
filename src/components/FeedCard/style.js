@@ -35,6 +35,7 @@ export const feedHeaderProfileImg = css`
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  overflow: hidden;
   & > img {
     width: 100%;
   }
@@ -69,7 +70,7 @@ export const saveFavorite = css`
 `;
 
 export const feedcontents = css`
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   padding-bottom: 10px;
   border-top: 2px solid #CAD8D8;
   border-bottom: 2px solid #CAD8D8;
@@ -113,13 +114,18 @@ export const feedText = css`
 
 
 export const feedFooter = css`
-display: flex;
-align-items: center;
-justify-content: center;
+  display: flex;
   margin: 5px 0;
   width: 100%;
   height: 25px;
- 
+  & > button {
+    display: flex;  
+  align-items: center;
+  justify-content: center;
+  }
+  & > button > span {
+    margin: 0 5px;
+  }
 `;
 
 export const feedFooterButton = css`

@@ -17,10 +17,11 @@ function FeedCardComment({feedId}) {
   const [putCommentId, setPutCommentId] = useState(0);
   const [putChangeComment, setPutChangeComment] = useState("");
   const inputFocusRef = useRef(""); 
+  const [ isPutAndDelete, setIsPutAndDelete ] = useState(false);
 
-  // useEffect(() => {
-  //   inputFocusRef.current.focus()
-  // }, [putChangeComment])
+  useEffect(() => {
+    console.log(commentList)
+  }, [commentList])
 
   //댓글 get
   const searchFeedCommentQuery = useQuery(
@@ -31,15 +32,32 @@ function FeedCardComment({feedId}) {
       refetchOnWindowFocus: false,
       onSuccess: response => {
         console.log("댓글리스트");
-        console.log(response);
-        setCommentList(response.data);
+        console.log(response.data);
+        let newList = response.data.map((data) => {
+          return({
+            ...data,
+            state: false
+          })
+        })
+        setCommentList(newList);
       },
       onError: error => {
         console.log(error);
       }
     }
-
   )
+
+  const updateCommentState = (commentId) => {
+    let newList = [...commentList]
+
+    for(let comment of newList) {
+      if(comment.feedCommentId === commentId) {
+        comment.state = !comment.state
+      }
+    }
+
+    setCommentList(newList)
+  }
 
   // 댓글 작성
   const saveFeedCommentMutation = useMutation({
@@ -48,6 +66,7 @@ function FeedCardComment({feedId}) {
     onSuccess: response => {
       console.log("작성됨" + response);
       searchFeedCommentQuery.refetch();
+      setCommentSaveInputValue("");
     },
     onError: error => {
       console.log(error);
@@ -81,8 +100,6 @@ function FeedCardComment({feedId}) {
     }
   })
 
-
-
   // 댓글 save 버튼
   const addClickSaveComment = () => {
     saveFeedCommentMutation.mutate({
@@ -109,6 +126,11 @@ function FeedCardComment({feedId}) {
   // 수정 input 창 open 
   const openClickCommentInput = (feedCommentId) => {
     setPutCommentId(feedCommentId)
+  }
+
+  // 댓글 수정, 삭제 메뉴 
+  const openPutAndDelete = () => {
+    setIsPutAndDelete(!isPutAndDelete)
   }
 
   return (
@@ -139,8 +161,9 @@ function FeedCardComment({feedId}) {
               <span>댓글수정</span>
               <input 
                 css={s.feedCommentInput}
-                // ref={inputFocusRef}
                 type="text" 
+                placeholder="입력..."
+                // ref={inputFocusRef}
                 defaultValue={comment.commentContent}
                 onChange={(e) => setPutChangeComment(e.target.value)}
                 />
@@ -151,6 +174,7 @@ function FeedCardComment({feedId}) {
             </div>
           </div>
           :
+          // 전체 댓글
           <div key={comment.feedCommentId} >
               <div css={s.commentContentLayout}>
                 <img 
@@ -165,22 +189,19 @@ function FeedCardComment({feedId}) {
                 <div css={s.contents}>
                   <h4>{comment.feedCommentNickName}</h4>
                   <span css={s.commentContent}>{comment.feedCommentContent}</span>
-                  
-                  {
-                    comment.feedCommentUserId === principalData.data.userId
-                    ?
-                    <div>
-                      <div css={s.editCommentButton}>
-                        <button onClick={() => openClickCommentInput(comment.feedCommentId)}><AiOutlineEdit /></button>
-                        <button onClick={() => deletClickFeedComment(comment.feedCommentId)}><AiOutlineDelete /></button>
-                      </div>
-                    </div>
-                    :
-                    <div></div>
-                  }
-
+                    {/* 댓글 수정, 삭제 메뉴 open */}
                   <div css={s.commentMenu}>
-                    <button ><TbDotsVertical /></button>
+                    <button css={s.commentMenuDots} onClick={() => updateCommentState(comment.feedCommentId)}><TbDotsVertical /></button>
+                    {
+                      comment.state === true && comment.feedCommentUserId === principalData.data.userId
+                    ?
+                      <div css={s.editCommentButton}>
+                        <button onClick={() => openClickCommentInput(comment.feedCommentId)}>수정하기</button>
+                        <button onClick={() => deletClickFeedComment(comment.feedCommentId)}>삭제하기</button>
+                      </div>
+                    :
+                      <></>
+                    }
                   </div>
 
                 </div>
@@ -190,6 +211,7 @@ function FeedCardComment({feedId}) {
         ))
       }
 
+      {/* 댓글 작성 인풋 */}
       <div css={s.addCommentLayout}>
         <span>댓글작성</span>
         <input 
