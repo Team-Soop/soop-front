@@ -16,6 +16,21 @@ import {
 } from "../../atoms/luchMapAtom";
 import { useRecoilState } from "recoil";
 import { lunchCategories } from "../../constants/lunchCategroies";
+import { Slide } from "react-slideshow-image";
+import 'react-slideshow-image/dist/styles.css'
+import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
+import { AiOutlinePicture } from "react-icons/ai";
+import { FaRegSquarePlus } from "react-icons/fa6";
+import { MdCancel } from "react-icons/md";
+import { FiPlusCircle } from "react-icons/fi";
+import { MdOutlineCancel } from "react-icons/md";
+import { TbPhotoCirclePlus } from "react-icons/tb";
+
+
+
+
+
+
 
 function LunchWrite(props) {
   // const reactQuillRef = useRef();
@@ -80,18 +95,39 @@ function LunchWrite(props) {
   const [checkCategories, setcheckCategories] = useState([]);
   const [laodPhotos, setLoadPhotos] = useState([]);
   const imgFileRef = useRef();
+  const [isAddPhotos, setIsAddPhotos] = useState(false);
+
 
   const modules = useMemo(() => ({
     toolbar: {
-      container: [
+      container: 
+      [
         [{ size: ["small", false, "large", "huge"] }],
         [{ align: [] }],
-        ["bold", "italic", "underline", "strike"],
+        // ["bold", "italic", "underline", "strike"],
         [{ list: "ordered" }, { list: "bullet" }],
         [{ color: [] }, { background: [] }],
+        [{ header: 1 }, { header: 2 }],
+        [{ clean: "clean" }]
       ],
+      // handlers: {
+      //   image: onChangeIsPhotos()
+      // }
     },
+    // imageResize: true
   }));
+
+  console.log(modules);
+
+  // 슬라이드쇼 
+  const settings = {
+    className: "slide-container",
+    dots: true,
+    autoplay: false,
+    infinite: laodPhotos.length > 1 ? true : false,
+    transitionDuration: 300,
+    easing: "ease-in"
+  }
 
   const saveLunch = useMutation({
     mutationKey: "saveLunch",
@@ -224,6 +260,27 @@ function LunchWrite(props) {
     setLunchTitle(e.target.value);
   };
 
+  // 사진 추가하기 input 창
+  const onChangeIsPhotos = () => {
+    setIsAddPhotos(!isAddPhotos) 
+    setLoadPhotos(() => [])
+  }
+
+  // 사진 추가하기 button
+  const onClickButton = () => {
+    imgFileRef.current.click()
+  }
+
+  // 사진 취소
+  const onCancelButton = () => {
+    if(laodPhotos.length > 1) {
+      setLoadPhotos(() => [])
+    } else if(1 > laodPhotos.length && isAddPhotos === true){
+      setIsAddPhotos(false)
+    }
+  }
+
+  console.log(isAddPhotos);
 
   return (
     <div css={s.writeLunchLayout}>
@@ -262,64 +319,89 @@ function LunchWrite(props) {
         <LunchMap />
 
 
-        
-        <div>
-          미리보기
-          {laodPhotos.map((photo) => (
-            <div key={photo.id}>
-              <img src={photo.dataUrl} alt="" />
+        {/* 사진 추가하기 컴프 */}
+        {
+          !isAddPhotos ?
+          <></>
+          :
+          <div >
+            <div css={s.selectPhotosLayout}>
+            <input
+              type="file"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+              ref={imgFileRef}
+              multiple={true}
+              />
+                <div css={s.cancelButtonLayout}>
+                  <button css={s.selectPhotosCancel} onClick={() => onCancelButton()}><MdOutlineCancel/></button>
+                </div>
+              {
+                !laodPhotos.length 
+                ?
+                  <button css={s.selectPhotos} onClick={() => onClickButton()}><FiPlusCircle/></button>
+                :
+                <>
+                {   
+                  // 이미지 2개 이상 일 때만 슬라이드
+                  laodPhotos.length > 1 
+                  ?
+                  <div className="slide-container">
+                      <Slide {...settings} 
+                          prevArrow={<div css={s.slideArrow}><IoIosArrowDropleftCircle /></div>}
+                          nextArrow={<div css={s.slideArrow}><IoIosArrowDroprightCircle /></div>}
+                      >
+                          {laodPhotos.map((photo)=> (
+                              <div key={photo.id} css={s.imgUrl(photo.dataUrl)}></div>
+                          ))} 
+                      </Slide>
+                  </div>
+                  :
+                  // 이미지 1개 일때 슬라이드
+                  <div className="slide-container">
+                      {laodPhotos.map((photo)=> (
+                        <div key={photo.id} css={s.imgUrl(photo.dataUrl)}></div>
+                      ))} 
+                  </div>
+                }
+                </>
+                  
+              }
+
             </div>
-          ))}
+          </div>
+        }
+
+
+
+
+        {/* 사진 추가하기 버튼 */}
+        {/* <div css={s.IsPhotosOpenLayout}>
+          <button onClick={() => onChangeIsPhotos()}><TbPhotoCirclePlus/></button>
+        </div> */}
+
+        <div css={s.test}>
+          <ReactQuill
+            css={s.addFeedQuill}
+            modules={modules}
+            value={lunchContent}
+            style={{ width: "100%", height:"100%"}}
+            onChange={lunchContentChange}
+          />
         </div>
 
-        <div >
-          {/* {   
-            // 이미지 2개 이상 일 때만 슬라이드
-            laodPhotos.length > 1 
-            ?
-            <div className="slide-container">
-                <Slide {...settings} 
-                    prevArrow={<div css={s.slideArrow}><IoIosArrowDropleftCircle /></div>}
-                    nextArrow={<div css={s.slideArrow}><IoIosArrowDroprightCircle /></div>}
-                >
-                    {feed.feedImgUrl.map((imgUrl, index)=> (
-                        <div key={index} css={s.feedImg(imgUrl)}></div>
-                    ))} 
-                </Slide>
-            </div>
-            :
-            <div className="slide-container">
-                {feed.feedImgUrl.map((imgUrl, index)=> (
-                    <div key={index} css={s.feedImg(imgUrl)}></div>
-                ))} 
-            </div>
-          } */}
+        <div css={s.contentMessageLayout}>
+          {
+          !!lunchContentMessage && 
+            <div> 
+              {lunchContentMessage.text}
+            </div>}
         </div>
 
-
-        <input
-          type="file"
-          style={{ display: "none" }}
-          onChange={handleFileChange}
-          ref={imgFileRef}
-          multiple={true}
-        />
-        <button onClick={() => imgFileRef.current.click()}>사진 선택</button>
-
-        <h2>글 제목</h2>
-        <input type="text" value={lunchTitle} onChange={onChangeTitle} />
-
-        <ReactQuill
-          modules={modules}
-          value={lunchContent}
-          style={{ width: "400px" }}
-          onChange={lunchContentChange}
-        />
-        <div>
-          {!!lunchContentMessage && <div>{lunchContentMessage.text}</div>}
+        <div css={s.addFeedFooter}>
+          <button onClick={() => onChangeIsPhotos()}>사진 선택</button>
+          <button onClick={() => handleImageUpload()}>작성 완료</button>
         </div>
-
-        <button onClick={() => handleImageUpload()}>작성완료</button>
       </div>
 
     </div>

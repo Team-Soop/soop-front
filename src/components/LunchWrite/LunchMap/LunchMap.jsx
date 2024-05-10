@@ -19,6 +19,7 @@ const searchBox = css`
   & > input {
     box-sizing: border-box;
     border: 2px solid #dbdbdb;
+    border-radius: 5px;
     outline: none;
     padding: 10px 30px 10px 20px;
     width: 100%;
@@ -151,6 +152,7 @@ function LunchMap(props) {
           style={{
             boxSizing: "border-box",
             border: "2px solid #dbdbdb",
+            borderRadius: "5px",
             width: "100%",
             height: "350px",
           }}
