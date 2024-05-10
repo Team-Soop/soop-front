@@ -12,7 +12,7 @@ export default function MypageFavoritePage() {
     const [feeds, setFeeds] = useState([]);
     const [lunchs, setLunchs] = useState([]);
     const [isBookMarkClick, setIsBookMarkClick] = useState(true);
-
+    const [isLunchClick, setIsLunchClick] = useState(true);
     const getSavedBoardQuery = useQuery(["getSavedBoardQuery", isBookMarkClick], getSavedBoard, {
         retry: 0,
         refetchOnWindowFocus: false,
@@ -24,7 +24,7 @@ export default function MypageFavoritePage() {
         },
     });
 
-    const getSavedLunchBoardQuery = useQuery(["getSavedLunchBoardQuery"], getSavedLunchBoard, {
+    const getSavedLunchBoardQuery = useQuery(["getSavedLunchBoardQuery", isLunchClick], getSavedLunchBoard, {
         retry: 0,
         refetchOnWindowFocus: false,
         onSuccess: (response) => {
@@ -74,6 +74,7 @@ export default function MypageFavoritePage() {
                                             title={lunch.title}
                                             imgUrls={lunch.imgUrls}
                                             content={lunch.content}
+                                            setIsLunchClick={setIsLunchClick}
                                         />
                                     </div>
                                 );
