@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 
 export const layout = css`
     position: relative;
-    width: 850px;
+    width: 100%;
     min-height: 100vh;
 `;
 
@@ -33,12 +33,6 @@ export const header = css`
             background-color: #97d7db;
         }
     }
-`;
-
-export const contentLayout = css`
-    border: 1px solid black;
-    margin: 35px;
-    height: 88vh;
 `;
 
 export const feedPageLayout = css`

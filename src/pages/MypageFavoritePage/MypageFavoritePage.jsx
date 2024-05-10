@@ -28,13 +28,13 @@ export default function MypageFavoritePage() {
                     <div onClick={() => setViewState(0)}>피드</div>
                     <div onClick={() => setViewState(1)}>오늘 뭐 먹지?</div>
                 </div>
-                <div css={s.contentLayout}>
+                <div css={s.feedPageLayout}>
                     {viewState === 0 ? (
-                        <div css={s.feedPageLayout}>
+                        <ul>
                             {feeds.map((feed) => {
                                 return <FeedCard feed={feed} key={feed.feedId} />;
                             })}
-                        </div>
+                        </ul>
                     ) : (
                         <div>lunch 콘텐츠 박스</div>
                     )}
