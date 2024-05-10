@@ -49,7 +49,9 @@ function RootSideMenuLeft() {
     <div css={s.layout}>
         <div css={s.logoLayout}>
           <div css={s.logoImg}>
-            <img src={logo} alt="" />
+            <Link to="/feed">
+              <img src={logo} alt="" />
+            </Link>
           </div>
             <div css={s.logoText}>
               <Link to="/feed">
