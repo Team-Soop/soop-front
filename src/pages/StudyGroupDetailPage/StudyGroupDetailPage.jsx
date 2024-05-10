@@ -10,6 +10,7 @@ import WaitingParticleModal from "../../components/Study/Modal/WaitngParticleMod
 import MemberListModal from "../../components/Study/Modal/MemberListModal/MemberListModal";
 import ApplyStudyModal from "../../components/Study/Modal/ApplyStudyModal/ApplyStudyModal";
 import DOMPurify from "dompurify";
+import userImg from "../../assets/images/userProfileNone.png";
 
 export default function StudyGroupDetailPage() {
     const [ studyContent, setStudyContent ] = useState();
@@ -31,6 +32,7 @@ export default function StudyGroupDetailPage() {
             retry: 0,
             refetchOnWindowFocus: false,
             onSuccess: response => {
+                console.log(response.data)
                 setStudyContent(response.data)
             }
         }
@@ -66,6 +68,10 @@ export default function StudyGroupDetailPage() {
             deleteStudyGroupMutation.mutate(studyContent.studyId)
         } else { return; }
     }
+
+    const closeWrite = () => {
+        setIsWrite(false)
+    }
     
     const openWaitingModal = () => {
         setIsOpenWaitingModal(!isOpenWaitingModal)
@@ -93,12 +99,19 @@ export default function StudyGroupDetailPage() {
             ? <div css={s.layout}>
                 <button onClick={() => setIsWrite(true)}>수정</button>
                 <button onClick={deleteStudyButton}>삭제</button>
-                <div css={s.contentBox}>
+                <div css={s.contentLayout}>
+                    <div css={s.userInfo}>
+                        <img src={
+                            !!studyContent.profileImgUrl
+                            ? studyContent.profileImgUrl
+                            : userImg
+                        } alt="" />
+                        <div>{studyContent.nickName}</div>
+                    </div>
                     <div css={s.header}>
-                        <div>제목: {studyContent.studyTitle}</div>
+                        <div css={s.title}>{studyContent.studyTitle}</div>
                         <div onClick={() => isReportOpen(studyContent.studyId)}>신고 아이콘</div>
                     </div>
-                    <div>작성자 - {studyContent.nickName}</div>
                     <div>
                         <div css={s.period}>
                             {studyContent.studyMemberLimited === studyContent.memberCount || studyContent.timeCount > 0
@@ -115,9 +128,8 @@ export default function StudyGroupDetailPage() {
                                 )
                             }
                         </div>
-                        <div>스킬
-                        </div>
                         <div css={s.skills}>
+                            <div>스킬</div>
                             {searchStudyCategories?.data.map((category, index) => {
 								return(
                                     studyContent.studySkills.includes(category.studyCategoryId) && 
@@ -125,8 +137,10 @@ export default function StudyGroupDetailPage() {
 								)
                             })}
                         </div>
-                        
-                        <div>인원: {studyContent.memberCount}/{studyContent.studyMemberLimited}</div>
+                        <div css={s.memberCount}>
+                            <div>모집 인원 </div>
+                            <div>{studyContent.memberCount}/{studyContent.studyMemberLimited}</div>
+                        </div>
                     </div>
                     <div>
                     <div dangerouslySetInnerHTML={{__html: sanitizer(studyContent.studyContent)}}></div>
@@ -137,17 +151,7 @@ export default function StudyGroupDetailPage() {
                         <button onClick={openApplyStudyModal}>가입 신청</button>
                     </div>
                 </div>
-                { isWrite && <SaveStduyGroup
-                    setState={1}
-                    studyId={studyContent.studyId}
-                    title={studyContent.studyTitle} 
-                    content={studyContent.studyContent} 
-                    memberLimited={studyContent.studyMemberLimited}
-                    periodEnd={studyContent.studyPeriodEnd}
-                    skills={studyContent.studySkills}
-                    memberCount={studyContent.memberCount}
-                    setIsWrite={setIsWrite}
-                /> }
+                <SaveStduyGroup isOpen={isWrite} isClose={closeWrite} setState={1} studyId={studyContent.studyId} title={studyContent.studyTitle}  content={studyContent.studyContent}  memberLimited={studyContent.studyMemberLimited} periodEnd={studyContent.studyPeriodEnd} skills={studyContent.studySkills} memberCount={studyContent.memberCount} />
                 <WaitingParticleModal isOpen={isOpenWaitingModal} isClose={openWaitingModal} waitingMember={waitingMember}/>
                 <MemberListModal isOpen={isOpenMemberListModal} isClose={openMemberListModal} recruitmentMember={recruitmentMember}/>
                 <ApplyStudyModal isOpen={isOpenApplyStudyModal} isClose={openApplyStudyModal} studyContent={studyContent} waitingMember={waitingMember}/>

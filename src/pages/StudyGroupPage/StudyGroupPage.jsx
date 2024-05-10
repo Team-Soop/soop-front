@@ -4,13 +4,12 @@ import * as s from "./style";
 import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import { searchOptionStudyList, searchStudyList } from '../../apis/api/study';
-import SaveStudyGroup from '../../components/Study/SaveStudyGroup/SaveStduyGroup'
 import { useNavigate } from "react-router-dom";
+import userImg from "../../assets/images/userProfileNone.png";
 
 
 function StudyGroupPage() {
 	const navigate = useNavigate();
-	const [ isWrite, setIsWrite ] = useState(false)
 	const [ studyBoardList, setStudyBoardList ] = useState([])
 	const [ categoryData, setCategoryData ] = useState([])
 	const [ searchTitle, setSearchTitle ] = useState("")
@@ -21,8 +20,9 @@ function StudyGroupPage() {
 	})
 	const [isSearch, setIsSearch ] = useState(false)
 	const queryClient = useQueryClient();
+	const principalData = queryClient.getQueryData("principalQuery");
 	const searchStudyCategories = queryClient.getQueryData("searchStudyCategories");
-
+	
 	const searchStudyGroupList = useQuery("searchStudyGroupList", searchStudyList, 
 	{
 		retry: 3,
@@ -85,61 +85,78 @@ function StudyGroupPage() {
 
 		setIsSearch(true)
 	}
+
+	console.log(studyBoardList)
 	
   return (
     <div css={s.layout}>
 		<header css={s.header}>
-			<button onClick={() => {setIsWrite(true)}}>글쓰기</button>
-			<div>
-				<input type="text" value={searchTitle} onChange={(e) => setSearchTitle(e.target.value)}/>
+				<div css={s.searchTitle}>
+					<div css={s.searchTitleBox}>
+						<label>제목</label>
+						<input type="text" value={searchTitle} onChange={(e) => setSearchTitle(e.target.value)}/>
+					</div>
+					<button onClick={searchOptionStudy}>검색</button>
+				</div>
+				<div css={s.searchCategory}>
 				{
 					searchCategory.map((category, index) => {
 						return(
-							<div key={index}>
+							<div css={s.searchCategoryBox} key={index}>
 								<input type="checkbox" checked={category.checkState} onChange={() => searchCategoryChange(category.studyCategoryId)}/>
 								<label>{category.studyCategoryName}</label>
 							</div>
 						)
 					})
 				}
-				<button onClick={searchOptionStudy}>검색</button>
-			</div>
+				</div>
 		</header>
 		<body css={s.boardListLayout}>
 			{
 				studyBoardList.map((board, index) => {
 					return(
 						<div key={index} css={s.boardContent} onClick={() => studyBoardOnClick(board.studyId)}>
-							{board.studyMemberLimited === board.memberCount || board.timeCount > 0
-								? <div> 모집완료 </div>	
-								: (0 > board.timeCount && board.timeCount > -1440 
-									? <>
-									<div>모집 중</div>
-									<div>{Math.round(board.timeCount / (60))} Hour</div>
-									</>
-									: <>
-									<div>모집 중</div>
-									<div>D{Math.round(board.timeCount / (60 * 24))} Day</div>
-									</>
-								)
-							}
-							<div>{board.nickname}</div>
-							<div>{board.studyTitle}</div>
-							<div>{categoryData.map((category, index) => {
-								return(
-								board.studySkills.includes(category.studyCategoryId) && 
-								<div key={index}>{category.studyCategoryName}</div>
-								)
-								})}
+							<div css={s.userInfo}>
+								<img src=
+								{
+									!!board.profileImgUrl
+									? board.profileImgUrl
+									: userImg
+								} alt="" />
+								<div>{board.nickname}</div>
 							</div>
-							<div>{board.memberCount}/{board.studyMemberLimited}</div>
+							<div css={s.contentBody}>
+								<div css={s.skill}>
+									{categoryData.map((category, index) => {
+										return(
+										board.studySkills.includes(category.studyCategoryId) && 
+										<div key={index}>{category.studyCategoryName}</div>
+										)
+									})}
+								</div>
+								<div css={s.title}> {board.studyTitle} </div>
+							</div>
+							<div css={s.party}>
+								<div css={s.period}>
+									{board.studyMemberLimited === board.memberCount || board.timeCount > 0
+										? <div> 모집완료 </div>	
+										: (0 > board.timeCount && board.timeCount > -1440 
+											? <>
+											<div>모집 중</div>
+											<div>H{Math.round(board.timeCount / (60))}</div>
+											</>
+											: <>
+											<div>모집 중</div>
+											<div>D{Math.round(board.timeCount / (60 * 24))}</div>
+											</>
+										)
+									}
+								</div>
+								<div css={s.memberCount}>{board.memberCount}/{board.studyMemberLimited}</div>
+							</div>
 						</div>
-				)})
-			}
+				)})}
 		</body>
-		<div>
-			{ isWrite && <SaveStudyGroup setIsWrite={setIsWrite} /> }
-		</div>
 	</div>
   );
 }

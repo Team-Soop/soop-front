@@ -7,10 +7,10 @@ import interactionPlugin from '@fullcalendar/interaction'
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from "react-query";
 import { searchAllSchedule } from "../../apis/api/schedule";
-import DailyClassSchedule from "../../components/DailyClassSchedule/DailyClassSchedule";
+import DailyClassSchedule from "../../components/Schedule/DailyClassSchedule/DailyClassSchedule";
 import { rightSideBarState } from "../../atoms/SideMenuAtom";
 import { useRecoilState } from "recoil";
-import AddClassSchedule from "../../components/AddClassSchedule/AddClassSchedule";
+import AddClassSchedule from "../../components/Schedule/AddClassSchedule/AddClassSchedule";
 
 function ClassSchedulePage() {
   const [ originScheduleDate, setOriginScheduleData ] = useState([]);
