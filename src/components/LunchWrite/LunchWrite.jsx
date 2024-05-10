@@ -76,8 +76,7 @@ function LunchWrite(props) {
   const [placeY, setPlaceY] = useRecoilState(lunchMapYState);
   const [placeUrl, setPlaceUrl] = useRecoilState(lunchMapPlaceUrlState);
   const [uploadPhotos, setUploadPhotos] = useState([]);
-  const [lunchContent, lunchContentChange, lunchContentMessage] =
-    useQuillContent("quilContent");
+  const [lunchContent, lunchContentChange, lunchContentMessage] = useQuillContent("quilContent");
   const [checkCategories, setcheckCategories] = useState([]);
   const [laodPhotos, setLoadPhotos] = useState([]);
   const imgFileRef = useRef();
@@ -263,8 +262,7 @@ function LunchWrite(props) {
         <LunchMap />
 
 
-        <h2>글 제목</h2>
-        <input type="text" value={lunchTitle} onChange={onChangeTitle} />
+        
         <div>
           미리보기
           {laodPhotos.map((photo) => (
@@ -274,6 +272,31 @@ function LunchWrite(props) {
           ))}
         </div>
 
+        <div >
+          {/* {   
+            // 이미지 2개 이상 일 때만 슬라이드
+            laodPhotos.length > 1 
+            ?
+            <div className="slide-container">
+                <Slide {...settings} 
+                    prevArrow={<div css={s.slideArrow}><IoIosArrowDropleftCircle /></div>}
+                    nextArrow={<div css={s.slideArrow}><IoIosArrowDroprightCircle /></div>}
+                >
+                    {feed.feedImgUrl.map((imgUrl, index)=> (
+                        <div key={index} css={s.feedImg(imgUrl)}></div>
+                    ))} 
+                </Slide>
+            </div>
+            :
+            <div className="slide-container">
+                {feed.feedImgUrl.map((imgUrl, index)=> (
+                    <div key={index} css={s.feedImg(imgUrl)}></div>
+                ))} 
+            </div>
+          } */}
+        </div>
+
+
         <input
           type="file"
           style={{ display: "none" }}
@@ -282,6 +305,9 @@ function LunchWrite(props) {
           multiple={true}
         />
         <button onClick={() => imgFileRef.current.click()}>사진 선택</button>
+
+        <h2>글 제목</h2>
+        <input type="text" value={lunchTitle} onChange={onChangeTitle} />
 
         <ReactQuill
           modules={modules}

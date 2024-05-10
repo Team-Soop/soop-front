@@ -47,42 +47,45 @@ function RootSideMenuLeft() {
   
   return (
     <div css={s.layout}>
-      <Link to="/feed">
         <div css={s.logoLayout}>
-            <div css={s.logoImg}>
-              <img src={logo} alt="" />
-            </div>
+          <div css={s.logoImg}>
+            <img src={logo} alt="" />
+          </div>
             <div css={s.logoText}>
-              KOREAIT SOOP
+              <Link to="/feed">
+                KOREAIT SOOP
+              </Link>
             </div>
         </div>
-      </Link>
 
-      <Link to={'/account/mypage/feed'}>
         <div css={s.sideMenuProfile}>
             <div css={s.sideMenuUserImg}>
               <img 
                 css={s.sideMenuImg}
                 src={  
-                !principal?.data
-                ?
-                  userImgNone
-                :
-                  principal.data.profileImgUrl
-              } alt=""/>
+                  !principal?.data
+                  ?
+                    <></>
+                  :
+                    !principal.data.profileImgUrl ?
+                      userImgNone
+                    : 
+                      principal.data.profileImgUrl
+                } alt=""/>
             </div>
               
             <div css={s.profileLink}>
               {
                 !principal?.data
                 ?
-                  <button css={s.logInButton} onClick={() => navigate("/auth/signin")}>로그인</button>
+                <button css={s.logInButton} onClick={() => navigate("/auth/signin")}>로그인</button>
                 :
+                <Link to={'/account/edit'}>
                   <div css={s.profileLink}>{principal.data.nickname}</div>
+                </Link>
               }
             </div>
         </div>
-      </Link>
 
       {
         getSideMenuState === 1 

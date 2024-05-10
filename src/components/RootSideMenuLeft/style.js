@@ -23,14 +23,12 @@ export const logoLayout = css`
     align-items: center;
     padding: 0px 10px;
     padding-top: 10px;
-
-
 `
 
 export const logoImg = css`
     box-sizing: border-box;
-    width: 70px;
-    height: 60px;
+    width: 85%;
+    /* height: 60px; */
     overflow: hidden;
     margin: 0 auto;
     img {
@@ -42,6 +40,9 @@ export const logoImg = css`
 export const logoText = css`
     font-size: 25px;
     font-weight: 700;
+    & > a {
+        text-decoration: none;
+    }
 `
 
 export const sideMenuProfile = css`
