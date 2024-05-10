@@ -20,7 +20,7 @@ import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons
 import { AiOutlineDelete } from "react-icons/ai";
 import { AiOutlineEdit } from "react-icons/ai";
 
-function FeedCard({ feed }) {
+function FeedCard({ feed, setIsBookMarkClick }) {
     const sanitizer = DOMPurify.sanitize;
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -86,6 +86,7 @@ function FeedCard({ feed }) {
             console.log(error);
         },
     });
+
     // 저장하기 버튼
     const lunchBoardSave = useMutation({
         mutationKey: "lunchBoardSave",
@@ -104,6 +105,7 @@ function FeedCard({ feed }) {
         mutationFn: saveDeleteBoard,
         onSuccess: (response) => {
             boardSaveQuery.refetch();
+            setIsBookMarkClick((prev) => !prev);
         },
         onError: (error) => {
             console.log(error);

@@ -10,25 +10,22 @@ export const header = css`
     box-sizing: border-box;
     display: flex;
     justify-content: space-around;
-    margin: 35px;
-    border: 1px solid black;
-
+    margin: 35px 0px;
+    border: 2px solid #8a9c99;
+    background-color: #f6f5ef;
+    width: 100%;
     & > :nth-of-type(1) {
         border-right: 1px solid black;
     }
-
     & > div {
         display: flex;
         justify-content: center;
         padding: 3px 0px;
         width: 100%;
-
         cursor: pointer;
-
         :hover {
             background-color: #b3e7ec;
         }
-
         :active {
             background-color: #97d7db;
         }
