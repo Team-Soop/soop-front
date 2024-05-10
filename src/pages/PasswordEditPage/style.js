@@ -22,6 +22,7 @@ export const title = css`
     text-align: center;
     line-height: 100px;
     padding-bottom: 10px;
+    cursor: default;
 `;
 
 export const main = css`
@@ -34,7 +35,7 @@ export const main = css`
 `;
 
 export const inputBox = css`
-width: 100%;
+    width: 100%;
     padding-left: 25px;
 `;
 
@@ -53,6 +54,7 @@ export const buttonBox = css`
 
     & > div {
         width: 100%;
+        cursor: pointer;
     }
 
     & > div:hover {

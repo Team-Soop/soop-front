@@ -19,6 +19,7 @@ export const title = css`
     color: #1f4d36;
     text-align: center;
     line-height: 100px;
+    cursor: default;
 `;
 
 export const main = css`
@@ -57,11 +58,13 @@ export const usernameBox = css`
     & > h1 {
         font-size: 40px;
         font-weight: 600;
+        cursor: default;
     }
     & > h2 {
         margin-top: 10px;
         font-size: 15px;
         color: #22222266;
+        cursor: default;
     }
 `;
 
@@ -88,6 +91,7 @@ export const labelBox = css`
 
 export const label = css`
     font-size: 16px;
+    cursor: default;
 `;
 
 export const checkButton = css`
