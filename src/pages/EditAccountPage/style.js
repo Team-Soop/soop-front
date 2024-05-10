@@ -71,32 +71,33 @@ export const editBox = css`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
 
     & > div {
         display: flex;
+        justify-content: right;
     }
 `;
 
 export const labelBox = css`
-    width: 40%;
+    width: 100px;
     height: 50px;
     display: flex;
-    justify-content: right;
+    justify-content: left;
     align-items: center;
 `;
 
 export const label = css`
-    font-size: 20px;
+    font-size: 16px;
 `;
 
 export const checkButton = css`
     position: absolute;
-    right: 15px;
+    right: 45px;
     background-color: transparent;
     border: none;
     font-size: 14px;
     font-weight: 500;
+    cursor: pointer;
 `;
 
 export const inputBox = css`
@@ -108,9 +109,9 @@ export const inputBox = css`
 
     & > input {
         margin-left: 5px;
-        width: 300px;
+        width: 200px;
         height: 20px;
-        font-size: 20px;
+        font-size: 14px;
         padding: 5px;
         background-color: transparent;
         outline: none;
@@ -133,19 +134,30 @@ export const buttonBox = css`
     align-items: center;
 
     & > div:nth-of-type(1) {
+        cursor: pointer;
         box-sizing: border-box;
         width: 30%;
         height: 100%;
         border-right: 2px solid #cad8d8;
     }
     & > div:nth-of-type(2) {
+        cursor: pointer;
         box-sizing: border-box;
         width: 40%;
         height: 100%;
         border-right: 2px solid #cad8d8;
     }
     & > div:nth-of-type(3) {
+        cursor: pointer;
         width: 30%;
         height: 100%;
+    }
+
+    & > div:hover {
+        background-color: #c4d9d5;
+    }
+
+    & > div:active {
+        background-color: #94b5b0;
     }
 `;

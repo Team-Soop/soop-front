@@ -140,8 +140,17 @@ export default function AccountEditPage() {
                             <div css={s.label}>닉네임</div>
                         </div>
                         <div css={s.inputBox}>
-                            <input type="text" defaultValue={nickname} />
-                            <button css={s.checkButton}>중복확인</button>
+                            <input
+                                type="text"
+                                defaultValue={nickname}
+                                onChange={nicknameChange}
+                            />
+                            <button
+                                css={s.checkButton}
+                                onClick={duplicateUsernameCheck}
+                            >
+                                중복확인
+                            </button>
                         </div>
                     </div>
                     <div>
@@ -149,7 +158,11 @@ export default function AccountEditPage() {
                             <div css={s.label}>사용자 이름</div>
                         </div>
                         <div css={s.inputBox}>
-                            <input type="text" defaultValue={username} />
+                            <input
+                                type="text"
+                                defaultValue={username}
+                                onChange={userNameChange}
+                            />
                         </div>
                     </div>
                     <div>
@@ -157,7 +170,11 @@ export default function AccountEditPage() {
                             <div css={s.label}>이름</div>
                         </div>
                         <div css={s.inputBox}>
-                            <input type="text" defaultValue={name} />
+                            <input
+                                type="text"
+                                defaultValue={name}
+                                onChange={nameChange}
+                            />
                         </div>
                     </div>
                     <div>
@@ -165,8 +182,23 @@ export default function AccountEditPage() {
                             <div css={s.label}>이메일</div>
                         </div>
                         <div css={s.inputBox}>
-                            <input type="text" defaultValue={email} />
-                            <button css={s.checkButton}>인증요청</button>
+                            <input
+                                type="text"
+                                defaultValue={email}
+                                onChange={emailChange}
+                            />
+                            {principalData?.data.authorities.filter(
+                                (auth) => auth.authority === "ROLE_USER"
+                            ).length === 0 ? (
+                                <button
+                                    css={s.checkButton}
+                                    onClick={handleSendAuthMailClick}
+                                >
+                                    인증요청
+                                </button>
+                            ) : (
+                                <div></div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -182,14 +214,14 @@ export default function AccountEditPage() {
     );
 }
 
-// <div>
-//     <label>이메일: </label>
-//     <input type="text" defaultValue={email} onChange={emailChange} />
-//     {principalData?.data.authorities.filter(
-//         (auth) => auth.authority === "ROLE_USER"
-//     ).length === 0 ? (
-//         <button onClick={handleSendAuthMailClick}>인증하기</button>
-//     ) : (
-//         <div></div>
-//     )}
-// </div>;
+/* <div>
+    <label>이메일: </label>
+    <input type="text" defaultValue={email} onChange={emailChange} />
+    {principalData?.data.authorities.filter(
+        (auth) => auth.authority === "ROLE_USER"
+    ).length === 0 ? (
+        <button css={s.checkButton}>인증요청</button>
+    ) : (
+        <div></div>
+    )}
+</div>; */
