@@ -213,15 +213,3 @@ export default function AccountEditPage() {
         </div>
     );
 }
-
-/* <div>
-    <label>이메일: </label>
-    <input type="text" defaultValue={email} onChange={emailChange} />
-    {principalData?.data.authorities.filter(
-        (auth) => auth.authority === "ROLE_USER"
-    ).length === 0 ? (
-        <button css={s.checkButton}>인증요청</button>
-    ) : (
-        <div></div>
-    )}
-</div>; */

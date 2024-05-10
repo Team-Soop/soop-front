@@ -13,17 +13,17 @@ export const accountEditPage = css`
 
 export const title = css`
     width: 100%;
-    height: 70px;
-    border-bottom: 2px solid #8a9c99;
-    font-size: 40px;
+    height: 10%;
+    font-size: 28px;
     font-weight: 400;
+    color: #1f4d36;
     text-align: center;
-    line-height: 70px;
+    line-height: 100px;
 `;
 
 export const main = css`
     width: 100%;
-    height: 70%;
+    height: 80%;
 `;
 
 export const profileImgBox = css`
@@ -124,9 +124,9 @@ export const buttonBox = css`
     box-sizing: border-box;
     border-top: 2px solid #cad8d8;
     width: 100%;
-    height: 50px;
+    height: 52px;
     text-align: center;
-    line-height: 50px;
+    line-height: 52px;
     font-size: 18px;
     font-weight: 500;
     display: flex;

@@ -1,13 +1,13 @@
 import { css } from "@emotion/react";
 
 export const root = css`
-    width: 500px;
+    width: 700px;
     height: 100%;
     border-radius: 5px;
     box-sizing: border-box;
-    border: 2px solid #8A9C99;
-    background-color: #F6F5EF;
-`
+    border: 2px solid #8a9c99;
+    background-color: #f6f5ef;
+`;
 export const signinLayout = css`
     position: absolute;
     justify-content: center;
@@ -33,7 +33,7 @@ export const authPageInput = css`
         /* border: 1px solid #b8d6fd; */
         border: 1px solid #dbdbdb;
     }
-    input:nth-of-type(1){
+    input:nth-of-type(1) {
         margin-bottom: 5px;
     }
 `;
@@ -45,7 +45,6 @@ export const button = css`
     align-items: center;
     margin-bottom: 5px;
     width: 100%;
-
 `;
 
 export const signinButton = css`
@@ -53,30 +52,28 @@ export const signinButton = css`
     height: 35px;
     width: 300px;
     margin-bottom: 5px;
-    background-color: #CBF1F5;
+    background-color: #cbf1f5;
     cursor: pointer;
     &:hover {
-        background-color: #B3E7EC;
-        
+        background-color: #b3e7ec;
     }
-    &:active{
-        background-color: #97D7DB;
+    &:active {
+        background-color: #97d7db;
     }
-    a{
+    a {
         display: block;
         text-decoration: none;
         padding: 5px;
     }
-    a:link{
+    a:link {
         color: #333333;
     }
-    a:visited{
+    a:visited {
         color: #333333;
     }
-    a:hover{
+    a:hover {
         color: #c2dbff;
     }
-
 `;
 
 export const oauth2Signin = css`
@@ -84,32 +81,31 @@ export const oauth2Signin = css`
     display: flex;
     width: 300px;
     justify-content: space-between;
-    div{
+    div {
         box-sizing: border-box;
         margin: 15px 5px 5px 0;
         width: 33%;
         height: 40px;
         border-radius: 5px;
-
     }
     div:nth-of-type(1) {
-        background-color: #F7E111;
+        background-color: #f7e111;
     }
     div:nth-of-type(2) {
         background-color: #f0f0f0;
     }
     div:nth-of-type(3) {
-        background-color: #03CA5B;
+        background-color: #03ca5b;
     }
-    a{
+    a {
         display: block;
         font-size: 20px;
         padding: 10px;
     }
-    a:link{
+    a:link {
         color: black;
     }
-    a:visited{
+    a:visited {
         color: black;
     }
 `;
