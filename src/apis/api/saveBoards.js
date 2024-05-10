@@ -15,3 +15,7 @@ export const saveDeleteBoard = async ({ boardId, menuId }) => {
 export const getSavedBoard = async () => {
     return await instance.get("save/boards");
 };
+
+export const getSavedLunchBoard = async () => {
+    return await instance.get("save/lunch-boards");
+};

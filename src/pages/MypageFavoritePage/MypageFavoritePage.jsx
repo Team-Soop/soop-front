@@ -10,8 +10,6 @@ export default function MypageFavoritePage() {
     const [viewState, setViewState] = useState(0); // 0 = feed, 1 = lunch
     const [feeds, setFeeds] = useState([]);
     const [isBookMarkClick, setIsBookMarkClick] = useState(true);
-    const queryClient = useQueryClient();
-    const principalData = queryClient.getQueryData("principalQuery");
 
     const getSavedBoardQuery = useQuery(["getSavedBoardQuery"], getSavedBoard, {
         retry: 0,
