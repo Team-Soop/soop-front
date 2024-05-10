@@ -4,7 +4,7 @@ export const layout = css`
     position: relative;
     width: 850px;
     min-height: 100vh;
-`
+`;
 
 export const header = css`
     box-sizing: border-box;
@@ -26,17 +26,26 @@ export const header = css`
         cursor: pointer;
 
         :hover {
-            background-color: #B3E7EC;
+            background-color: #b3e7ec;
         }
 
         :active {
-            background-color: #97D7DB;
+            background-color: #97d7db;
         }
     }
-`
+`;
 
 export const contentLayout = css`
     border: 1px solid black;
     margin: 35px;
     height: 88vh;
-`
+`;
+
+export const feedPageLayout = css`
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+`;
