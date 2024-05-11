@@ -43,15 +43,21 @@ function FeedCard({ feed, setIsBookMarkClick }) {
     });
 
     // 저장된 board 들고오기
+
     const boardSaveQuery = useQuery([`boardSaveQuery${feed.feedId}`], () => saveGetBoard(feed.feedId, 1), {
         refetchOnWindowFocus: false,
         retry: 0,
     });
 
+
+
+    
+    // 댓글 카운트
     const searchFeedCommentQuery = useQuery(
         ["searchFeedCommentQuery", feed.feedId],
         () => searchFeedComment(feed.feedId),
         {
+
             retry: 0,
             refetchOnWindowFocus: false,
             onSuccess: (response) => {
@@ -61,6 +67,7 @@ function FeedCard({ feed, setIsBookMarkClick }) {
             onError: (error) => {
                 console.log(error);
             },
+
         }
     );
 

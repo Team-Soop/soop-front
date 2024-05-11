@@ -9,6 +9,7 @@ import { MdOutlineCancel } from "react-icons/md";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 import { RiMenu5Fill } from "react-icons/ri";
 import LunchWrite from "../LunchWrite/LunchWrite";
+import SaveStduyGroup from "../Study/SaveStudyGroup/SaveStduyGroup";
 
 function RootSideMenuRight(props) {
   const [modal, setModal] = useState(false);
@@ -88,8 +89,9 @@ function RootSideMenuRight(props) {
         <div>
           <div css={s.rigthButton}>
             <button>필터</button>
-            <button onClick={test}>글 쓰기</button>
+            <button onClick={openModal}>글 쓰기</button>
           </div>
+          <SaveStduyGroup isOpen={modal} isClose={closeModal} />
         </div>
       ) : (
         <></>

@@ -1,14 +1,13 @@
-import React from 'react'
-import MyLunchList from '../../components/MyPageComp/MyLunchList/MyLunchList';
+/** @jsxImportSource @emotion/react */
+import * as s from "./style";
+import MyLunchList from "../../components/MyPageComp/MyLunchList/MyLunchList";
 
 function MypageLunch() {
-
-
-  return (
-    <div>
-      <MyLunchList/>
-    </div>
-  )
+    return (
+        <div css={s.layout}>
+            <MyLunchList />
+        </div>
+    );
 }
 
 export default MypageLunch;
