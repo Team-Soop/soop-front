@@ -28,27 +28,26 @@ export const lunchAddLayout = css`
   height: 720px;
   overflow-y: scroll;
   margin-top: 5px;
-
+  padding: 0px 40px;
   &::-webkit-scrollbar {
     width: 8px;
   }
-
   &::-webkit-scrollbar-button {
     display: none;
   }
-
   &::-webkit-scrollbar-thumb {
     background: #dbdbdb; /* 스크롤바 막대 색상 */
     border: 1px solid #dbdbdb; /* 스크롤바 막대 테두리 설정  */
     border-radius: 12px 12px 12px 12px;
   }
-
   &::-webkit-scrollbar-button:vertical:start:decrement {
     display: block;
     height: 17px;
   }
-
-  padding: 0px 40px;
+  &::-webkit-scrollbar-button:vertical:end:decrement {
+    display: block;
+    width: 35px;
+  }
 `;
 
 export const categoryLayout = css`
@@ -125,6 +124,8 @@ export const selectPhotosLayout = css`
   border: 2px solid #dbdbdb;
   border-radius: 5px;
   padding: 4px 4px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 `;
 
 export const cancelButtonLayout = css`
@@ -174,7 +175,6 @@ export const selectPhotos = css`
 `;
 
 
-
 export const imgUrl = (url) => css`
   box-sizing: border-box;
   display: flex;
@@ -222,7 +222,7 @@ export const addFeedQuill = css`
   border-radius: 5px;
 `;
 
-export const test = css`
+export const qillLayout = css`
 
   .ql-container {
   border-bottom-left-radius: 5px;
@@ -234,12 +234,12 @@ export const test = css`
   background: #eaecec;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-}
+  }
 `
 
-export const addFeedFooter = css`
+export const addLunchFooter = css`
   margin-top: 30px;
-  margin-bottom: 30px;
+  margin-bottom: 17px;
   width: 100%;
   button{
     box-sizing: border-box;
