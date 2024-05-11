@@ -10,6 +10,9 @@ import userImgNone from "../../assets/images/userProfileNone.png"
 import 'react-slideshow-image/dist/styles.css'
 import { Slide } from "react-slideshow-image";
 import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
+import { FiPlusCircle } from "react-icons/fi";
+import { MdOutlineCancel } from "react-icons/md";
+
 
 function AddFeed() {
   const queryClient = useQueryClient();
@@ -18,6 +21,8 @@ function AddFeed() {
   const [ newFeedContent, setNewFeedContent ] = useState("");
   const [ contentImg, setContentImg ] = useState([]);
   const [ loadPhotos, setLoadPhotos ] = useState([]);
+  const [isAddPhotos, setIsAddPhotos] = useState(false);
+
   const imgFileRef = useRef();
 
   const saveFeed = useMutation({
@@ -134,6 +139,27 @@ function AddFeed() {
     })
   }
 
+  // 사진 추가하기 input 창
+  const onChangeIsPhotos = () => {
+    setIsAddPhotos(!isAddPhotos) 
+    setLoadPhotos(() => [])
+  }
+
+  // 사진 추가하기 button
+  const onClickButton = () => {
+    imgFileRef.current.click()
+    console.log("gd");
+  }
+
+  // 사진 취소
+  const onCancelButton = () => {
+    if(loadPhotos.length > 1) {
+      setLoadPhotos(() => [])
+    } else if(1 > loadPhotos.length && isAddPhotos === true){
+      setIsAddPhotos(false)
+    }
+  }
+
   // 슬라이드쇼 
   const settings = {
     className: "slide-container",
@@ -143,6 +169,7 @@ function AddFeed() {
     transitionDuration: 300,
     easing: "ease-in"
   }
+
 
   return (
     <div css={s.addFeedLayout}>
@@ -162,42 +189,92 @@ function AddFeed() {
         <div css={s.addFeedNickname}>{principalData.data.nickname}</div>
       </div>
 
-      <div css={s.addFeedContents}>
-        <div css={s.addFeedImgPrievew}>
-          {
-            <div className="slide-container">
-              <Slide {...settings} 
-                prevArrow={<div css={s.slideArrow}><IoIosArrowDropleftCircle /></div>}
-                nextArrow={<div css={s.slideArrow}><IoIosArrowDroprightCircle /></div>}
-                >
-                {loadPhotos.map(photo =>
-                    <div key={photo.id} >
-                      <img src={photo.dataUrl} css={s.feedImg} alt="" />
-                    </div>
-                )}
-              </Slide>
-            </div>
-          }
-        </div>
-        <input 
-            type="file" 
-            style={{display: "none"}} 
-            onChange={handleFileChange} 
-            ref={imgFileRef} 
-            multiple={true} 
-          />
+      {
+        !isAddPhotos ?
+        <></>
+        :
         <div>
+          <div css={s.selectPhotosLayout}>
+            <input 
+                type="file" 
+                style={{display: "none"}} 
+                onChange={handleFileChange} 
+                ref={imgFileRef} 
+                multiple={true} 
+            />
+            <div css={s.cancelButtonLayout}>
+              <button css={s.selectPhotosCancel} onClick={() => onCancelButton()}><MdOutlineCancel/></button>
+            </div>
+            {
+              !loadPhotos.length
+              ?
+              <button css={s.selectPhotos} onClick={() => onClickButton()}><FiPlusCircle/></button>
+              :
+              <>
+              {
+                // 이미지 2개 이상 일 때만 슬라이드
+                loadPhotos.length > 1 
+                ?
+                <div className="slide-container">
+                  <Slide {...settings} 
+                    prevArrow={<div css={s.slideArrow}><IoIosArrowDropleftCircle /></div>}
+                    nextArrow={<div css={s.slideArrow}><IoIosArrowDroprightCircle /></div>}
+                  >
+                    {loadPhotos.map(photo =>
+                      <div key={photo.id} >
+                        <img src={photo.dataUrl} css={s.feedImg(photo.dataUrl)} alt="" />
+                      </div>
+                    )}
+                  </Slide>
+                </div>
+                :
+                // 이미지 1개 일때 슬라이드
+                <div className="slide-container">
+                  {loadPhotos.map((photo)=> (
+                    <div key={photo.id} css={s.feedImg(photo.dataUrl)}></div>
+                  ))} 
+                </div>      
+              }
+              </>
+            }
+
+          </div>
+        </div>
+      }
+
+      <div css={s.addFeedContents}>
+
+        {/* <div css={s.addFeedImgPrievew}> */}
+          {
+            // <div className="slide-container">
+            //   <Slide {...settings} 
+            //     prevArrow={<div css={s.slideArrow}><IoIosArrowDropleftCircle /></div>}
+            //     nextArrow={<div css={s.slideArrow}><IoIosArrowDroprightCircle /></div>}
+            //     >
+            //     {loadPhotos.map(photo =>
+            //         <div key={photo.id} >
+            //           <img src={photo.dataUrl} css={s.feedImg} alt="" />
+            //         </div>
+            //     )}
+            //   </Slide>
+            // </div>
+          }
+        {/* </div> */}
+
+
+
+
+        <div css={s.qillLayout}>
           <ReactQuill 
             css={s.addFeedQuill}
             modules={modules} 
             value={newFeedContent} 
             onChange={setNewFeedContent}
           />
-          
         </div>
 
         <div css={s.addFeedFooter}>
-          <button onClick={() => imgFileRef.current.click()}>사진 선택</button>
+          <button onClick={() => onChangeIsPhotos()}>사진 선택</button>
           {/* <button onClick={handleCancelFeed}>글 지우기</button> */}
           <button onClick={() => {handleImageUpload()}}>작성 완료</button>
         </div>

@@ -21,6 +21,7 @@ export const addFeedLayout = css`
     display: none;
   }
   
+  
 `;
 
 export const addFeedHeader = css`
@@ -74,15 +75,86 @@ export const feedImg = (url) => css`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 10px;
   border-radius: 5px;
-  border: 1px solid #8A9C9988;
   width: 100%;
+  height: 285px;
   background-size: cover;
   background-repeat: repeat;
   background-position: center;
   background-image: url(${url});
 `;
+
+export const qillLayout = css`
+  .ql-container {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background: #fefcfc;
+  }
+  .ql-snow.ql-toolbar {
+  display: block;
+  background: #eaecec;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  }
+`
+
+export const selectPhotosLayout = css`
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  height: 300px;
+  border: 2px solid #dbdbdb;
+  border-radius: 5px;
+  padding: 4px 4px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+`
+export const cancelButtonLayout = css`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 17px;
+  height: 17px;
+`
+
+export const selectPhotosCancel = css`
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  border: none;
+  outline: none;
+  background-color: inherit;
+  color: black;
+  cursor: pointer;
+  font-size: 20px;
+  border: 0px solid black;
+  border-radius: 50%;
+
+  &:hover {
+    color: #333333;
+  }
+`;
+
+export const selectPhotos = css`
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  background-color: #dbdbdb86;
+  border: 0px solid black;
+  border-radius: 5px;
+  font-size: 25px;
+  color: #333333;
+  top: 0;
+
+  &:hover {
+    background-color: #dbdbdb;
+  }
+`;
+
 
 export const addFeedQuill = css`
   margin-bottom: 10px;

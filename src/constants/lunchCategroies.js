@@ -8,7 +8,7 @@ export const lunchCategories = [
   { id:7 , value:"회ㆍ초밥",  label:"🍣"}, 
   { id:8 , value:"버거",  label:"🍔"}, 
   { id:9 , value:"일식ㆍ돈까스",  label:"🧆"}, 
-  { id:10,value:"피자 양식", label:"🍕"}, 
+  { id:10,value:"피자ㆍ양식", label:"🍕"}, 
   { id:11, value:"고기구이", label:"🥩"}, 
   { id:12, value:"찜ㆍ탕", label:"🍲"} 
 ]

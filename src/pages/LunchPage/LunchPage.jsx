@@ -70,7 +70,6 @@ function LunchPage(props) {
     navigate(`/lunch/Detail?lunchId=${lunchId}`)
   }
 
-
   return (
     <div css={s.lunchPageRootLayout}>
       <Routes>
@@ -90,7 +89,7 @@ function LunchPage(props) {
                   lunchId={listData.lunchId}
                   profileImgUrl={listData.profileImgUrl}
                   nickName={listData.nickName}
-                  placeName={listData.PlaceName}
+                  placeName={listData.placeName}
                   categroies={listData.categroies}
                   title={listData.title}
                   imgUrls={listData.imgUrls}
