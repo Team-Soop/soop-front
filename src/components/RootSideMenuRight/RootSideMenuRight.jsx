@@ -91,7 +91,7 @@ function RootSideMenuRight(props) {
             <button>필터</button>
             <button onClick={openModal}>글 쓰기</button>
           </div>
-          <SaveStduyGroup isOpen={modal} isClose={closeModal} />
+          <SaveStduyGroup isOpen={modal} isClose={closeModal} setState={0} />
         </div>
       ) : (
         <></>

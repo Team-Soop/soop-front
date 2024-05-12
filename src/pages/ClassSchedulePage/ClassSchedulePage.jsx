@@ -21,11 +21,11 @@ function ClassSchedulePage() {
   const [ selectEndTimeOption ] = useState([]);
   const [ isOpenAddSchedule, setIsOpenAddSchedule ] = useState(false);
   const [ isOpenDailySchedule, setIsOpenDailySchedule ] = useState(false);
-  // const [ rightSideBar, setRightSideBar ] = useRecoilState(rightSideBarState);
+  const [ rightSideBar, setRightSideBar ] = useRecoilState(rightSideBarState);
 
-  // useEffect(() => {
-  //   setRightSideBar(0)
-  // }, [])
+  useEffect(() => {
+    setRightSideBar(0)
+  }, [])
 
 
   // timeOption 설정 (i = Hour, j = Minute)
@@ -38,7 +38,6 @@ function ClassSchedulePage() {
               let timeSet = {};
               timeSet.value = ('0' + i).slice(-2) + ":" + ('0' + (j * 30)).slice(-2);
               timeSet.label = ('0' + i).slice(-2) + "시 " +  ('0' + (j * 30)).slice(-2) + "분";
-              console.log(timeSet)
               selectTimeOption.push(timeSet);
 
               if (i === startHour && j === 0) {
@@ -83,10 +82,6 @@ function ClassSchedulePage() {
         setDailyScheduleData(originScheduleDate.filter(originScheduleDate => originScheduleDate.classScheduleStartDate.substring(0, 10) == selectDay))
     }, [selectDay])
 
-    useEffect(() => {
-        console.log(dailyScheduleData)
-    }, [dailyScheduleData])
-
     const openAddSchduleModal = () => {
       setIsOpenAddSchedule(!isOpenAddSchedule)
     }
@@ -99,7 +94,7 @@ function ClassSchedulePage() {
     <>
       <div css={s.layout}>
         <div css={s.header}>
-          <h1>스케줄 페이지</h1>
+          <h1>강의 스케줄</h1>
           <button css={s.button} onClick={openAddSchduleModal}>일정 관리</button>
         </div>
         <div css={s.calendar}>

@@ -13,7 +13,6 @@ export default function AccountEditPage() {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const principalData = queryClient.getQueryData("principalQuery");
-
     const [
         username,
         userNameChange,
@@ -66,7 +65,8 @@ export default function AccountEditPage() {
         editAccount,
         {
             onSuccess: (response) => {
-                console.log(response);
+                // queryClient.invalidateQueries("principalQuery")
+                window.location.reload();
             },
             onError: (error) => {
                 console.log(error);
@@ -114,7 +114,11 @@ export default function AccountEditPage() {
     }, [principalData]);
 
     useEffect(() => {
-        setUsernameCheck(false);
+        if(username == principalData.data.username){
+            setUsernameCheck(true);    
+        } else {
+            setUsernameCheck(false);
+        }
     }, [username]);
 
     const duplicateUsernameCheck = () => {
@@ -135,15 +139,15 @@ export default function AccountEditPage() {
                     </div>
                 </div>
                 <div css={s.editBox}>
-                    <div>
+                <div>
                         <div css={s.labelBox}>
-                            <div css={s.label}>닉네임</div>
+                            <div css={s.label}>아이디</div>
                         </div>
                         <div css={s.inputBox}>
                             <input
                                 type="text"
-                                defaultValue={nickname}
-                                onChange={nicknameChange}
+                                defaultValue={username}
+                                onChange={userNameChange}
                             />
                             <button
                                 css={s.checkButton}
@@ -155,13 +159,13 @@ export default function AccountEditPage() {
                     </div>
                     <div>
                         <div css={s.labelBox}>
-                            <div css={s.label}>사용자 이름</div>
+                            <div css={s.label}>닉네임</div>
                         </div>
                         <div css={s.inputBox}>
                             <input
                                 type="text"
-                                defaultValue={username}
-                                onChange={userNameChange}
+                                defaultValue={nickname}
+                                onChange={nicknameChange}
                             />
                         </div>
                     </div>

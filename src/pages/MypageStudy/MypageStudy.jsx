@@ -8,6 +8,7 @@ import { useQuery, useQueryClient } from 'react-query';
 import { mySearchStudyList } from '../../apis/api/study';
 import { useNavigate } from "react-router-dom";
 import SaveStudyGroup from '../../components/Study/SaveStudyGroup/SaveStduyGroup'
+import userImg from "../../assets/images/userProfileNone.png";
 
 export default function MypageStudy(set) {
 
@@ -52,36 +53,54 @@ export default function MypageStudy(set) {
   return (
     <div css={s.layout}>
 		<header css={s.header}>
-			<button onClick={() => {setIsWrite(true)}}>글쓰기</button>
+				<label css={s.modalName}>마이페이지 - 스터디</label>
 		</header>
 		<body css={s.boardListLayout}>
 			{
 				studyBoardList.map((board, index) => {
 					return(
+						
 						<div key={index} css={s.boardContent} onClick={() => studyBoardOnClick(board.studyId)}>
-							{board.studyMemberLimited === board.memberCount || board.timeCount > 0
-								? <div> 모집완료 </div>	
-								: (0 > board.timeCount && board.timeCount > -1440 
-									? <>
-									<div>모집 중</div>
-									<div>{Math.round(board.timeCount / (60))} Hour</div>
-									</>
-									: <>
-									<div>모집 중</div>
-									<div>D{Math.round(board.timeCount / (60 * 24))} Day</div>
-									</>
-								)
-							}
-							<div>{board.nickname}</div>
-							<div>{board.studyTitle}</div>
-							<div>{categoryData.map((category, index) => {
-								return(
-								board.studySkills.includes(category.studyCategoryId) && 
-								<div key={index}>{category.studyCategoryName}</div>
-								)
-								})}
+							<div css={s.userInfo}>
+								<img src=
+								{
+									!!board.profileImgUrl
+									? board.profileImgUrl
+									: userImg
+								} alt="" />
+								<div>{board.nickname}</div>
 							</div>
-							<div>{board.memberCount}/{board.studyMemberLimited}</div>
+							<div css={s.contentBody}>
+								<div css={s.skill}>
+									{categoryData.map((category, index) => {
+										return(
+										board.studySkills.includes(category.studyCategoryId) && 
+										<div key={index}>{category.studyCategoryName}</div>
+										)
+									})}
+								</div>
+								<div css={s.title}> {board.studyTitle} </div>
+							</div>
+							<div css={s.party}>
+								<div css={s.period}>
+									{board.studyMemberLimited === board.memberCount || board.timeCount > 0
+										? <div css={s.complete}> 모집완료 </div>	
+										: (0 > board.timeCount && board.timeCount > -1440 
+											?
+											<div css={s.recruiting}>
+												<div>모집 중</div>
+												<div>H{Math.round(board.timeCount / (60))}</div>
+											</div>
+											:
+											<div css={s.recruiting}>
+												<div css={s.recruiting}>모집 중</div>
+												<div>D{Math.round(board.timeCount / (60 * 24))}</div>
+											</div>
+										)
+									}
+								</div>
+								<div css={s.memberCount}>{board.memberCount}/{board.studyMemberLimited}</div>
+							</div>
 						</div>
 				)})
 			}

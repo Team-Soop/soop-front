@@ -55,7 +55,7 @@ export const button = css`
 export const calendar = css`
     position: relative;
     margin: 10px;
-    border-top: 3px solid white;
+    border-top: 2px solid white;
     z-index: 0;
     
     --fc-border-color: white;

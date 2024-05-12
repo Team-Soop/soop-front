@@ -25,7 +25,7 @@ function StudyGroupPage() {
 	
 	const searchStudyGroupList = useQuery("searchStudyGroupList", searchStudyList, 
 	{
-		retry: 3,
+		retry: 0,
 		refetchOnWindowFocus: false,
 		onSuccess: response => {
 			setStudyBoardList(response.data)
@@ -37,12 +37,14 @@ function StudyGroupPage() {
 
 	const searchOptionStudyQuery = useQuery("searchOptionStudyQuery",() => searchOptionStudyList(option), {
 		enabled: isSearch,
+		retry: 0,
 		refetchOnWindowFocus: false,
 		onSuccess: response => {
-
+			setIsSearch(false)
+			setStudyBoardList(response.data)
 		},
 		onError: error => {
-
+			setIsSearch(false)
 		}
 	})
 	
@@ -53,6 +55,10 @@ function StudyGroupPage() {
 		}
 	}, [searchStudyCategories])
 
+	useEffect(() => {
+		queryClient.refetchQueries("searchStudyCategories")
+	}, [])
+
 	const studyBoardOnClick = (studyId) => {
 		navigate(`/study/board/${studyId}`)
 	}
@@ -62,7 +68,6 @@ function StudyGroupPage() {
 		for(let category of changeSearchCategory){
 			if(category.studyCategoryId === id){
 				category.checkState = !category.checkState
-				console.log(category.checkState)
 			}
 		}
 		setSearchCategory(changeSearchCategory)
@@ -85,11 +90,10 @@ function StudyGroupPage() {
 
 		setIsSearch(true)
 	}
-
-	console.log(studyBoardList)
 	
   return (
     <div css={s.layout}>
+		<h1>스터디 모집</h1>
 		<header css={s.header}>
 				<div css={s.searchTitle}>
 					<div css={s.searchTitleBox}>
@@ -103,8 +107,8 @@ function StudyGroupPage() {
 					searchCategory.map((category, index) => {
 						return(
 							<div css={s.searchCategoryBox} key={index}>
-								<input type="checkbox" checked={category.checkState} onChange={() => searchCategoryChange(category.studyCategoryId)}/>
-								<label>{category.studyCategoryName}</label>
+								<input type="checkbox" id={index} checked={category.checkState} onChange={() => searchCategoryChange(category.studyCategoryId)}/>
+								<label for={index}>{category.studyCategoryName}</label>
 							</div>
 						)
 					})
@@ -139,16 +143,18 @@ function StudyGroupPage() {
 							<div css={s.party}>
 								<div css={s.period}>
 									{board.studyMemberLimited === board.memberCount || board.timeCount > 0
-										? <div> 모집완료 </div>	
+										? <div css={s.complete}> 모집완료 </div>	
 										: (0 > board.timeCount && board.timeCount > -1440 
-											? <>
-											<div>모집 중</div>
-											<div>H{Math.round(board.timeCount / (60))}</div>
-											</>
-											: <>
-											<div>모집 중</div>
-											<div>D{Math.round(board.timeCount / (60 * 24))}</div>
-											</>
+											?
+											<div css={s.recruiting}>
+												<div>모집 중</div>
+												<div>H{Math.round(board.timeCount / (60))}</div>
+											</div>
+											:
+											<div css={s.recruiting}>
+												<div css={s.recruiting}>모집 중</div>
+												<div>D{Math.round(board.timeCount / (60 * 24))}</div>
+											</div>
 										)
 									}
 								</div>
