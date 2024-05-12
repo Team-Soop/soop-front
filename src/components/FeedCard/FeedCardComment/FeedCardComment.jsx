@@ -16,7 +16,6 @@ function FeedCardComment({feedId}) {
   const [commentList, setCommentList] = useState([]);
   const [putCommentId, setPutCommentId] = useState(0);
   const [putChangeComment, setPutChangeComment] = useState("");
-  const inputFocusRef = useRef(""); 
   const [ isPutAndDelete, setIsPutAndDelete ] = useState(false);
 
   useEffect(() => {
@@ -163,7 +162,6 @@ function FeedCardComment({feedId}) {
                 css={s.feedCommentInput}
                 type="text" 
                 placeholder="입력..."
-                // ref={inputFocusRef}
                 defaultValue={comment.commentContent}
                 onChange={(e) => setPutChangeComment(e.target.value)}
                 />
@@ -191,7 +189,14 @@ function FeedCardComment({feedId}) {
                   <span css={s.commentContent}>{comment.feedCommentContent}</span>
                     {/* 댓글 수정, 삭제 메뉴 open */}
                   <div css={s.commentMenu}>
-                    <button css={s.commentMenuDots} onClick={() => updateCommentState(comment.feedCommentId)}><TbDotsVertical /></button>
+                    <button 
+                      css={s.commentMenuDots} 
+                      onClick={() => {
+                        updateCommentState(comment.feedCommentId)
+                      }}
+                    >
+                      <TbDotsVertical />
+                    </button>
                     {
                       comment.state === true && comment.feedCommentUserId === principalData.data.userId
                     ?

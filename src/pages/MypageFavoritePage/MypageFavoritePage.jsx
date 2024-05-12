@@ -48,7 +48,7 @@ export default function MypageFavoritePage() {
         <>
             <div css={s.layout}>
                 <div css={s.header}>
-                    <div onClick={() => setViewState(0)}>북마크 피드</div>
+                    <div onClick={() => setViewState(0)}>자유게시판</div>
                     <div onClick={() => setViewState(1)}>오늘 뭐 먹지?</div>
                 </div>
                 <div css={s.feedPageLayout}>
