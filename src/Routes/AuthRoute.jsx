@@ -20,7 +20,7 @@ import UserAlarm from "../components/UserAlarm/UserAlarm";
 import FeedRoute from "./FeedRoute";
 
 function AuthRoute(props) {
-  const principalQuery = useQuery(["principalQuery"], getPrincipalRequest, {
+  const principalQuery = useQuery("principalQuery", getPrincipalRequest, {
     retry: 0,
     refetchOnWindowFocus: false,
     onSuccess: (response) => {

@@ -15,7 +15,8 @@ export const layout = css`
 export const contentLayout = css`
     margin: 10px;
     border-radius: 10px;
-    background-color: #b5ddd6;
+    border: 2px solid white;
+    /* background-color: #b5ddd6; */
 `
 
 export const addButton = css`

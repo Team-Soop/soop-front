@@ -64,7 +64,7 @@ export default function SaveStduyGroup({ isOpen, isClose, setState, studyId, tit
         mutationKey: "saveStudyGroupMutation",
         mutationFn: saveStudyGroup,
         onSuccess: response => {
-            console.log(response)
+            window.location.reload()
         },
         onError: error => {
             console.log(error)
@@ -75,7 +75,7 @@ export default function SaveStduyGroup({ isOpen, isClose, setState, studyId, tit
         mutationKey: "updateStudyGroupMutation",
         mutationFn: updateStudyGroup,
         onSuccess: response => {
-
+            window.location.reload()
         },
         onError: error => {
             console.log(error)

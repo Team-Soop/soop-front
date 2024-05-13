@@ -88,8 +88,8 @@ function RootSideMenuRight(props) {
       {isStudyWrite ? (
         <div>
           <div css={s.rigthButton}>
-            <button>필터</button>
-            <button onClick={openModal}>글 쓰기</button>
+            <button><RiMenu5Fill /></button>
+            <button onClick={openModal}><HiOutlinePencilSquare /></button>
           </div>
           <SaveStduyGroup isOpen={modal} isClose={closeModal} setState={0} />
         </div>

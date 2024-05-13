@@ -20,7 +20,7 @@ export default function AccountEditPage() {
         setUsernameValue,
         setUsernameMessage,
     ] = useInput("username");
-    const [usernameCheck, setUsernameCheck] = useState(false);
+    const [usernameCheck, setUsernameCheck] = useState(true);
     const [
         nickname,
         nicknameChange,
@@ -65,7 +65,7 @@ export default function AccountEditPage() {
         editAccount,
         {
             onSuccess: (response) => {
-                // queryClient.invalidateQueries("principalQuery")
+                queryClient.invalidateQueries("principalQuery")
                 window.location.reload();
             },
             onError: (error) => {
@@ -99,7 +99,6 @@ export default function AccountEditPage() {
         if (usernameCheck === true) {
             if (window.confirm("회원 정보를 변경하시겠습니까?") === true) {
                 editAccountMutation.mutate(changeUserInfo);
-                console.log(changeUserInfo);
             }
         } else {
             alert("닉네임 중복 검사를 진행해주세요.");
@@ -107,15 +106,17 @@ export default function AccountEditPage() {
     };
 
     useEffect(() => {
-        setUsernameValue(principalData.data.username);
-        setNicknameValue(principalData.data.nickname);
-        setNameValue(principalData.data.name);
-        setEmailValue(principalData.data.email);
+        if(!!principalData) {
+            setUsernameValue(principalData.data.username);
+            setNicknameValue(principalData.data.nickname);
+            setNameValue(principalData.data.name);
+            setEmailValue(principalData.data.email);
+        }
     }, [principalData]);
 
     useEffect(() => {
         if(username == principalData.data.username){
-            setUsernameCheck(true);    
+            setUsernameCheck(true);
         } else {
             setUsernameCheck(false);
         }
