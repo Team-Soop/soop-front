@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import * as s from "./style";
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom'
 import { deleteStudyGroup, searchRecruitment, searchStudyBoard, searchWaitingMember } from '../../apis/api/study';
@@ -20,6 +20,8 @@ export default function StudyGroupDetailPage() {
     const [ isOpenWaitingModal, setIsOpenWaitingModal ] = useState(false);
     const [ isOpenMemberListModal, setIsOpenMemberListModal] = useState(false);
     const [ isOpenApplyStudyModal, setIsOpenApplyStudyModal] = useState(false);
+    const [ isManager, setIsManager ] = useState(false)
+    const [ isUserInMember, setIsUserInMember ] = useState(false)
     const sanitizer = DOMPurify.sanitize;
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -32,7 +34,6 @@ export default function StudyGroupDetailPage() {
             retry: 0,
             refetchOnWindowFocus: false,
             onSuccess: response => {
-                console.log(response.data)
                 setStudyContent(response.data)
             }
         }
@@ -88,67 +89,114 @@ export default function StudyGroupDetailPage() {
     const isReportOpen = (feedId) => {
         if(window.confirm("이 게시물을 신고 하시겠습니까?")){
           navigate(`/report/2/${feedId}`)
-        // console.log(feedId)
         }
         return;
       }
+
+    useEffect(() => {
+        let checkInMember = false
+        
+        
+        if(!!recruitmentMember) {
+            for(let member of recruitmentMember) {
+                if (principalData.data.userId === member.userId) {
+                    checkInMember = true
+                }
+            }
+        }
+
+        setIsUserInMember(checkInMember)
+
+    }, [recruitmentMember, studyContent])
+
+    useEffect(() => {
+        if(principalData.data.userId === studyContent?.managerUserId){
+            setIsManager(true)
+        }
+    }, [studyContent])
 
     return (
         <>
         {studyContent
             ? <div css={s.layout}>
-                <button onClick={() => setIsWrite(true)}>수정</button>
-                <button onClick={deleteStudyButton}>삭제</button>
-                <div css={s.contentLayout}>
-                    <div css={s.userInfo}>
-                        <img src={
-                            !!studyContent.profileImgUrl
-                            ? studyContent.profileImgUrl
-                            : userImg
-                        } alt="" />
-                        <div>{studyContent.nickName}</div>
+                {
+                    isManager &&
+                    <div css={s.addButton}>
+                        <button onClick={() => setIsWrite(true)}>수정</button>
+                        <button onClick={deleteStudyButton}>삭제</button>
                     </div>
-                    <div css={s.header}>
-                        <div css={s.title}>{studyContent.studyTitle}</div>
-                        <div onClick={() => isReportOpen(studyContent.studyId)}>신고 아이콘</div>
-                    </div>
-                    <div>
-                        <div css={s.period}>
-                            {studyContent.studyMemberLimited === studyContent.memberCount || studyContent.timeCount > 0
-								? <div> 모집완료 </div>	
-								: (0 > studyContent.timeCount && studyContent.timeCount > -1440 
-									? <>
-									<div>모집 중</div>
-									<div>{Math.round(studyContent.timeCount / (60))} Hour</div>
-									</>
-									: <>
-									<div>모집 중</div>
-									<div>D{Math.round(studyContent.timeCount / (60 * 24))} Day</div>
-									</>
-                                )
-                            }
-                        </div>
-                        <div css={s.skills}>
-                            <div>스킬</div>
-                            {searchStudyCategories?.data.map((category, index) => {
-								return(
-                                    studyContent.studySkills.includes(category.studyCategoryId) && 
-                                    <div key={index}>{category.studyCategoryName}</div>
-								)
-                            })}
-                        </div>
-                        <div css={s.memberCount}>
-                            <div>모집 인원 </div>
-                            <div>{studyContent.memberCount}/{studyContent.studyMemberLimited}</div>
+                }
+                <div>
+                    <div css={s.contentLayout}>
+                        <div css={s.userInfo}>
+                            <img src={
+                                !!studyContent.profileImgUrl
+                                ? studyContent.profileImgUrl
+                                : userImg
+                            } alt="" />
+                            <div>{studyContent.nickName}</div>
                         </div>
                     </div>
-                    <div>
-                    <div dangerouslySetInnerHTML={{__html: sanitizer(studyContent.studyContent)}}></div>
+                    <div css={s.contentLayout}>
+                        <div css={s.header}>
+                            <div css={s.title}>{studyContent.studyTitle}</div>
+                            <div css={s.titleInBox}>
+                                <div onClick={() => isReportOpen(studyContent.studyId)}>신고 아이콘</div>
+                                <div>{studyContent.contentCreateDate}</div>
+                            </div>
+                        </div>
                     </div>
-                    <div css={s.memberLayout}>
-                        <button onClick={openWaitingModal}>신청 현황</button>
-                        <button onClick={openMemberListModal}>인원 목록</button>
-                        <button onClick={openApplyStudyModal}>가입 신청</button>
+                    <div css={s.contentLayout}>
+                        <div css={s.option}>
+                            <div css={s.period}>
+                                {studyContent.studyMemberLimited === studyContent.memberCount || studyContent.timeCount > 0
+                                    ? <div css={s.complete}> 모집완료 </div>	
+                                    : (0 > studyContent.timeCount && studyContent.timeCount > -1440 
+                                        ? <div css={s.recruiting}>
+                                        <div>모집 중</div>
+                                        <div>{Math.round(studyContent.timeCount / (60))} Hour</div>
+                                        </div>
+                                        : <div css={s.recruiting}>
+                                        <div>모집 중</div>
+                                        <div>D{Math.round(studyContent.timeCount / (60 * 24))} Day</div>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                            <div css={s.skills}>
+                                <div>스킬</div>
+                                    <div css={s.skillList}>
+                                    {searchStudyCategories?.data.map((category, index) => {
+                                        return(
+                                            studyContent.studySkills.includes(category.studyCategoryId) && 
+                                            <div key={index}>{category.studyCategoryName}</div>
+                                        )
+                                    })}
+                                    </div>
+                            </div>
+                            <div css={s.memberCount}>
+                                <div>모집 인원 </div>
+                                <div>{studyContent.memberCount}/{studyContent.studyMemberLimited}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div css={s.contentLayout}>
+                        <div css={s.content}>
+                            <div dangerouslySetInnerHTML={{__html: sanitizer(studyContent.studyContent)}}></div>
+                            <div css={s.memberLayout}>
+                                {
+                                    principalData.data.userId === studyContent.managerUserId &&
+                                    <button onClick={openWaitingModal}>신청 현황</button>
+                                }
+                                { 
+                                    (isManager || isUserInMember) && <button onClick={openMemberListModal}>인원 목록</button>
+                                }
+                                {
+                                    (!isManager && !isUserInMember && studyContent.timeCount < 0) && <button onClick={openApplyStudyModal}>가입 신청</button>
+                                }
+                                
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <SaveStduyGroup isOpen={isWrite} isClose={closeWrite} setState={1} studyId={studyContent.studyId} title={studyContent.studyTitle}  content={studyContent.studyContent}  memberLimited={studyContent.studyMemberLimited} periodEnd={studyContent.studyPeriodEnd} skills={studyContent.studySkills} memberCount={studyContent.memberCount} />

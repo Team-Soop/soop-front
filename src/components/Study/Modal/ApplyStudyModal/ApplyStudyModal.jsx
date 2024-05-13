@@ -12,10 +12,6 @@ export default function ApplyStudyModal({ isOpen, isClose, studyContent, waiting
   const queryClient = useQueryClient();
   const principalData = queryClient.getQueryData("principalQuery");
 
-  useEffect(() => {
-    console.log(applyMessage)
-  }, [applyMessage])
-
   const applyPeriodMutation = useMutation({
     mutationKey: "applyPeriodMutation",
     mutationFn: applyPeriod,
@@ -53,21 +49,21 @@ export default function ApplyStudyModal({ isOpen, isClose, studyContent, waiting
   return (
     <>
       <Modal isOpen={isOpen}
-      css={s.modalLayout}>
-        <div>
-            <div>스터디 가입 신청</div>
-            <div css={s.header}>
-              <div>스터디 제목</div>
-              
-            </div>
-            <div>
-              <label>가입 신청 메시지</label>
-              <input type="text" value={applyMessage} onChange={onChangeMessage}/>
-            </div>
-            <div>
-              <button onClick={isClose}>취소</button>
-              <button onClick={applyPeriodButton}>신청</button>
-            </div>
+       css={s.modal}>
+        <div css={s.modalLayout}>
+          <div css={s.modalName}>스터디 가입 신청</div>
+          <div css={s.header}>
+            <div>스터디 -</div>
+            <div>{studyContent.studyTitle}</div>
+          </div>
+          <div css={s.message}>
+            <label>가입 신청 메시지</label>
+            <textarea spellCheck="false" value={applyMessage} onChange={onChangeMessage}/>
+          </div>
+          <div css={s.applyButtons}>
+            <button onClick={applyPeriodButton}>신청</button>
+            <button onClick={isClose}>취소</button>
+          </div>
         </div>
         </Modal>
     </>

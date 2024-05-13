@@ -11,15 +11,20 @@ export const layout = css`
     height: 100%;
     background-color: #F6F5EF;
     overflow-y: auto;
+
+    & > h1 {
+        padding: 15px 0px 0px 15px;
+        font-size: 28px;
+        color: #1F4D36;
+    }
 `
 
 export const header = css`
     box-sizing: border-box;
-    padding: 10px;
-    border-bottom: 2px solid #CAD8D8;
+    margin-top: 10px;
+    padding: 0px 10px;
+    border-top: 2px solid white;
     width: 100%;
-    
-
 `
 
 export const searchTitle = css`
@@ -42,7 +47,6 @@ export const searchTitle = css`
 
         :hover {
             background-color: #e7e7e7;
-            /* color: white; */
         }
         :active {
             background-color: #d7d7d7;
@@ -66,23 +70,33 @@ export const searchTitleBox = css`
 `
 
 export const searchCategory = css`
-    margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
+    margin-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #CAD8D8;
     
 
 `
 
 export const searchCategoryBox = css`
-    margin: 0px 20px 0px 0px;
+    margin-right: 20px;
     width: 100px;
 
     & > input {
         margin-right: 5px;
+
+        :hover {
+            border: 2px solid black;
+        }
     }
 
     & > label {
         font-size: 14px;
+        
+        :hover .test {
+            background-color: teal
+        }
     }
 
 `
@@ -117,9 +131,6 @@ export const userInfo = css`
 `
 
 export const contentBody = css`
-    /* display: flex;
-    flex-direction: column;
-    justify-content: space-between; */
     padding: 10px 0px 0px 10px;
     width: 50%;
 `
@@ -156,18 +167,34 @@ export const party = css`
 `
 
 export const period = css`
-    display: flex;
-    justify-content: end;
+display: flex;
+justify-content: end;
+
     & > div {
         margin-right: 5px;
         font-size: 13px;
     }
 
-    & > div:nth-last-of-type(1) {
-        margin-right: 0;
+`
+
+export const complete = css`
+    color: #ff0000;
+`
+
+export const recruiting = css`
+    display: flex;
+    justify-content: space-between;
+    
+    color: #0044ff;
+    & > div {
+        margin-left: 5px;
     }
 
+    & > div:nth-of-type(2) {
+        color: black;
+    }
 `
+
 
 export const memberCount = css`
     display: flex;

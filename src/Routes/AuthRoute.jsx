@@ -24,11 +24,8 @@ function AuthRoute(props) {
     retry: 0,
     refetchOnWindowFocus: false,
     onSuccess: (response) => {
-      console.log("토큰 있음");
-      console.log(response);
     },
     onError: (error) => {
-      console.log("토큰 없음");
       console.log(error);
     },
   });
@@ -42,7 +39,6 @@ function AuthRoute(props) {
 
   useEffect(() => {
     setRightSideMenu(0);
-    console.log("뿌뿌");
   });
 
   return (

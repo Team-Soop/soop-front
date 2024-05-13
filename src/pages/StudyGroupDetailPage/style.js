@@ -11,20 +11,47 @@ export const layout = css`
     height: 100%;
     background-color: #F6F5EF;
     overflow-y: auto;
-
 `
 export const contentLayout = css`
-    border: 1px solid white;
-    height: 100%;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: #b5ddd6;
+`
+
+export const addButton = css`
+    display: flex;
+    justify-content: f;
+    width: 100%;
+
+    & > button {
+        margin-left: 5px;
+        width: 70px;
+        height: 30px;
+        border: 1px solid #CAD8D8;
+        border-radius: 5px;
+
+        background-color: white;
+        font-size: 12px;
+        cursor: pointer;
+
+        :hover {
+            background-color: #e7e7e7;
+            /* color: white; */
+        }
+        :active {
+            background-color: #d7d7d7;
+        }
+    }
 `
 
 export const userInfo = css`
     display: flex;
     align-items: center;
     margin: 10px;
+    height: 60px;
 
     & > img {
-        width: 20px;
+        width: 40px;
         border-radius: 50%;
         margin-right: 20px;
     }
@@ -34,9 +61,7 @@ export const header = css`
     justify-content: space-between;
     align-items: center;
     margin: 10px;
-    padding-top: 10px;
-    border-top: 2px solid #CAD8D8;
-    height: 40px;
+    height: 60px;
 `
 
 export const title = css`
@@ -44,15 +69,40 @@ export const title = css`
     margin-bottom: 0;
 `
 
+export const titleInBox = css`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 12px;
+`
+
+export const option = css`
+    height: 100%;
+    padding: 10px 0px;
+
+    & > * {
+        margin: 5px 10px;
+    }
+`
+
 export const period = css`
+    & > div {
+        display: flex;
+        justify-content: space-between;
+    }
+`
+
+export const complete = css`
+    color: #ff0000;
+`
+
+export const recruiting = css`
     display: flex;
     justify-content: space-between;
-    margin: 10px;
-    padding-top: 10px;
-    border-top: 2px solid #CAD8D8;
-
+    color: #0044ff;
 
 `
+
 export const skills = css`
     display: flex;
     flex-wrap: wrap;
@@ -68,10 +118,13 @@ export const skills = css`
 
 `
 
+export const skillList = css`
+    
+`
+
 export const memberCount = css`
         display: flex;
     flex-wrap: wrap;
-    margin: 10px;
 
     & > div {
         margin-right: 5px;
@@ -83,9 +136,33 @@ export const memberCount = css`
 
 `
 
+export const content = css`
+    padding: 10px;
+`
+
 export const memberLayout = css`
     display: flex;
     flex-direction: column;
-    margin-left: auto;
-    width: 100px;
+    align-items: flex-end;
+    width: 100%;
+
+    & > button {
+        width: 70px;
+        height: 30px;
+        border: 1px solid #CAD8D8;
+        border-radius: 5px;
+
+        background-color: white;
+        font-size: 12px;
+        cursor: pointer;
+
+        :hover {
+            background-color: #e7e7e7;
+            /* color: white; */
+        }
+        :active {
+            background-color: #d7d7d7;
+        }
+    }
 `
+
