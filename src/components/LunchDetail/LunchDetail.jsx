@@ -6,12 +6,20 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { lunchDetailState } from '../../atoms/lunchDetailAtom';
 import { useRecoilState } from 'recoil';
 import DOMPurify from "dompurify";
-import { AiOutlineLike, AiFillLike } from "react-icons/ai";
+import { AiOutlineLike } from "react-icons/ai";
 import LunchDetailMap from "./LunchDetailMap/LunchDetailMap";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { saveBoard, saveDeleteBoard, saveGetBoard } from "../../apis/api/saveBoards";
 import LunchComment from "./LunchComment/LunchComment";
 import { lunchDeleteLike, lunchGetLike, lunchLike } from "../../apis/api/lunch";
+import userImg from "../../assets/images/userProfileNone.png";
+import { lunchCategories } from "../../constants/lunchCategroies";
+import 'react-slideshow-image/dist/styles.css'
+import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
+import { Slide } from "react-slideshow-image";
+import { IoMdHeart } from "react-icons/io";
+
+
 
 function LunchDetail() {
   const sanitizer = DOMPurify.sanitize;
@@ -21,10 +29,20 @@ function LunchDetail() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [lunchDetailData, setLunchDetailData] = useRecoilState(lunchDetailState);
   const [isCommentOpen, setIsCommentOpen] = useState(false);
-
+  const [ categoryuLabel, setCategoryLabel ] = useState([]);
+  
 
   const detailLunchId = parseInt(searchParams.get("lunchId"))
-  const dataResult = lunchDetailData.filter(detailData => detailData.lunchId === detailLunchId)[0];
+  const dataResult = lunchDetailData?.filter(detailData => detailData.lunchId === detailLunchId)[0];
+  // 슬라이드쇼 
+  const settings = {
+    className: "slide-container",
+    dots: true,
+    autoplay: false,
+    infinite: dataResult?.imgUrls.length > 1 ? true : false,
+    transitionDuration: 300,
+    easing: "ease-in"
+  }
 
   useEffect(() => {
     return () => {
@@ -32,6 +50,14 @@ function LunchDetail() {
       queryClient.invalidateQueries([`likeLunchQuery${detailLunchId}`]);
     }
   }, [])
+
+  useEffect(() => {
+    setCategoryLabel(() => 
+      lunchCategories.filter(lunchCategory => 
+        dataResult?.categroies.map(category => category).includes(lunchCategory.value)
+      )
+    )
+  },[dataResult?.categroies])
 
 
   // board 들고오기
@@ -109,99 +135,146 @@ function LunchDetail() {
     navigate('/lunch')
   }
 
+  console.log(dataResult);
+
 
   return (
-    <div>
-      <button onClick={handleClickBack}>뒤로가기</button>
+    <div css={s.layout}>
+      {/* <button onClick={handleClickBack}>뒤로가기</button> */}
 
-      {/* 게시물 저장하기 */}
-      <div>
-        저장하기
+      <div css={s.detailHeader}>
+        {/* 가게이름 */}
+        <div css={s.placeName}>
+          {dataResult?.placeName}
+        </div>
+
+        {/* 게시물 저장하기 */}
+        <div css={s.detailFavorite}>
+          {
+            boardSaveQuery.isLoading
+            ? <></>
+            : boardSaveQuery.data.data.saveBoardStatus > 0
+              ? 
+                <button onClick={() => deleteBoardSave.mutate({boardId:detailLunchId, menuId: 2})}>
+                  <IoBookmark />
+                </button>
+              : 
+                <button onClick={() => boardSave.mutate({boardId:detailLunchId, menuId: 2})}>
+                  <IoBookmarkOutline/>
+                </button>
+          }
+        </div>
+      </div>
+      
+      <div css={s.userInfo}>
+        <img src=
         {
-          boardSaveQuery.isLoading
-          ? <></>
-          : boardSaveQuery.data.data.saveBoardStatus > 0
-            ? 
-              <button onClick={() => deleteBoardSave.mutate({boardId:detailLunchId, menuId: 2})}>
-                <IoBookmark />
-              </button>
-            : 
-              <button onClick={() => boardSave.mutate({boardId:detailLunchId, menuId: 2})}>
-                <IoBookmarkOutline/>
-              </button>
-        }
+          !!dataResult?.profileImgUrl
+          ? dataResult?.profileImgUrl
+          : userImg
+        }/>
+        <div>{dataResult?.nickName}</div>
       </div>
 
+      <div css={s.line}></div>
       {/* 게시물 내용 */}
       {/* ---------- */}
-      {/* 가게이름 */}
-      <div>
-        {dataResult?.placeName}
-      </div>
-      {/* 카테고리 */}
-      <div>
-        {dataResult?.categroies}
-      </div>
-      {/* 이미지 */}
-      <div>
-        {
-          !!dataResult?.imgUrls ?
-            dataResult.imgUrls.map((imgUrl, idx) =>
-              <img css={s.imgLayOut}
-                key={idx}
-                src={imgUrl}
-              />
+
+      
+      {
+        categoryuLabel > 1
+        ?
+        <div  css={s.categoriesLayout}>
+          {/* 카테고리 */} 
+          {categoryuLabel.map(category => {
+            return (
+              <div css={s.categoriesContainer}>
+                <div>{category.label}</div>
+                <span>{category.value}</span>
+                <p>{category.value}</p>
+              </div>
             )
-            :
-            <p>사진없음</p>
-        }
-      </div>
-      {/* 게시물 글 */}
-      <div>
-        <div dangerouslySetInnerHTML={{ __html: sanitizer(dataResult?.content) }}></div>
-      </div>
+          })
+          }
+        </div>
+        :
+        <></>
+      }
 
 
       {/* 가게 지도 */}
-      <div>
-        <LunchDetailMap
-          placeName={dataResult?.placeName}
-          placeX={dataResult?.placeX}
-          placeY={dataResult?.placeY}
-          placeUrl={dataResult?.placeUrl}
-        />
+
+      <LunchDetailMap
+        placeName={dataResult?.placeName}
+        placeX={dataResult?.placeX}
+        placeY={dataResult?.placeY}
+        placeUrl={dataResult?.placeUrl}
+      />
+
+
+      {/* 이미지, 게세물 */}
+      <div css={s.feedcontents}>
+        {
+          dataResult?.imgUrls > 1
+          ? (
+          <div className="slide-container">
+            <Slide {...settings} 
+              prevArrow={<div css={s.slideArrow}><IoIosArrowDropleftCircle /></div>}
+              nextArrow={<div css={s.slideArrow}><IoIosArrowDroprightCircle /></div>}
+            >
+              {dataResult?.imgUrls.map((photo, index) => (
+                <div key={index} css={s.imgUrl(photo)}></div>
+              ))}
+            </Slide>
+          </div>
+          )
+          : (
+          <div className="slide-container">
+            {dataResult?.imgUrls.map((photo, index) => (
+              <div key={index} css={s.imgUrl(photo)}></div>
+            ))}
+          </div>
+          )
+        }
+
+        <div css={s.content}>
+          <div dangerouslySetInnerHTML={{ __html: sanitizer(dataResult?.content) }}></div>
+        </div>
       </div>
 
-      {/* 댓글 */}
-      <div>
-        <button onClick={() => {setIsCommentOpen(!isCommentOpen)}}>댓글보기</button>
-        {
-          isCommentOpen ?
-            <LunchComment 
+      {/* 댓글, 좋아요 */}
+      <div css={s.footer}>
+        
+        {/* 좋아요/추천 */}
+        <div>
+          {
+            likeLunchQuery.isLoading
+            ? <></>
+            : likeLunchQuery.data.data.likeStatus > 0
+              ?
+                <button css={s.feedFooterButton} onClick={() => unLikeLunch.mutate(detailLunchId)}>
+                  <IoMdHeart/> <span>{likeLunchQuery.data.data.totalCount}</span>
+                </button>
+              :
+                <button css={s.feedFooterButton} onClick={() => likeLunch.mutate(detailLunchId)}> 
+                  <AiOutlineLike /> <span>{likeLunchQuery.data.data.totalCount}</span>
+                </button>
+          }
+        </div>
+
+        {/* 댓글 */}
+        <div>
+          <button onClick={() => {setIsCommentOpen(!isCommentOpen)}}>댓글보기</button>
+          {
+            isCommentOpen ?
+              <LunchComment 
               userId={principalData.data.userId}
               lunchId={detailLunchId}
-            />
-          :
-            <></>
-        }
-      </div>
-
-      {/* 좋아요/추천 */}
-      <div>
-        {
-          likeLunchQuery.isLoading
-          ? <></>
-          : likeLunchQuery.data.data.likeStatus > 0
-            ?
-              <button onClick={() => unLikeLunch.mutate(detailLunchId)}>
-                <AiFillLike /> <span>{likeLunchQuery.data.data.totalCount}</span>
-              </button>
+              />
             :
-              <button onClick={() => likeLunch.mutate(detailLunchId)}> 
-                <AiOutlineLike /> <span>{likeLunchQuery.data.data.totalCount}</span>
-              </button>
-
-        }
+              <></>
+          }
+        </div>
       </div>
 
 

@@ -97,7 +97,7 @@ function RootSideMenuLeft() {
             <Link to="/feed">자유게시판</Link>
             <Link to="/schedule">강의스케줄</Link>
             <Link to="/study/boardlist">스터디</Link>
-            <Link to="/lunch">오늘 뭐 먹지?</Link>
+            <Link to="/lunch/list">오늘 뭐 먹지?</Link>
             <Link to="/">즐겨찾기 링크연결</Link>
           </div>
         </div>

@@ -295,16 +295,18 @@ function LunchWrite() {
           :
           <div>
             <div css={s.selectPhotosLayout}>
-            <input
-              type="file"
-              style={{ display: "none" }}
-              onChange={handleFileChange}
-              ref={imgFileRef}
-              multiple={true}
+              <input
+                type="file"
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+                ref={imgFileRef}
+                multiple={true}
               />
-                <div css={s.cancelButtonLayout}>
-                  <button css={s.selectPhotosCancel} onClick={() => onCancelButton()}><MdOutlineCancel/></button>
-                </div>
+
+              <div css={s.cancelButtonLayout}>
+                <button css={s.selectPhotosCancel} onClick={() => onCancelButton()}><MdOutlineCancel/></button>
+              </div>
+
               {
                 !loadPhotos.length 
                 ?
@@ -320,21 +322,20 @@ function LunchWrite() {
                           prevArrow={<div css={s.slideArrow}><IoIosArrowDropleftCircle /></div>}
                           nextArrow={<div css={s.slideArrow}><IoIosArrowDroprightCircle /></div>}
                       >
-                          {loadPhotos.map((photo)=> (
-                              <div key={photo.id} css={s.imgUrl(photo.dataUrl)}></div>
-                          ))} 
+                        {loadPhotos.map((photo)=> (
+                            <div key={photo.id} css={s.imgUrl(photo.dataUrl)}></div>
+                        ))} 
                       </Slide>
                   </div>
                   :
                   // 이미지 1개 일때 슬라이드
                   <div className="slide-container">
-                      {loadPhotos.map((photo)=> (
-                        <div key={photo.id} css={s.imgUrl(photo.dataUrl)}></div>
-                      ))} 
+                    {loadPhotos.map((photo)=> (
+                      <div key={photo.id} css={s.imgUrl(photo.dataUrl)}></div>
+                    ))} 
                   </div>
                 }
                 </>
-                  
               }
 
             </div>

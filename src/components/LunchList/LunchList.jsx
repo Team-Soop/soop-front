@@ -45,8 +45,6 @@ function LunchList({
                 categroies.map(category => category).includes(lunchCategory.value)
             )
         )
-
-
     },[categroies])
 
     useEffect(() => {
@@ -101,8 +99,13 @@ function LunchList({
         return;
     };
 
+    // 상세보기 컴포넌트 클릭 버튼
+  const handleOnLunchDetail = (lunchId) => {
+    navigate(`/lunch/Detail?lunchId=${lunchId}`)
+  }
+
     return (
-        <div>
+        <div onClick={() => handleOnLunchDetail(lunchId)}>
           <li css={s.lunchLayout}>
             {/* 제목, 북마크 버튼 */}
             <div css={s.listHeader}>
@@ -180,7 +183,7 @@ function LunchList({
                   <div dangerouslySetInnerHTML={{ __html: sanitizer(content) }}></div>
               </div> */}
 
-              <div>{!!imgUrls ? imgUrls.map((imgUrl, idx) => <img key={idx} src={imgUrl} />) : <p>사진없음</p>}</div>
+              {/* <div>{!!imgUrls ? imgUrls.map((imgUrl, idx) => <img key={idx} src={imgUrl} />) : <p>사진없음</p>}</div> */}
           </li>
         </div>
     );
