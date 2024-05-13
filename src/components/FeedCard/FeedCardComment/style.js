@@ -42,9 +42,13 @@ export const editCommentLayout = css`
   align-items: center;
   margin-bottom: 10px;
   margin-top: 5px;
+  padding: 5px;
+  border-radius: 5px;
   width: 100%;
+  height: 40px;
+  background-color: #f0efe3;
   & > span {
-    font-size: 13px;
+    font-size: 11px;
     color: #777;
   }
 `
@@ -56,9 +60,11 @@ export const editingCommentButton = css`
   & > button{
     padding: 4px;
     border: 1px solid #f3f3f3;
-    background-color: #ffffff;
-    font-size: 11px;
+    border-radius: 5px;
+    background-color: #F6F5EF;
+    font-size: 10px;
     cursor: pointer;
+
     &:hover{
       background-color: #e7e7e7;
     }
@@ -68,13 +74,15 @@ export const editingCommentButton = css`
     }
 
   }
+  & > button:nth-of-type(1) {
+    margin-right: 3px;
+  }
 `
 
 export const editCommentButton = css`
   position: absolute;
   top: 0;
   right: 7px;
-  margin-left: 5px;
   width: 70px;
   height: 70px;
   background-color: #F6F5EF;
@@ -120,6 +128,8 @@ export const commentMenu = css`
 `
 
 export const commentMenuDots = css`
+  display: flex;
+  right: 2px;
   color: #4F5152;
 `
 
@@ -130,26 +140,33 @@ export const addCommentLayout = css`
   align-items: center;
   margin-bottom: 10px;
   margin-top: 5px;
+  padding: 5px;
+  border-radius: 5px;
   width: 100%;
+  height: 50px;
+  background-color: #ecebdf;
   & > span {
-    font-size: 13px;
+    font-size: 11px;
   }
 `;
 
 export const feedCommentInput = css`
   margin: 0 8px;
   padding: 3px 5px;
+  border-radius: 5px;
   width: 70%;
   height: 20px;
   border: 1px solid #f3f3f3;
+  background-color: #F6F5EF;
 `;
 
 export const addCommentButton = css`
   padding: 0 5px;
   width: 65px;
   height: 30px;
-  border: 1px solid #f3f3f3;
-  background-color: #ffffff;
+  border: 1px solid #ececec;
+  border-radius: 5px;
+  background-color: #F6F5EF;
   cursor: pointer;
   &:hover{
     background-color: #e7e7e7;
