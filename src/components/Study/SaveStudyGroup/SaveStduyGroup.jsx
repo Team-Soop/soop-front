@@ -115,7 +115,6 @@ export default function SaveStduyGroup({ isOpen, isClose, setState, studyId, tit
         }
 
         if (setState === 1) {
-            console.log(studyPost)
             updateStudyGroupMutation.mutate({id: studyId, data: studyPost})
         } else {
             console.log(studyPost)
