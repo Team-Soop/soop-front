@@ -61,3 +61,33 @@ export const modalCancel = css`
     color: #b4bdbb;
   }
 `;
+
+export const sortMenu = css`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border: 1px solid #ffffff73;
+  border-radius: 5px;
+  background-color: #fafafa88;
+  top: -100%;
+  left: -25%;
+  text-align: center;
+  z-index: 2;
+`
+
+export const sortButton = css`
+  width: 100%;
+  padding: 5px 0px;
+  font-size: 20px;
+
+  :nth-of-type(2) {
+    border-top: 1px solid #ffffff73;
+  }
+
+  :hover {
+    background-color: #fafafaa1;
+  }
+`

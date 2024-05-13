@@ -69,6 +69,7 @@ export const memberList = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 50px;
     
 
     & > div > button {
@@ -95,11 +96,17 @@ export const memberList = css`
 export const memberInfo = css`
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
 
     & > img {
         margin-right: 10px;
         border-radius: 50%;
         width: 40px;
+    }
+`
+
+export const nameBox = css`
+
+    & > div:nth-of-type(2) {
+        font-size: 13px;
     }
 `

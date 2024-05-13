@@ -6,6 +6,8 @@ import { useQuery, useQueryClient } from 'react-query';
 import { searchOptionStudyList, searchStudyList } from '../../apis/api/study';
 import { useNavigate } from "react-router-dom";
 import userImg from "../../assets/images/userProfileNone.png";
+import { useRecoilValue } from "recoil";
+import { contentSortState } from "../../atoms/contentSortAtom";
 
 
 function StudyGroupPage() {
@@ -22,7 +24,8 @@ function StudyGroupPage() {
 	const queryClient = useQueryClient();
 	const principalData = queryClient.getQueryData("principalQuery");
 	const searchStudyCategories = queryClient.getQueryData("searchStudyCategories");
-	
+	const sortState = useRecoilValue(contentSortState)
+
 	const searchStudyGroupList = useQuery("searchStudyGroupList", searchStudyList, 
 	{
 		retry: 0,
@@ -34,6 +37,10 @@ function StudyGroupPage() {
 			console.log(error)
 		}
 	})
+
+	useEffect(() => {
+		
+	}, [])
 
 	const searchOptionStudyQuery = useQuery("searchOptionStudyQuery",() => searchOptionStudyList(option), {
 		enabled: isSearch,
@@ -63,6 +70,20 @@ function StudyGroupPage() {
 		navigate(`/study/board/${studyId}`)
 	}
 
+	useEffect(() => {
+        let sortStudyList;
+
+        if(sortState === 0) {
+            return;
+        } else if (sortState === 1) {
+            sortStudyList = studyBoardList.sort((a, b) => new Date(b.createDate) - new Date(a.createDate))
+        } else if (sortState === 2) {
+            sortStudyList = studyBoardList.sort((a, b) => new Date(a.createDate) - new Date(b.createDate))
+        }
+
+        setStudyBoardList([...sortStudyList]);
+    }, [sortState])
+
 	const searchCategoryChange = (id) => {
 		let changeSearchCategory = [...searchCategory]
 		for(let category of changeSearchCategory){
@@ -72,8 +93,6 @@ function StudyGroupPage() {
 		}
 		setSearchCategory(changeSearchCategory)
 	}
-
-	
 
 	const searchOptionStudy = () => {
 		let checkedSearchCategory = searchCategory.filter(category => category.checkState === true)

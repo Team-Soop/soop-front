@@ -20,29 +20,18 @@ export default function ApplyStudyModal({ isOpen, isClose, studyContent, waiting
       window.location.reload();
     },
     onError: error => {
-
+      console.log(error)
     }
   })
 
   const applyPeriodButton = () => {
-    let checkedApply = false;
     let applyData = {
       studyId: studyContent.studyId,
       userId: principalData.data.userId,
       applyMessage: applyMessage
     }
 
-    for(let member of waitingMember) {
-        if(principalData.data.userId === member.userId){
-            checkedApply = true
-        }
-    }
-
-    if(checkedApply) {
-        alert("이미 스터디 가입을 신청한 사용자입니다.")
-    } else {
-      applyPeriodMutation.mutate(applyData)
-    }
+    applyPeriodMutation.mutate(applyData)
 }
 
   

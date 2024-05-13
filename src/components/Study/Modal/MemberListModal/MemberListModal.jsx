@@ -5,7 +5,7 @@ import Modal from 'react-modal'
 import { resignMember } from "../../../../apis/api/study";
 import userImg from "../../../../assets/images/userProfileNone.png";
 
-export default function MemberListModal({isOpen, isClose, recruitmentMember}) {
+export default function MemberListModal({isOpen, isClose, recruitmentMember, isManager}) {
   const queryClient = useQueryClient();
   
   const resignMemberMutation = useMutation({
@@ -41,13 +41,18 @@ export default function MemberListModal({isOpen, isClose, recruitmentMember}) {
                               ? member.profileImgUrl
                               : userImg
                             } alt="" />
-                            <div>{member.nickname}</div>
+                            <div css={s.nameBox}>
+                              <div>{member.nickname}</div>
+                              <div>{member.createDate}</div>
+                            </div>
                           </div>
                           <div>
-                              <button onClick={() => resignMemberButton(member.recruitmentId)}>추방</button>
+                          {
+                            isManager && <button onClick={() => resignMemberButton(member.recruitmentId)}>추방</button>
+                          }
                           </div>
                         </div>
-                        <div>{member.createDate}</div>
+                        
                       </div>
                   )})}
           </div>

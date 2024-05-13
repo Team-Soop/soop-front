@@ -11,6 +11,7 @@ import MemberListModal from "../../components/Study/Modal/MemberListModal/Member
 import ApplyStudyModal from "../../components/Study/Modal/ApplyStudyModal/ApplyStudyModal";
 import DOMPurify from "dompurify";
 import userImg from "../../assets/images/userProfileNone.png";
+import { BsExclamationCircle } from "react-icons/bs";
 
 export default function StudyGroupDetailPage() {
     const [ studyContent, setStudyContent ] = useState();
@@ -42,6 +43,7 @@ export default function StudyGroupDetailPage() {
     const searchWaitingMemberQuery = useQuery("searchWaitingMemberQuery", () => searchWaitingMember(param.id),
         {
          onSuccess: response => {
+            console.log(response.data)
             setWaitingMember(response.data)
          }
         }
@@ -82,9 +84,18 @@ export default function StudyGroupDetailPage() {
         setIsOpenMemberListModal(!isOpenMemberListModal)
     }
 
+    console.log(waitingMember)
+    console.log(isOpenApplyStudyModal)
+
     const openApplyStudyModal = () => {
+        for(let member of waitingMember) {
+            if(principalData.data.userId === member.userId){
+                alert("이미 스터디 가입을 신청한 사용자입니다.")
+                return;
+            }
+        }   
         setIsOpenApplyStudyModal(!isOpenApplyStudyModal)
-    }
+    }   
 
     const isReportOpen = (feedId) => {
         if(window.confirm("이 게시물을 신고 하시겠습니까?")){
@@ -141,7 +152,7 @@ export default function StudyGroupDetailPage() {
                         <div css={s.header}>
                             <div css={s.title}>{studyContent.studyTitle}</div>
                             <div css={s.titleInBox}>
-                                <div onClick={() => isReportOpen(studyContent.studyId)}>신고 아이콘</div>
+                                <div onClick={() => isReportOpen(studyContent.studyId)}><BsExclamationCircle /></div>
                                 <div>{studyContent.contentCreateDate}</div>
                             </div>
                         </div>
@@ -201,7 +212,7 @@ export default function StudyGroupDetailPage() {
                 </div>
                 <SaveStduyGroup isOpen={isWrite} isClose={closeWrite} setState={1} studyId={studyContent.studyId} title={studyContent.studyTitle}  content={studyContent.studyContent}  memberLimited={studyContent.studyMemberLimited} periodEnd={studyContent.studyPeriodEnd} skills={studyContent.studySkills} memberCount={studyContent.memberCount} />
                 <WaitingParticleModal isOpen={isOpenWaitingModal} isClose={openWaitingModal} waitingMember={waitingMember}/>
-                <MemberListModal isOpen={isOpenMemberListModal} isClose={openMemberListModal} recruitmentMember={recruitmentMember}/>
+                <MemberListModal isOpen={isOpenMemberListModal} isClose={openMemberListModal} recruitmentMember={recruitmentMember} isManager={isManager}/>
                 <ApplyStudyModal isOpen={isOpenApplyStudyModal} isClose={openApplyStudyModal} studyContent={studyContent} waitingMember={waitingMember}/>
             </div>
             : null}

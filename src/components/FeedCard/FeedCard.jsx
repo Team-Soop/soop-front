@@ -48,9 +48,6 @@ function FeedCard({ feed, setIsBookMarkClick }) {
         refetchOnWindowFocus: false,
         retry: 0,
     });
-
-
-
     
     // 댓글 카운트
     const searchFeedCommentQuery = useQuery(

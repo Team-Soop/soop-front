@@ -7,9 +7,10 @@ import { searchAllLunch } from "../../apis/api/lunch";
 import LunchList from "../../components/LunchList/LunchList";
 import LunchDetail from "../../components/LunchDetail/LunchDetail";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { lunchDetailState } from "../../atoms/lunchDetailAtom";
 import { rightSideBarState, sideMenuState } from "../../atoms/SideMenuAtom";
+import { contentSortState } from "../../atoms/contentSortAtom";
 
 function LunchPage(props) {
   const navigate = useNavigate();
@@ -17,12 +18,26 @@ function LunchPage(props) {
   const [ lunchDetailData, setLunchDetailData] = useRecoilState(lunchDetailState);
   const setSideMenuNum = useSetRecoilState(sideMenuState);
   const [ rightSideBar, sestRightSideBar ] = useRecoilState(rightSideBarState);
+  const sortState = useRecoilValue(contentSortState)
 
   useEffect(() => {
     sestRightSideBar(3)
     setSideMenuNum(1)
   })
 
+  // Recoil이 아닌 State로 변경 시 재렌더링 필요 (RecoilState 스프레드로 변경 불가)
+  // useEffect(() => {
+  //   let sortLunchList;
+
+  //   if(sortState === 0) {
+  //       return;
+  //   } else if (sortState === 1) {
+  //     sortLunchList = lunchDetailData.sort((a, b) => new Date(b.createDate) - new Date(a.createDate))
+  //   } else if (sortState === 2) {
+  //     sortLunchList = lunchDetailData.sort((a, b) => new Date(a.createDate) - new Date(b.createDate))
+  //   }
+  //   setLunchDetailData([...sortLunchList]);
+  // }, [sortState])
 
   // 랜더링 될때마다 DB에서 LIST 데이터를 get함
   const searchAllLunchQuery = useQuery("searchAllLunchQuery", searchAllLunch,
@@ -39,7 +54,7 @@ function LunchPage(props) {
           PlaceName: response.lunchPlaceName,
           categroies: response.lunchCategoryNames,
           title: response.lunchTitle,
-          imgUrls: response.lunchImgUrls,
+          imgUrls: response.lunchImgUrls
         }
       }))
       // 상세페이지를 위한 data
@@ -55,7 +70,8 @@ function LunchPage(props) {
           content: response.lunchContent,
           placeX: response.lunchPlaceX,
           placeY: response.lunchPlaceY,
-          placeUrl: response.lunchPlaceUrl
+          placeUrl: response.lunchPlaceUrl,
+          createDate: response.createDate
         }
       }))
     },
