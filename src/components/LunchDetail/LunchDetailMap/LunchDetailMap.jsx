@@ -44,7 +44,16 @@ function LunchDetailMap({placeName, placeX, placeY, placeUrl}) {
 
   return (
     <div>
-      <div id="map" style={{ width: "350px", height: "350px" }}></div>
+      <div id="map" 
+      style={{ 
+        marginTop: "30px",
+        boxSizing: "border-box",
+        border: "2px solid #dbdbdb",
+        borderRadius: "5px",
+        width: "100%", 
+        height: "350px" 
+        }}>
+        </div>
     </div>
   );
 }

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import MainPage from "../pages/MainPage/MainPage";
 import ClassSchedulePage from "../pages/ClassSchedulePage/ClassSchedulePage";
-import FeedPage from "../pages/FeedPage/FeedPage";
 import AuthPage from "../pages/AuthPage/AuthPage";
 import { useQuery } from "react-query";
 import { getPrincipalRequest } from "../apis/api/principal";
@@ -18,6 +17,7 @@ import AdminRoute from "./AdminRoute";
 import Report from "../components/Report/Report";
 import UserAlarm from "../components/UserAlarm/UserAlarm";
 import FeedRoute from "./FeedRoute";
+import LunchRoute from "./LunchRoute";
 
 function AuthRoute(props) {
   const principalQuery = useQuery("principalQuery", getPrincipalRequest, {
@@ -62,7 +62,7 @@ function AuthRoute(props) {
             {/* 임시회원, 일반회원은 접근 불가 */}
             <Route path="/study/*" element={<StudyRoute />} />
             {/* 임시회원 글작성 불가  */}
-            <Route path="/lunch/*" element={<LunchPage />} />
+            <Route path="/lunch/*" element={<LunchRoute />} />
             {/* 임시회원 글작성 불가 */}
             <Route path="/feed/*" element={<FeedRoute />} />
           </Routes>

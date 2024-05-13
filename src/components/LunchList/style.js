@@ -13,13 +13,6 @@ export const lunchLayout = css`
   list-style: none;
   background-color: #F6F5EF;
   transition: all 0.3s;
-  cursor: pointer;
-
-  &:hover {
-    
-    /* padding: 40px 50px; */
-    border: 2px solid #dbdbdb;
-  }
 `
 
 export const listHeader = css`
@@ -55,7 +48,7 @@ export const saveFavorite = css`
   color: #8A9C99;
 `
 
-export const line = css `
+export const line = css`
   margin-top: 10px;
   margin-bottom: 30px;
   border-top: 2px solid #CAD8D8;

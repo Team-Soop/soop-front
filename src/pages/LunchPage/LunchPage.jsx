@@ -26,18 +26,18 @@ function LunchPage(props) {
   })
 
   // Recoil이 아닌 State로 변경 시 재렌더링 필요 (RecoilState 스프레드로 변경 불가)
-  // useEffect(() => {
-  //   let sortLunchList;
+  useEffect(() => {
+    let sortLunchList;
 
-  //   if(sortState === 0) {
-  //       return;
-  //   } else if (sortState === 1) {
-  //     sortLunchList = lunchDetailData.sort((a, b) => new Date(b.createDate) - new Date(a.createDate))
-  //   } else if (sortState === 2) {
-  //     sortLunchList = lunchDetailData.sort((a, b) => new Date(a.createDate) - new Date(b.createDate))
-  //   }
-  //   setLunchDetailData([...sortLunchList]);
-  // }, [sortState])
+    if(sortState === 0) {
+        return;
+    } else if (sortState === 1) {
+      sortLunchList = lunchListsData.sort((a, b) => new Date(b.createDate) - new Date(a.createDate))
+    } else if (sortState === 2) {
+      sortLunchList = lunchListsData.sort((a, b) => new Date(a.createDate) - new Date(b.createDate))
+    }
+    setLunchListsData([...sortLunchList]);
+  }, [sortState])
 
   // 랜더링 될때마다 DB에서 LIST 데이터를 get함
   const searchAllLunchQuery = useQuery("searchAllLunchQuery", searchAllLunch,
@@ -51,10 +51,11 @@ function LunchPage(props) {
           lunchId: response.lunchId,
           nickName: response.nickName,
           profileImgUrl: response.profileImgUrl,
-          PlaceName: response.lunchPlaceName,
+          placeName: response.lunchPlaceName,
           categroies: response.lunchCategoryNames,
           title: response.lunchTitle,
-          imgUrls: response.lunchImgUrls
+          imgUrls: response.lunchImgUrls,
+          createDate: response.createDate
         }
       }))
       // 상세페이지를 위한 data
@@ -81,26 +82,15 @@ function LunchPage(props) {
   })
 
 
-  // 상세보기 컴포넌트 클릭 버튼
-  const handleOnLunchDetail = (lunchId) => {
-    navigate(`/lunch/Detail?lunchId=${lunchId}`)
-  }
-
   return (
     <div css={s.lunchPageRootLayout}>
-      <Routes>
-        <Route path='/Detail' element={<LunchDetail />}/>
-      </Routes>
 
       {/* lunch List 피드 컴포넌트 */}
       <div css={s.lunchPageLayout}>
         <ul>
           {
-            lunchDetailData.map(listData => (
+            lunchListsData.map(listData => (
               <div key={listData.lunchId}>
-                {/* <button onClick={() => handleOnLunchDetail(listData.lunchId)}>
-                  상세보기
-                </button> */}
                 <LunchList
                   lunchId={listData.lunchId}
                   profileImgUrl={listData.profileImgUrl}
@@ -110,6 +100,7 @@ function LunchPage(props) {
                   title={listData.title}
                   imgUrls={listData.imgUrls}
                   content={listData.content}
+                  
                 />
               </div>
             ))
