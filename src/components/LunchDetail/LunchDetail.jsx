@@ -18,6 +18,9 @@ import 'react-slideshow-image/dist/styles.css'
 import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
 import { Slide } from "react-slideshow-image";
 import { IoMdHeart } from "react-icons/io";
+import { IoMdHeartEmpty } from "react-icons/io";
+import { FaRegCommentAlt } from "react-icons/fa";
+import { commentContent } from "../FeedCard/FeedCardComment/style";
 
 
 
@@ -212,7 +215,7 @@ function LunchDetail() {
       />
 
 
-      {/* 이미지, 게세물 */}
+      {/* 이미지, 게시물 */}
       <div css={s.feedcontents}>
         {
           dataResult?.imgUrls > 1
@@ -244,9 +247,6 @@ function LunchDetail() {
 
       {/* 댓글, 좋아요 */}
       <div css={s.footer}>
-        
-        {/* 좋아요/추천 */}
-        <div>
           {
             likeLunchQuery.isLoading
             ? <></>
@@ -257,14 +257,17 @@ function LunchDetail() {
                 </button>
               :
                 <button css={s.feedFooterButton} onClick={() => likeLunch.mutate(detailLunchId)}> 
-                  <AiOutlineLike /> <span>{likeLunchQuery.data.data.totalCount}</span>
+                  <IoMdHeartEmpty/> <span>{likeLunchQuery.data.data.totalCount}</span>
                 </button>
           }
-        </div>
 
-        {/* 댓글 */}
-        <div>
-          <button onClick={() => {setIsCommentOpen(!isCommentOpen)}}>댓글보기</button>
+
+
+          <button css={s.feedFooterButton} onClick={() => {setIsCommentOpen(!isCommentOpen)}}>
+            <FaRegCommentAlt />{" "}
+            <span>{!commentContent?.totalCount ? 0 : commentContent?.totalCount}</span>
+          </button>
+          
           {
             isCommentOpen ?
               <LunchComment 
@@ -274,7 +277,7 @@ function LunchDetail() {
             :
               <></>
           }
-        </div>
+
       </div>
 
 

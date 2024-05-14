@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import * as s from "./style";
 import { useMutation, useQueryClient } from "react-query";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../apis/firebase/firebaseConfig";
 import ReactQuill from "react-quill";
@@ -21,6 +21,7 @@ import 'react-slideshow-image/dist/styles.css'
 import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
 import { FiPlusCircle } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
+import { rightSideBarState } from "../../atoms/SideMenuAtom";
 
 
 
@@ -39,6 +40,8 @@ function LunchWrite() {
   const [loadPhotos, setLoadPhotos] = useState([]);
   const imgFileRef = useRef();
   const [isAddPhotos, setIsAddPhotos] = useState(false);
+  const [rightSideBar, setRightSideBar] = useRecoilState(rightSideBarState);
+
 
 
   const modules = useMemo(() => ({
@@ -56,6 +59,9 @@ function LunchWrite() {
     },
   }));
 
+  // useEffect(() => {
+  //   setRightSideBar(0);
+  // })
 
   // 슬라이드쇼 
   const settings = {
