@@ -178,6 +178,8 @@ export const footer = css`
   margin: 5px 0;
   width: 100%;
   height: 25px;
+  justify-content: center;
+  align-items: center;
   & > button {
     display: flex;  
   align-items: center;
@@ -193,6 +195,6 @@ export const feedFooterButton = css`
   background-color: transparent;
   border: none;
   font-size: 16px;
-  color: #ff0000;
+  color: #000000;
   cursor: pointer;
 `;

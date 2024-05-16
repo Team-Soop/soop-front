@@ -19,7 +19,7 @@ function SigninPage(props) {
     }).then(response => {
         const accessToken = response.data;
         localStorage.setItem("AccessToken", accessToken);
-        window.location.replace("/");
+        window.location.replace("/schedule");
     }).catch(error => {
         alert(error.response.data);
     })

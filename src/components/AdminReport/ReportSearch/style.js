@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 export const tableLayout = css`
     position: relative;
     border: 1px solid #dbdbdb;
-    width: 800px;
+    width: 100%;
     height: 300px;
     background-color: white;
     overflow: auto;
