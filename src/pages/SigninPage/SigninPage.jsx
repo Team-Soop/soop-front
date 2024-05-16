@@ -7,6 +7,7 @@ import { signinRequest } from '../../apis/api/signin';
 import { SiNaver } from "react-icons/si";
 import { FcGoogle } from "react-icons/fc";
 import { SiKakao } from "react-icons/si";
+import getServerAddress from "../../constants/serverAddress";
 
 function SigninPage(props) {
   const [ username, usernameChange ] = useInput();
@@ -40,9 +41,9 @@ function SigninPage(props) {
           <button css={s.signinButton}><Link to={"/auth/signup"}>회원가입</Link> </button>
         </div>
         <div css={s.oauth2Signin}>
-            <div><a href="http://localhost:8080/oauth2/authorization/kakao"><SiKakao /></a></div>
-            <div><a href="http://localhost:8080/oauth2/authorization/google"><FcGoogle /></a></div>
-            <div><a href="http://localhost:8080/oauth2/authorization/naver"><SiNaver /></a></div>
+            <div><a href={`http://${getServerAddress()}/oauth2/authorization/kakao`}><SiKakao /></a></div>
+            <div><a href={`http://${getServerAddress()}/oauth2/authorization/google`}><FcGoogle /></a></div>
+            <div><a href={`http://${getServerAddress()}/oauth2/authorization/naver`}><SiNaver /></a></div>
         </div>
       </div>
     </div>
