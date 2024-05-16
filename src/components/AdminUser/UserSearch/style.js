@@ -113,7 +113,7 @@ export const table = css`
 
     & tr > th:nth-of-type(6),
     & tr > td:nth-of-type(6) {
-        min-width: 80px;
+        min-width: 115px;
     }
 
     & tr > th:nth-of-type(7),
