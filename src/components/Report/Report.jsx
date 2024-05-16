@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+import * as s from "./style";
 import React, { useMemo, useState } from 'react';
 import ReactQuill from 'react-quill';
 import { useQuillContent } from '../../hooks/quillContent';
@@ -59,15 +61,16 @@ function Report() {
   }
 
   return (
-    <div>
+    <div css={s.reportLayout}>
       {/* 타이틀 */}
       <div>
         <h2>해당 게시물 신고하기</h2>
       </div>
-
+      <br/>
       <div>
         <p>해당 게시물이 어떤 신고 사유가 있는지 가능한 자세하게 적어주세요.</p>
-      </div>      
+      </div>    
+      <br/>  
 
       {/* 신고 카테고리 */}
       <div>
@@ -88,6 +91,7 @@ function Report() {
           불쾌감을 주거나 부적적한 닉네임 사용
         </div>
       </div>
+      <br/>
 
       {/* 신고 내용 */}
       <div>
@@ -106,8 +110,8 @@ function Report() {
           }
         </div>
       </div>  
-      
-      <button onClick={() => requstClickReport()}>신고하기</button>
+      <br/>
+      <button css={s.reportButton}onClick={() => requstClickReport()}>신고하기</button>
 
         
 

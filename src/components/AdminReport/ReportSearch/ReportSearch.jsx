@@ -72,7 +72,7 @@ function ReportSearch(props) {
 
 
   return (
-    <div>
+    <div css={s.layOut}>
       <h1>Report</h1>
       <div>
         <Select

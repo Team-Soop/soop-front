@@ -32,7 +32,7 @@ function RootSideMenuLeft() {
     }
   }, [principalQueryState.status])
 
-  // console.log(principal?.data.profileImgUrl);
+  console.log(principal?.data);
 
   const handleLogoutClick = () => {
     localStorage.removeItem("AccessToken");

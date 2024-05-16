@@ -71,7 +71,7 @@ function ReportCompleted () {
 
 
   return (
-    <div>
+    <div css={s.layout}>
       <h1>처리 완료된 Rport</h1>
       <div>
         <Select
